@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
+    missing_check = fields.Boolean(string="Missing Check", default=False)
     late_attendance_hours = fields.Float()
     early_leave_hours = fields.Float()
 

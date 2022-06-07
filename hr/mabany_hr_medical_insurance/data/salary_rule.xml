@@ -17,7 +17,6 @@
             <field name="name">Medical Insurance Deduction</field>
             <field name="code">MEDICALINSURANCE</field>
             <field name="category_id" ref="hr_payroll.DED"/>
-            <field name="sequence" eval="42"/>
             <field name="amount_select">code</field>
             <field name="struct_id" ref="custom_medical_structure"/>
 
@@ -30,7 +29,6 @@
             <field name="name">Medical Company Insurance Deduction</field>
             <field name="code">MEDICALCOMPINSURANCE</field>
             <field name="category_id" ref="hr_payroll.DED"/>
-            <field name="sequence" eval="43"/>
             <field name="amount_select">code</field>
             <field name="struct_id" ref="custom_medical_structure"/>
 
@@ -43,7 +41,6 @@
             <field name="name">Accident Insurance Deduction</field>
             <field name="code">LIFEINSURANCE</field>
             <field name="category_id" ref="hr_payroll.DED"/>
-            <field name="sequence" eval="81"/>
             <field name="amount_select">code</field>
             <field name="struct_id" ref="custom_medical_structure"/>
 
