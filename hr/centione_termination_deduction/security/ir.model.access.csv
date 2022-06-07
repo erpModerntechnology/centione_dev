@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_centione_termination_deduction_centione_termination_deduction,centione_termination_deduction.centione_termination_deduction,model_centione_termination_deduction_centione_termination_deduction,base.group_user,1,1,1,1

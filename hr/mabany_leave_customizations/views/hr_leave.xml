@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="holiday_type_form_inherit" model="ir.ui.view">
+            <field name="name">holiday.type.form.inherit</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='leave_validation_type']" position="after">
+                    <field name="holiday_type"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="constraint_leave_form_inherit" model="ir.ui.view">
+            <field name="name">constraint.leave.form.inherit</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='title']" position="after">
+                    <group>
+                        <field name="exception_constraint"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

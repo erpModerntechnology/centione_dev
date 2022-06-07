@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_over_time_form" model="ir.ui.view">
+            <field name="name">over.time.form</field>
+            <field name="model">over.time</field>
+            <field name="arch" type="xml">
+                <form string="MODEL">
+                    <header>
+                        <button name="action_approve" string="Approved" type="object"
+                                attrs="{'invisible':[('state','!=','draft')]}" class="oe_highlight"/>
+                        <!--<button name="action_approved" string="Confirm" type="object" attrs="{'invisible':[('state','!=','draft')]}" class="oe_highlight"/>-->
+                        <!--<button name="migrate_company" string="Migrate Company" type="object" class="oe_highlight"/>-->
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Name" />
+                            <h1>
+                                <field name="name" placeholder="Name" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id"
+                                       attrs="{'readonly':[('state','=','done')],'required':[('state','!=','done')]}"/>
+                                <field name="company_id"
+                                       attrs="{'readonly':[('state','=','done')],'required':[('state','!=','done')]}"/>
+                                <field name="date_from"
+                                       attrs="{'readonly':[('state','=','done')],'required':[('state','!=','done')]}"/>
+                                <field name="date_to"
+                                       attrs="{'readonly':[('state','=','done')],'required':[('state','!=','done')]}"/>
+                            </group>
+                            <group>
+                                <field name="holiday_type" required="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="morning_hours"/>
+                            <field name="night_hours"/>
+                            <field name="holiday_hours"/>
+                            <field name="total_hours"/>
+                        </group>
+                        <group>
+                            <field name="attendance_id" readonly="1"
+                                   attrs="{'invisible': [('attendance_id', '=', False)]}"/>
+                            <field name="payslip_id" readonly="1" attrs="{'invisible': [('payslip_id', '=', False)]}"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_over_time_tree" model="ir.ui.view">
+            <field name="name">over.time.tree</field>
+            <field name="model">over.time</field>
+            <field name="arch" type="xml">
+                <tree string="MODEL">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_over_time_search" model="ir.ui.view">
+            <field name="name">over.time.search</field>
+            <field name="model">over.time</field>
+            <field name="arch" type="xml">
+                <search string="Search Over Time">
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_over_time_action" model="ir.actions.act_window">
+            <field name="name">Over Time</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">over.time</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.server" id="action_confirm_over_time">
+            <field name="name">Confirm Over Time</field>
+            <field name="model_id" ref="mabany_over_time.model_over_time"/>
+            <field name="binding_model_id" ref="mabany_over_time.model_over_time"/>
+            <field name="type">ir.actions.server</field>
+            <field name="groups_id" eval="[(4,ref('base.group_user'))]"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records: action = records.action_approve()
+            </field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_over_time" name="Over Time" parent="hr_work_entry_contract_enterprise.menu_hr_work_entry_configuration"
+                  action="view_over_time_action" sequence="10"/>
+
+    </data>
+</odoo>

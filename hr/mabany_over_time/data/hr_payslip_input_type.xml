@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+        <record id="overtime_input_type" model="hr.payslip.input.type">
+            <field name="name">Total overtime</field>
+            <field name="code">OVERTIME</field>
+        </record>
+    </data>
+</odoo>

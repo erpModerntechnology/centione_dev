@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="hr_medical_insurance" model="ir.ui.view">
+            <field name="name">hr.medical.insurance</field>
+            <field name="model">hr.medical.insurance</field>
+            <field name="inherit_id" ref="mabany_hr_medical_insurance.view_hr_medical_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='grades']" position="after">
+                    <page name="family_grade" string="Family Grades">
+                        <field name="family_grade_ids">
+                            <tree editable="bottom">
+                                <field name="grade_id"/>
+                                <field name="spouse"/>
+                                <field name="child"/>
+                                <field name="on_company"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
