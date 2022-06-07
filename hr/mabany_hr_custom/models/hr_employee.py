@@ -69,13 +69,3 @@ class HrEmployee(models.Model):
             if len(rec.identification_id) > 14:
                 raise ValidationError(_("Identification Id Should Be Less Than 14 Character"))
 
-
-    # @api.constrains('identification_id')
-    # def check_identification_id(self):
-    #     for rec in self:
-    #         employees = self.env['hr.employee'].search(
-    #             [('identification_id', '=', rec.identification_id), ('id', '!=', rec.id)])
-    #         termination_employee = self.env['hr.termination'].search(
-    #             [('employee_id.identification_id', '=', rec.identification_id), ('id', '!=', rec.id)])
-    #         if employees or termination_employee:
-    #             raise ValidationError(_("The Identification Id is already existed"))
