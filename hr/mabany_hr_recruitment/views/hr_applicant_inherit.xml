@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+         <record model="ir.ui.view" id="hr_applicant_view_search_inherit">
+            <field name="name">hr_applicant_view_searchinherit</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//field[@name='job_id']" position="after">
+                    <field name="partner_mobile"/>
+
+                </xpath>
+
+            </field>
+         </record>
+
+        <record model="ir.ui.view" id="hr_applicant_view_form_inherit">
+            <field name="name">hr_applicant_view_form inherit</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//field[@name='salary_expected_extra']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="string">Interviewer</attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='salary_proposed_extra']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+
+                </xpath>
+                <xpath expr="//label[@for='salary_proposed']" position="attributes">
+                    <attribute name="string">Current Salary</attribute>
+                </xpath>
+                <xpath expr="//field[@name='availability']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='source_id']" position="after">
+                    <field name="stage_sequence" invisible="True"/>
+                </xpath>
+
+                <xpath expr="//field[@name='description']" position="after">
+                    <group name="comments" string="Interview Comments">
+                        <field name="comment_interview1" attrs="{'readonly': [('stage_sequence', '!=', 1)]}">
+                            <tree>
+                                <field name="stage_name"/>
+                                <field name="recruiter"/>
+                                <field name="date"/>
+                                <field name="comment"/>
+                            </tree>
+                        </field>
+
+                        <field name="comment_interview2" attrs="{'readonly': [('stage_sequence', '!=', 2)]}">
+                            <tree>
+                                <field name="stage_name"/>
+                                <field name="recruiter"/>
+                                <field name="date"/>
+                                <field name="comment"/>
+                            </tree>
+                        </field>
+
+                        <field name="comment_interview3" attrs="{'readonly': [('stage_sequence', '!=', 3)]}">
+                            <tree>
+                                <field name="stage_name"/>
+                                <field name="recruiter"/>
+                                <field name="date"/>
+                                <field name="comment"/>
+                            </tree>
+                        </field>
+                        <field name="comment_interview4" attrs="{'readonly': [('stage_sequence', '!=', 4)]}">
+                            <tree>
+                                <field name="stage_name"/>
+                                <field name="recruiter"/>
+                                <field name="date"/>
+                                <field name="comment"/>
+
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+
+<!--                <xpath expr="//field[@name='type_id']" position="after">-->
+<!--                    <field name="start_date"/>-->
+<!--                    <field name="end_date"/>-->
+
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='partner_mobile']" position="after">-->
+<!--                    <field name="current_address"/>-->
+<!--                </xpath>-->
+
+
+<!--                <xpath expr="//sheet//group" position="inside">-->
+<!--                    <group string="Military Status" name="military_status"-->
+<!--                     attrs="{'invisible': [('gender', '!=', 'male')]}"-->
+<!--                    >-->
+
+<!--                        <field name="army_status"/>-->
+<!--                        <field name="postponed_to_date" attrs="{'invisible': [('army_status', '!=', 'postponed')]}"/>-->
+<!--                    </group>-->
+
+<!--                </xpath>-->
+
+
+            </field>
+        </record>
+    </data>
+</odoo>
