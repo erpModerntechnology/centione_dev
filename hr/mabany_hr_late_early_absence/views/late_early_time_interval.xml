@@ -21,7 +21,7 @@
                         <field name="late_early_penalty_line_ids">
                             <tree editable="bottom">
                                 <field name="sequence"/>
-                                <field name="penalty_value" widget="float_time"/>
+                                <field name="penalty_value" />
                             </tree>
                         </field>
                     </group>

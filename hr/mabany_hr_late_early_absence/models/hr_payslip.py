@@ -263,7 +263,7 @@ class HrPayslip(models.Model):
             total_penalty_time = 0
             for it in late_days:
                 idx = self._get_policy_idx(it.late_attendance_hours, late_policy)
-                total_penalty_time += late_policy[idx][1][0] if late_policy and late_policy[idx][1] else it.late_attendance_hours
+                total_penalty_time+=(late_policy[idx][1][0] *it.late_attendance_hours)if (late_policy and late_policy[idx][1]) else it.late_attendance_hours
                 if late_policy and len(late_policy[idx][1]) > 1:
                     late_policy[idx][1].pop(0)
 
@@ -307,7 +307,7 @@ class HrPayslip(models.Model):
             total_penalty_time = 0
             for it in early_days:
                 idx = self._get_policy_idx(it.early_leave_hours, early_policy)
-                total_penalty_time += early_policy[idx][1][0] if early_policy and early_policy[idx][1] else it.early_leave_hours
+                total_penalty_time += (early_policy[idx][1][0]*it.early_leave_hours) if (early_policy and early_policy[idx][1]) else it.early_leave_hours
                 if early_policy and len(early_policy[idx][1]) > 1:
                     early_policy[idx][1].pop(0)
 
