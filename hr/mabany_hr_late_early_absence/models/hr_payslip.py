@@ -220,7 +220,7 @@ class HrPayslip(models.Model):
     def _get_policy_idx(self, time, policy):
         time=round(time,2)
         for idx, lp in enumerate(policy):
-            if lp[0][0] <= time <= lp[0][1]:
+            if round(lp[0][0],2) <= time <= round(lp[0][1],2):
                 return idx
         return -1
 
