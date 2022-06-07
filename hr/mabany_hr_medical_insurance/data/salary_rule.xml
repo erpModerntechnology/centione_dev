@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+
+
+        <record id="medical_structure_type" model="hr.payroll.structure.type">
+            <field name="name">Medical</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="custom_medical_structure" model="hr.payroll.structure">
+            <field name="name">Medical</field>
+            <field name="type_id" ref="medical_structure_type"/>
+        </record>
+
+
+        <record id="medical_insurance_salary_rule" model="hr.salary.rule">
+            <field name="name">Medical Insurance Deduction</field>
+            <field name="code">MEDICALINSURANCE</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="sequence" eval="42"/>
+            <field name="amount_select">code</field>
+            <field name="struct_id" ref="custom_medical_structure"/>
+
+            <field name="amount_python_compute">result = employee.get_medical_cost(payslip)</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = employee.get_medical_cost(payslip)</field>
+        </record>
+
+        <record id="medical_company_insurance_salary_rule" model="hr.salary.rule">
+            <field name="name">Medical Company Insurance Deduction</field>
+            <field name="code">MEDICALCOMPINSURANCE</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="sequence" eval="43"/>
+            <field name="amount_select">code</field>
+            <field name="struct_id" ref="custom_medical_structure"/>
+
+            <field name="amount_python_compute">result = employee.get_comp_medical_cost(payslip)</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = employee.get_comp_medical_cost(payslip)</field>
+        </record>
+
+        <record id="life_insurance_salary_rule" model="hr.salary.rule">
+            <field name="name">Accident Insurance Deduction</field>
+            <field name="code">LIFEINSURANCE</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="sequence" eval="81"/>
+            <field name="amount_select">code</field>
+            <field name="struct_id" ref="custom_medical_structure"/>
+
+            <field name="amount_python_compute">result = employee.get_life_cost(payslip) / 12</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = employee.get_life_cost(payslip)</field>
+        </record>
+
+    </data>
+</odoo>
