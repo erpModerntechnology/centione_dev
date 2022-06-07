@@ -229,7 +229,6 @@ class HrPayslip(models.Model):
         resource_calendar = payslip.employee_id.resource_calendar_id
         wage = payslip.contract_id.wage
         wage_per_day = wage / 30.0
-        total_missing_days = 0
         missing_penalty_rate = []
         date_from = fields.Datetime.to_datetime(payslip.date_from)
         date_to = fields.Datetime.to_datetime(payslip.date_to) + timedelta(hours=23, minutes=59, seconds=59)
