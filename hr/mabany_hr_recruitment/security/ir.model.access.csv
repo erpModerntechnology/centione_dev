@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_interview_comment1,access_interview_comment1,model_interview_comment1,,1,1,1,1
+access_interview_comment2,access_interview_comment2,model_interview_comment2,,1,1,1,1
+access_interview_comment3,access_interview_comment3,model_interview_comment3,,1,1,1,1
+access_interview_comment4,access_interview_comment4,model_interview_comment4,,1,1,1,1
