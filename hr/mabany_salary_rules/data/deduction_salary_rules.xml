@@ -2,7 +2,6 @@
     <data>
         <record id="rule_sick_leave" model="hr.salary.rule">
             <field name="name">Sick Leave</field>
-            <field name="sequence" eval="14"/>
             <field name="code">SIL</field>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
