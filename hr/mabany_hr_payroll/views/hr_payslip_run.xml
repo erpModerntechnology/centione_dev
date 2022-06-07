@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_hr_payslip_run_form_inherit" model="ir.ui.view">
+            <field name="name">hr_payslip_run_form_inherit</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_validate']" position="after">
+                    <field name="report" widget="binary" string="Download" filename="report_name"/>
+
+                    <button name="generate_excel" string="Generate Report" type="object"
+                            class="btn-primary"/>
+
+                </xpath>
+            </field>
+        </record>
+
+        <record id="missing_attendance_salary_rule" model="hr.salary.rule">
+            <field name="name">Missing Attendance</field>
+            <field name="code">MA</field>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="sequence" eval="181"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -1*employee.get_missing_attendance(contract,payslip.date_from,payslip.date_to)
+            </field>
+        </record>
+
+        <record id="view_hr_salary_rule_form_inherit" model="ir.ui.view">
+             <field name="name">hr.salary.rule.form.inherit</field>
+             <field name="model">hr.salary.rule</field>
+             <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+             <field name="arch" type="xml">
+
+                 <xpath expr="//field[@name='appears_on_payslip']" position="after">
+                      <field name="contract_valid_based" />
+                 </xpath>
+
+             </field>
+         </record>
+
+
+    </data>
+</odoo>

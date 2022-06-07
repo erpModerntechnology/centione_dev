@@ -1,0 +1,48 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_contract_work_hours
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20160726\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-07 21:53+0000\n"
+"PO-Revision-Date: 2016-12-07 21:53+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_contract_work_hours
+#: model:ir.model,name:hr_contract_work_hours.model_hr_contract
+msgid "Contract"
+msgstr ""
+
+#. module: hr_contract_work_hours
+#: help:hr.contract,workday_hours:0
+msgid "It helps compute work hour value based on Wage and Month Workdays"
+msgstr ""
+
+#. module: hr_contract_work_hours
+#: field:hr.contract,month_workdays:0
+msgid "Month Workdays"
+msgstr ""
+
+#. module: hr_contract_work_hours
+#: help:hr.contract,month_workdays:0
+msgid "Net month workdays excluding occasional holidays, it's computed as follows: 30 - (4 * weekly_holidays).\n"
+"weekly_holidays are calculated from Working Days field"
+msgstr ""
+
+#. module: hr_contract_work_hours
+#: field:hr.contract,work_hour_value:0
+msgid "Work Hour Value"
+msgstr ""
+
+#. module: hr_contract_work_hours
+#: field:hr.contract,workday_hours:0
+msgid "Workday Hours"
+msgstr ""
+
