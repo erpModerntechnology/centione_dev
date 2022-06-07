@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="view_hr_grade" model="ir.actions.act_window">
+            <field name="name">HR Grade</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.grade</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_hr_grade"
+                  name="HR Grade"
+                  parent="hr.menu_human_resources_configuration"
+                  action="view_hr_grade"
+                  sequence="16"/>
+    </data>
+</odoo>

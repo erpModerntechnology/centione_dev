@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+
+
+
+         <record id="view_attned_form_inherit" model="ir.ui.view">
+            <field name="name">view.attend.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="mabany_hr.hr_employee_add_attendance_id"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='attendance_id']"  position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+            </field>
+         </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">view.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="mobile_phone" position="before">
+                    <field name="zk_emp_id"/>
+                    <field name="employee_code"/>
+                </field>
+                <field name="passport_id" position="after">
+                    <field name="passport_end_date"/>
+                    <field name="license_end_date"/>
+                    <field name="identify_end_date"/>
+                    <field name="military_status"/>
+                </field>
+                <field name="address_home_id" position="before">
+                    <field name="private_address"/>
+                </field>
+                <field name="department_id" position="after">
+                    <field name="job_id"/>
+                    <field name="job_grade_id"/>
+                </field>
+                <field name="work_email" position="after">
+                    <field name="hire_date"/>
+                </field>
+                <field name="country_of_birth" position="after">
+                    <field name="region"/>
+                </field>
+                <xpath expr="//field[@name='identification_id']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                    <page string="Bank Information">
+                        <group>
+                            <group>
+                                <field name="bank_name"/>
+                                <field name="bank_number"/>
+                                <field name="bank_branch_name"/>
+                            </group>
+
+                        </group>
+                    </page>
+                    <page string="Social Insurance">
+                        <group>
+                            <group>
+                                <field name="insurance_num"/>
+                                <field name="insurance_start_date"/>
+                                <field name="insurance_office"/>
+                            </group>
+
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

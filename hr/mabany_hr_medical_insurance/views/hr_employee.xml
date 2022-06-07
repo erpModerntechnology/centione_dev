@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="view_hr_employee_view_inherit" model="ir.ui.view">
+            <field name="name">view_hr_employee_view_inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                    <page name="medical_insurance" string="Medical Insurance" groups="hr.group_hr_manager">
+                        <field name="medical_line_ids" context="{'default_employee_id': active_id}">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="medical_id" options="{'no_create_edit' : True}"/>
+                                <field name="medical_grade_id" options="{'no_create_edit' : True}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="follower_ids" widget="many2many_tags" options="{'no_create_edit' : True}"/>
+                                <field name="employee_cost"/>
+                                <field name="company_cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="life_insurance" string="Life Insurance" groups="hr.group_hr_manager">
+                        <field name="life_line_ids" context="{'default_employee_id': active_id}">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="life_id" options="{'no_create_edit' : True}"/>
+                                <field name="life_grade_id" options="{'no_create_edit' : True}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="follower_ids" widget="many2many_tags" options="{'no_create_edit' : True}"/>
+<!--                                <field name="cost"/>-->
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

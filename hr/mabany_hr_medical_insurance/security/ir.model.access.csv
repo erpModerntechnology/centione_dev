@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_insurance_company,mabany_hr_insurance_company,model_hr_insurance_company,,1,1,1,1
+access_hr_medical_insurance,mabany_hr_medical_insurance,model_hr_medical_insurance,,1,1,1,1
+access_hr_employee_medical_line,mabany_hr_employee_medical_line,model_hr_employee_medical_line,,1,1,1,1
+access_hr_medical_insurance_lines,centioen_hr_medical_insurance_lines,model_hr_medical_insurance_lines,,1,1,1,1
+access_hr_life_insurance,mabany_hr_life_insurance,model_hr_life_insurance,,1,1,1,1
+access_hr_employee_life_line,mabany_hr_employee_life_line,model_hr_employee_life_line,,1,1,1,1
+access_hr_life_insurance_lines,mabany_hr_life_insurance_lines,model_hr_life_insurance_lines,,1,1,1,1
