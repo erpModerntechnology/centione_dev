@@ -18,3 +18,10 @@ class HrContract(models.Model):
             res.date_start = datetime.strptime(combined_start, '%Y-%m-%d').date()
             emp.first_contract_date = datetime.strptime(combined_start, '%Y-%m-%d').date()
         return res
+
+    # def get_domain(self):
+
+
+
+    hr_responsible_id = fields.Many2one('res.users', 'HR Responsible', tracking=True,
+                                        help='Person responsible for validating the employee\'s contracts.')
