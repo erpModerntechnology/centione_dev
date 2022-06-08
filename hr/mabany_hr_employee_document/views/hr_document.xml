@@ -15,6 +15,7 @@
                                 <field name="states"/>
                                 <field name="start_date"/>
                                 <field name="end_date"/>
+                                <field name="done"/>
                             </tree>
                         </field>
                     </group>

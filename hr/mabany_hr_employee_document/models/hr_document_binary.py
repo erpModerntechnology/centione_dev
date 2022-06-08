@@ -9,4 +9,5 @@ class HrDocumentBinary(models.Model):
     end_date = fields.Date()
     document_id = fields.Many2one('hr.document')
     comment = fields.Char('Comment')
-    states = fields.Char('States')
+    states = fields.Selection([('recieved','Recieved'),('not_recieved','Not Recieved'),('loaned','Loaned')],string='State')
+    done = fields.Boolean('Done')
