@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "khater absence manual recalculate",
+    'name': "mabany absence manual recalculate",
 
     'summary': """""",
 
@@ -18,7 +18,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','khater_hr_late_early_absence','khater_attendance_manual_recalculate'],
+    'depends': ['base','mabany_hr_late_early_absence','mabany_attendance_manual_recalculate'],
 
     # always loaded
     'data': [
