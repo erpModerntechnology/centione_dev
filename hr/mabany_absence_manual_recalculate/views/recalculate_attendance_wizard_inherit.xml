@@ -5,7 +5,7 @@
          <record id="recalculate_attendance_wizard_view_form" model="ir.ui.view">
             <field name="name">recalculate_attendance_wizard.inherit</field>
             <field name="model">recalculate.attendance.wizard</field>
-            <field name="inherit_id" ref="khater_attendance_manual_recalculate.recalculate_attendance_wizard_form"/>
+            <field name="inherit_id" ref="mabany_attendance_manual_recalculate.recalculate_attendance_wizard_form"/>
             <field name="arch" type="xml">
 
 

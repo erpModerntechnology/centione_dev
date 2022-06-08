@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "khater attendance manual recalculate",
+    'name': "mabany attendance manual recalculate",
 
     'summary': """
         """,
