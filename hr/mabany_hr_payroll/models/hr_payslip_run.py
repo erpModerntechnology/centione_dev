@@ -40,6 +40,8 @@ class HrPayslipRun(models.Model):
 
                 value = object if object else 'NULL'
                 row.update({'%s_%s' % (employee_fields[field][0], employee_fields[field][1]): value})
+            row.update({'300_Employee Code': employee_contract.employee_id.zk_emp_id})
+            row.update({'300_Employee Department': employee_contract.employee_id.department_id.name})
 
             salary_rules = {}
             for line in payslip.line_ids:

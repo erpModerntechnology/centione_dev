@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="BINCTAX" model="hr.salary.rule.category">
+            <field name="name">Before Income Tax Category</field>
+            <field name="code">BINCTAX</field>
+        </record>
+
+          <record id="before_income_tax_config_salary_rule" model="hr.salary.rule">
+                <field name="name">BEFORE INCOME TAX SALARY RULE</field>
+                <field name="sequence" eval="79"/>
+                <field name="code">BINCTAX</field>
+                <field name="category_id" ref="mabany_income_tax.BINCTAX"/>
+                <field name="condition_select">python</field>
+              <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+                <field name="condition_python">
+result = payslip.env['income.tax.settings'].sudo().check_date(payslip,contract)
+                </field>
+                <field name="amount_select">code</field>
+                <field name="amount_python_compute">
+result = -1 * (contract.wage + categories.ALW + categories.DED) * (payslip.env['income.tax.settings'].sudo().get_attendance_rate(payslip, contract))
+                </field>
+           </record>
+
+
+
+        <record id="income_tax_config_salary_rule" model="hr.salary.rule">
+                <field name="name">INCOME TAX SALARY RULE</field>
+                <field name="sequence" eval="80"/>
+                <field name="code">INCTAX</field>
+                <field name="category_id" ref="hr_payroll.DED"/>
+                <field name="condition_select">none</field>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+                <field name="amount_select">code</field>
+                <field name="amount_python_compute">
+effective_salary = categories.BASIC + categories.ALW + categories.BINCTAX + categories.DED
+result = -1 * payslip.env['income.tax.settings'].sudo().calc_income_tax(effective_salary)
+                </field>
+           </record>
+
+          <record id="income_tax_compliment_salary_rule" model="hr.salary.rule">
+                <field name="name">INCOME TAX Next Month SALARY RULE</field>
+                <field name="sequence" eval="81"/>
+                <field name="code">NXTTAX</field>
+                <field name="category_id" ref="hr_payroll.DED"/>
+              <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+                <field name="condition_select">none</field>
+                <field name="amount_select">code</field>
+                <field name="amount_python_compute">
+effective_salary = categories.BASIC + categories.ALW + categories.DED
+result = -1 * payslip.env['income.tax.settings'].calc_next_tax(effective_salary,employee,payslip)
+                </field>
+           </record>
+
+    </data>
+</odoo>
