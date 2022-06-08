@@ -170,21 +170,32 @@ class zk_attendance_machine(models.Model):
 
     ##
     @api.model
+    def get_machine_last_download(self, args=None):
+        self=self.sudo()
+        if args['machine_id']:
+            last_download_log= str(self.env['hr.attendance.zk.machine'].sudo().search(
+                [('id', '=', int(args['machine_id']))]).last_download_log)
+
+            #subtract 5 days from last download log, for any missing data for last 5 days
+            #to be pulled in odoo again, and by itself reqpition in log is not permitted
+            last_download_log=datetime.strptime(last_download_log, "%Y-%m-%d %H:%M:%S")- delta.timedelta(5)
+            return str(last_download_log)
+
+    @api.model
     def update_machine_last_download(self, args=None):  # machine_id, last_download
         # return self.sudo().do_update_machine_last_download(machine_id, last_download)
         if args is None:
             args = {}
         return self.sudo().do_update_machine_last_download(args['machine_id'], args['last_datetime'])
 
-    ##
     @api.model
     def do_update_machine_last_download(self, machine_id, last_download):
         # _logger.critical('Machine Id: ', str(machine_id))
         # _logger.critical('Last download', str(last_download))
         # found = self.env['hr.attendance.zk.machine'].search([('id', '=', int(machine_id))])
         # if found:
-        # as sure save all data for all machines once,update last donwload for all machines
-        found = self.env['hr.attendance.zk.machine'].search([('id', '=', int(machine_id))])
+        #as sure save all data for all machines once,update last donwload for all machines
+        found = self.env['hr.attendance.zk.machine'].search([])
         if found:
             for rec in found:
                 rec.write({
