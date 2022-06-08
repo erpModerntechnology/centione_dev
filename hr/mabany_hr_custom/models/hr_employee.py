@@ -66,6 +66,7 @@ class HrEmployee(models.Model):
     @api.constrains('identification_id')
     def check_identification_id_length(self):
         for rec in self:
-            if len(rec.identification_id) > 14:
-                raise ValidationError(_("Identification Id Should Be Less Than 14 Character"))
+            if len(rec.identification_id) != 14:
+                raise ValidationError(_("Identification Id Should Be 14 Character"))
+
 

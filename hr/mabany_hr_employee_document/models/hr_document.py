@@ -14,3 +14,10 @@ class HrDocument(models.Model):
     @api.depends('documents_ids')
     def _compute_done(self):
         self.done = True if len(self.documents_ids) else False
+
+
+    @api.onchange('documents_ids')
+    def onchange_comment(self):
+        for rec in self.documents_ids:
+            self.comment = rec.comment
+            self.states = rec.states
