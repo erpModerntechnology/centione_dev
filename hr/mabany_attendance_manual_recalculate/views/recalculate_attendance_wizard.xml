@@ -30,7 +30,7 @@
         </record>
 
         <menuitem id="recalculate_attendance_menu"
-                  groups="khater_attendance_manual_recalculate.recalculate_attendance_group"
+                  groups="mabany_attendance_manual_recalculate.recalculate_attendance_group"
                   name="Recalculate Attendance" parent="hr_attendance.menu_hr_attendance_manage_attendances" action="recalculate_attendance_wizard_action" />
 
 
