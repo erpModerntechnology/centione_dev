@@ -26,6 +26,10 @@ class HrEmployee(models.Model):
                                        selection=[('completed', 'Completed'), ('exempted', 'Exepmted'), ('postponed', 'Postponed')], required=False, )
     employee_code = fields.Char('Employee Code', required=False)
     job_grade_id = fields.Many2one('job.grade', 'Job Grade')
+    payment_method = fields.Selection(string="Payment Method", selection=[('cash', 'Cash'), ('bank', 'Bank'), ],
+                              required=False, )
+    nbe_code = fields.Char('NBE Code', required=False)
+    arabic_name = fields.Char('Arabic Name', required=False)
 
     _sql_constraints = [
         ('attendance_code_unique', 'unique("zk_emp_id")', 'Attendance ID Already Exists!!')

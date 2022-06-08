@@ -13,6 +13,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/hr_applicant_inherit.xml',
+        'views/hr_job.xml',
     ],
     # only loaded in demonstration mode
     # 'demo': [
