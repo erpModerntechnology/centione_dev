@@ -62,7 +62,7 @@ class zk_attendance_tmp(models.Model):
             if rec.user_number:
                 emps = self.env['hr.employee'].search([])
                 for emp in emps:
-                    if int(emp.attendance_id) == int(rec.user_number):
+                    if emp.attendance_id == rec.user_number:
                         rec.user = emp.id
 
     @api.depends('date')
