@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="income_tax_settings0" model="income.tax.settings">
+            <field name="is_functional_exempt">True</field>
+            <field name="name">Tax Divisions</field>
+            <field name="functional_exempt_value">750</field>
+        </record>
+
+        <record id="income_tax_settings_line1" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">1</field>
+            <field name="min_value">0</field>
+            <field name="max_value">1250</field>
+            <field name="tax_ratio">0</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+        <record id="income_tax_settings_line2" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">8</field>
+            <field name="min_value">0</field>
+            <field name="max_value">2500</field>
+            <field name="tax_ratio">2.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">2</field>
+        </record>
+        <record id="income_tax_settings_line3" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">14</field>
+            <field name="min_value">0</field>
+            <field name="max_value">3750</field>
+            <field name="tax_ratio">10</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">3</field>
+        </record>
+        <record id="income_tax_settings_line4" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">19</field>
+            <field name="min_value">0</field>
+            <field name="max_value">5000</field>
+            <field name="tax_ratio">15</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">4</field>
+        </record>
+        <record id="income_tax_settings_line5" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">23</field>
+            <field name="min_value">0</field>
+            <field name="max_value">16666.66</field>
+            <field name="tax_ratio">20</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">5</field>
+        </record>
+        <record id="income_tax_settings_line6" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">26</field>
+            <field name="min_value">0</field>
+            <field name="max_value">33333.33</field>
+            <field name="tax_ratio">22.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">6</field>
+        </record>
+        <record id="income_tax_settings_line7" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">2</field>
+            <field name="min_value">1250</field>
+            <field name="max_value">2500</field>
+            <field name="tax_ratio">2.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+        <record id="income_tax_settings_line8" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">9</field>
+            <field name="min_value">2500</field>
+            <field name="max_value">3750</field>
+            <field name="tax_ratio">10</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">2</field>
+        </record>
+        <record id="income_tax_settings_line9" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">3</field>
+            <field name="min_value">2500</field>
+            <field name="max_value">3750</field>
+            <field name="tax_ratio">10</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+        <record id="income_tax_settings_line10" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">4</field>
+            <field name="min_value">3750</field>
+            <field name="max_value">5000</field>
+            <field name="tax_ratio">15</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+        <record id="income_tax_settings_line11" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">15</field>
+            <field name="min_value">3750</field>
+            <field name="max_value">5000</field>
+            <field name="tax_ratio">15</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">3</field>
+        </record>
+        <record id="income_tax_settings_line12" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">10</field>
+            <field name="min_value">3750</field>
+            <field name="max_value">5000</field>
+            <field name="tax_ratio">15</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">2</field>
+        </record>
+        <record id="income_tax_settings_line13" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">16</field>
+            <field name="min_value">5000</field>
+            <field name="max_value">16666.66</field>
+            <field name="tax_ratio">20</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">3</field>
+        </record>
+        <record id="income_tax_settings_line14" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">20</field>
+            <field name="min_value">5000</field>
+            <field name="max_value">16666.66</field>
+            <field name="tax_ratio">20</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">4</field>
+        </record>
+        <record id="income_tax_settings_line15" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">11</field>
+            <field name="min_value">5000</field>
+            <field name="max_value">16666.66</field>
+            <field name="tax_ratio">20</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">2</field>
+        </record>
+        <record id="income_tax_settings_line16" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">5</field>
+            <field name="min_value">5000</field>
+            <field name="max_value">16666.66</field>
+            <field name="tax_ratio">20</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+        <record id="income_tax_settings_line17" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">6</field>
+            <field name="min_value">16666.66</field>
+            <field name="max_value">33333.33</field>
+            <field name="tax_ratio">22.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+        <record id="income_tax_settings_line18" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">12</field>
+            <field name="min_value">16666.66</field>
+            <field name="max_value">33333.33</field>
+            <field name="tax_ratio">22.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">2</field>
+        </record>
+        <record id="income_tax_settings_line19" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">24</field>
+            <field name="min_value">16666.66</field>
+            <field name="max_value">33333.33</field>
+            <field name="tax_ratio">22.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">5</field>
+        </record>
+        <record id="income_tax_settings_line20" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">17</field>
+            <field name="min_value">16666.66</field>
+            <field name="max_value">33333.33</field>
+            <field name="tax_ratio">22.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">3</field>
+        </record>
+        <record id="income_tax_settings_line21" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">21</field>
+            <field name="min_value">16666.66</field>
+            <field name="max_value">33333.33</field>
+            <field name="tax_ratio">22.5</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">4</field>
+        </record>
+        <record id="income_tax_settings_line22" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">22</field>
+            <field name="min_value">33333.33</field>
+            <field name="max_value">75000</field>
+            <field name="tax_ratio">25</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">4</field>
+        </record>
+        <record id="income_tax_settings_line23" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">25</field>
+            <field name="min_value">33333.33</field>
+            <field name="max_value">83333.33</field>
+            <field name="tax_ratio">25</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">5</field>
+        </record>
+        <record id="income_tax_settings_line24" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">18</field>
+            <field name="min_value">33333.33</field>
+            <field name="max_value">66666.66</field>
+            <field name="tax_ratio">25</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">3</field>
+        </record>
+        <record id="income_tax_settings_line25" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">13</field>
+            <field name="min_value">33333.33</field>
+            <field name="max_value">58333.33</field>
+            <field name="tax_ratio">25</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">2</field>
+        </record>
+        <record id="income_tax_settings_line26" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">27</field>
+            <field name="min_value">33333.33</field>
+            <field name="max_value">99999999999.000046</field>
+            <field name="tax_ratio">25</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">6</field>
+        </record>
+        <record id="income_tax_settings_line27" model="income.tax.settings.line">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="sequence">7</field>
+            <field name="min_value">33333.33</field>
+            <field name="max_value">50000</field>
+            <field name="tax_ratio">25</field>
+            <field name="discount_ratio">0</field>
+            <field name="beginning_segment_sequence">1</field>
+        </record>
+
+        <record id="income_tax_class1" model="income.tax.class">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="rank">1</field>
+            <field name="value_from">0</field>
+            <field name="value_to">50000</field>
+        </record>
+        <record id="income_tax_class2" model="income.tax.class">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="rank">2</field>
+            <field name="value_from">50000</field>
+            <field name="value_to">58333.33</field>
+        </record>
+        <record id="income_tax_class3" model="income.tax.class">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="rank">3</field>
+            <field name="value_from">58333.33</field>
+            <field name="value_to">66666.66</field>
+        </record>
+        <record id="income_tax_class4" model="income.tax.class">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="rank">4</field>
+            <field name="value_from">66666.66</field>
+            <field name="value_to">75000</field>
+        </record>
+        <record id="income_tax_class5" model="income.tax.class">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="rank">5</field>
+            <field name="value_from">75000</field>
+            <field name="value_to">83333.33</field>
+        </record>
+        <record id="income_tax_class6" model="income.tax.class">
+            <field name="income_tax_id" ref="income_tax_settings0"/>
+            <field name="rank">6</field>
+            <field name="value_from">83333.33</field>
+            <field name="value_to">99999999999</field>
+        </record>
+
+
+
+    </data>
+</odoo>
