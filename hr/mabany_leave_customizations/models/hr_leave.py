@@ -18,6 +18,19 @@ class HrLeave(models.Model):
 
     exception_constraint = fields.Boolean('Exception Constraint')
 
+    @api.depends('date_from', 'date_to', 'employee_id','request_date_from','request_date_to',)
+    def _compute_number_of_days(self):
+        result = super(HrLeave, self)._compute_number_of_days()
+
+
+        #if sick leave type,compute the number of days as diff bet dates +1
+        for holiday in self:
+            if holiday.holiday_status_id.holiday_type=='sick' and holiday.request_date_from and holiday.request_date_to:
+                holiday.number_of_days= (holiday.request_date_to-holiday.request_date_from).days+1
+
+
+        return result
+
     @api.constrains('number_of_days')
     def constraint_number_of_days_casual(self):
         total_dur_casual = []
