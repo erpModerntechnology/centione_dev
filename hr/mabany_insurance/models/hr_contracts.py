@@ -23,8 +23,9 @@ class HrContract(models.Model):
             age = ceil(((datetime.now().date() - employee_birth_date).total_seconds()) / (60*60*24*365))
         return result if age >= 60 else 0
 
+    @api.constrains('fixed_insurance')
     def get_insurance_primary_wage(self, date_from=None, date_to=None):
-        date_from_o = fields.Date.from_string(date_from)
+        date_from_o = fields.Date.from_string(self.date_start)
         contract = self.env['hr.contract'].browse(self.id)
         if contract.is_insured:
             insurance_fixed = self.env['hr.insurance.year'].search([('year', '=', str(date_from_o.year)), ('type', '=', 'fixed')], limit=1)
@@ -37,8 +38,10 @@ class HrContract(models.Model):
             if min_insurance_amount <= contract.fixed_insurance <= max_insurance_amount:
                 return contract.fixed_insurance
             elif contract.fixed_insurance < min_insurance_amount:
+                contract.fixed_insurance = min_insurance_amount
                 return min_insurance_amount
             elif contract.fixed_insurance > max_insurance_amount:
+                contract.fixed_insurance = max_insurance_amount
                 return max_insurance_amount
 
         else:
