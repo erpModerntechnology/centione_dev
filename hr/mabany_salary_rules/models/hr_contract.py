@@ -8,27 +8,27 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
 
     def get_basic_wage_val(self, payslip):
-        payslip = payslip.dict
+        # payslip = payslip.dict
 
         # if contract start date is after paysip from date,get only worked days
-        if self.date_start > payslip.date_from:
-            attendded_days = (
-                                     datetime.strptime(str(payslip.date_to), "%Y-%m-%d") - datetime.strptime(
-                                 str(self.date_start),
-                                 "%Y-%m-%d")).days + 1
-            wage_per_day = self.wage / 30
-            return attendded_days * wage_per_day
-        elif self.date_end < payslip.date_to:
-            attendded_days = (
-                                     datetime.strptime(str(self.date_end), "%Y-%m-%d") - datetime.strptime(
-                                 str(payslip.date_from),
-                                 "%Y-%m-%d")).days + 1
-            wage_per_day = self.wage / 30
-            return attendded_days * wage_per_day
-
-
-        else:
-            return self.wage
+        # if self.date_start > payslip.date_from:
+        #     attendded_days = (
+        #                              datetime.strptime(str(payslip.date_to), "%Y-%m-%d") - datetime.strptime(
+        #                          str(self.date_start),
+        #                          "%Y-%m-%d")).days + 1
+        #     wage_per_day = self.wage / 30
+        #     return attendded_days * wage_per_day
+        # elif self.date_end < payslip.date_to:
+        #     attendded_days = (
+        #                              datetime.strptime(str(self.date_end), "%Y-%m-%d") - datetime.strptime(
+        #                          str(payslip.date_from),
+        #                          "%Y-%m-%d")).days + 1
+        #     wage_per_day = self.wage / 30
+        #     return attendded_days * wage_per_day
+        #
+        #
+        # else:
+        return self.wage
 
     # def _generate_work_entries(self, date_start, date_stop, force=False):
     #     print('aaaaaaaaaaaaaaaaaa')
