@@ -1,60 +1,14 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="mabany_excuse_period.list">
-      <field name="name">mabany_excuse_period list</field>
-      <field name="model">mabany_excuse_period.mabany_excuse_period</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
--->
-
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="mabany_excuse_period.action_window">
-      <field name="name">mabany_excuse_period window</field>
-      <field name="res_model">mabany_excuse_period.mabany_excuse_period</field>
-      <field name="view_mode">tree,form</field>
-    </record>
--->
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="mabany_excuse_period.action_server">
-      <field name="name">mabany_excuse_period server</field>
-      <field name="model_id" ref="model_mabany_excuse_period_mabany_excuse_period"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
-
-    <!-- Top menu item -->
-<!--
-    <menuitem name="mabany_excuse_period" id="mabany_excuse_period.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="mabany_excuse_period.menu_1" parent="mabany_excuse_period.menu_root"/>
-    <menuitem name="Menu 2" id="mabany_excuse_period.menu_2" parent="mabany_excuse_period.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="mabany_excuse_period.menu_1_list" parent="mabany_excuse_period.menu_1"
-              action="mabany_excuse_period.action_window"/>
-    <menuitem name="Server to list" id="mabany_excuse_period" parent="mabany_excuse_period.menu_2"
-              action="mabany_excuse_period.action_server"/>
--->
+   <record id="hr_excuse_customization_form_inherit" model="ir.ui.view">
+       <field name="name">hr.excuse.customization.form.inherit</field>
+       <field name="model">hr.employee</field>
+       <field name="inherit_id" ref="mabany_hr_self_service.view_he_employee_excuse_form"/>
+       <field name="arch" type="xml">
+           <xpath expr="//field[@name='number_excuse_per_month']" position="attributes">
+             <attribute name="invisible" >True</attribute>
+           </xpath>
+       </field>
+   </record>
   </data>
 </odoo>
