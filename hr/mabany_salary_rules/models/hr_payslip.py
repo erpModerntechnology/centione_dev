@@ -8,7 +8,7 @@ class HrPayslip(models.Model):
 
     def _get_date_from_default(self):
         date_start = date.today().replace(month=date.today().month-1)
-        defualt_date_from = date_start + timedelta(days=17)
+        defualt_date_from = date_start.replace(day=26)
         return defualt_date_from
 
     def _get_date_to_default(self):
