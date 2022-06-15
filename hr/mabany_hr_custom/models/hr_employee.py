@@ -24,8 +24,12 @@ class HrEmployee(models.Model):
 
     military_status = fields.Selection(string="Military Status",
                                        selection=[('completed', 'Completed'), ('exempted', 'Exepmted'), ('postponed', 'Postponed')], required=False, )
-    employee_code = fields.Char('Employee Code', required=True)
+    employee_code = fields.Char('Employee Code', required=False)
     job_grade_id = fields.Many2one('job.grade', 'Job Grade')
+    payment_method = fields.Selection(string="Payment Method", selection=[('cash', 'Cash'), ('bank', 'Bank'), ],
+                              required=False, )
+    nbe_code = fields.Char('NBE Code', required=False)
+    arabic_name = fields.Char('Arabic Name', required=False)
 
     _sql_constraints = [
         ('attendance_code_unique', 'unique("zk_emp_id")', 'Attendance ID Already Exists!!')
@@ -39,13 +43,13 @@ class HrEmployee(models.Model):
             domain = ['|', ('name', operator, name), ('zk_emp_id', operator, name)]
         return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
 
-    @api.constrains('employee_code')
-    def check_employee_code(self):
-        employees = self.env['hr.employee'].search(
-                [('id', '!=', self.id)])
-        for emp in employees:
-            if emp.employee_code == self.employee_code:
-                raise ValidationError(_("Employee Code already existed"))
+    # @api.constrains('employee_code')
+    # def check_employee_code(self):
+    #     employees = self.env['hr.employee'].search(
+    #             [('id', '!=', self.id)])
+    #     for emp in employees:
+    #         if emp.employee_code == self.employee_code:
+    #             raise ValidationError(_("Employee Code already existed"))
 
     @api.constrains('zk_emp_id')
     def check_identification_id(self):
@@ -63,14 +67,10 @@ class HrEmployee(models.Model):
             if emp.identification_id == self.identification_id:
                 raise ValidationError(_("Identification Id is already existed"))
 
+    @api.constrains('identification_id')
+    def check_identification_id_length(self):
+        for rec in self:
+            if len(rec.identification_id) != 14:
+                raise ValidationError(_("Identification Id Should Be 14 Character"))
 
 
-    # @api.constrains('identification_id')
-    # def check_identification_id(self):
-    #     for rec in self:
-    #         employees = self.env['hr.employee'].search(
-    #             [('identification_id', '=', rec.identification_id), ('id', '!=', rec.id)])
-    #         termination_employee = self.env['hr.termination'].search(
-    #             [('employee_id.identification_id', '=', rec.identification_id), ('id', '!=', rec.id)])
-    #         if employees or termination_employee:
-    #             raise ValidationError(_("The Identification Id is already existed"))

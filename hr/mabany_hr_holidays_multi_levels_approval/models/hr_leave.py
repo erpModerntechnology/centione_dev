@@ -39,7 +39,7 @@ class Holidays(models.Model):
                                               compute='_compute_current_user_is_approver')
     current_user_is_refusers = fields.Boolean(string='Current user is refuser',
                                               compute='_compute_current_user_is_refuser')
-    approbations = fields.One2many('hr.employee.holidays.approbation', 'holidays', string='Approvals', readonly=True)
+    approbations = fields.One2many('hr.employee.holidays.approbation', 'holidays', string='Approvals')
     pending_transfered_approver_user = fields.Many2one('res.users', string='Pending transfered approver user',
                                                        compute="_compute_pending_transfered_approver_user",
                                                        search='_search_pending_transfered_approver_user')
@@ -107,6 +107,7 @@ class Holidays(models.Model):
                 self.env['hr.employee.holidays.approbation'].create(
                     {'holidays': holiday.id, 'approver': self.env.uid, 'sequence': sequence,
                      'date': fields.Datetime.now()})
+
 
     # @api.multi
     def action_validate(self):

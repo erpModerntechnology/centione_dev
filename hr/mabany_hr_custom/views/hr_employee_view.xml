@@ -22,7 +22,7 @@
             <field name="arch" type="xml">
                 <field name="mobile_phone" position="before">
                     <field name="zk_emp_id"/>
-                    <field name="employee_code"/>
+                    <field name="employee_code" invisible="True"/>
                 </field>
                 <field name="passport_id" position="after">
                     <field name="passport_end_date"/>
@@ -32,6 +32,12 @@
                 </field>
                 <field name="address_home_id" position="before">
                     <field name="private_address"/>
+                </field>
+                <field name="job_title" position="before">
+                    <field name="arabic_name" placeholder="arabic name"/>
+                </field>
+                <field name="bank_account_id" position="after">
+                    <field name="payment_method"/>
                 </field>
                 <field name="department_id" position="after">
                     <field name="job_id"/>
@@ -54,6 +60,7 @@
                                 <field name="bank_name"/>
                                 <field name="bank_number"/>
                                 <field name="bank_branch_name"/>
+                                <field name="nbe_code"/>
                             </group>
 
                         </group>

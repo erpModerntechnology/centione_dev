@@ -6,7 +6,6 @@
             <field name="code">ABSENCE</field>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
-            <field name="sequence" eval="3"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 result = payslip.env['hr.payslip'].compute_absence_penalty(payslip)
@@ -18,11 +17,16 @@ result = payslip.env['hr.payslip'].compute_absence_penalty(payslip)
             <field name="code">LATENESS</field>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
-            <field name="sequence" eval="3"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">
-result = payslip.env['hr.payslip'].compute_late_arrive_penalty(payslip)
-            </field>
+            <field name="amount_python_compute">result = payslip.env['hr.payslip'].compute_late_arrive_penalty(payslip)</field>
+        </record>
+        <record id="missing_check_salary_rule" model="hr.salary.rule">
+            <field name="name">Missing Check salary rule</field>
+            <field name="code">MISS_CHECK</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.env['hr.payslip'].compute_Missing_check_penalty(payslip)</field>
         </record>
 
         <record id="early_leave_salary_rule" model="hr.salary.rule">
@@ -30,7 +34,6 @@ result = payslip.env['hr.payslip'].compute_late_arrive_penalty(payslip)
             <field name="code">EARLINESS</field>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
-            <field name="sequence" eval="3"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 result = payslip.env['hr.payslip'].compute_early_leave_penalty(payslip)

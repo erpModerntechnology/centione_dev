@@ -15,35 +15,35 @@ class HrExcuse(models.Model):
     end_date = fields.Datetime()
     period = fields.Float(compute='_compute_period', store=True)
 
-    @api.constrains('period')
-    def _check_period(self):
-        max_period = self.employee_id.max_excuse_period
-        if self.period > max_period:
-            raise UserError(_('Period exceeds employee\'s allowed period.'))
-        month = self.start_date.month
-        year = self.start_date.year
-        month_start = datetime(day=1, month=month, year=year, hour=0, minute=0, second=0)
-        month_end = datetime(day=calendar.monthrange(year, month)[1], month=month, year=year, hour=23, minute=59, second=59)
-        max_month_request = self.employee_id.number_excuse_per_month
-        excuses_this_month = self.env['hr.excuse'].search([('employee_id', '=', self.employee_id.id),
-                                                           ('start_date', '>=', month_start),
-                                                           ('end_date', '<=', month_end),
-                                                           ('state', '=', 'draft')])
-        if len(excuses_this_month) > max_month_request:
-            raise UserError(_('Period exceeds employee\'s allowed requests per month.'))
+    # @api.constrains('period')
+    # def _check_period(self):
+    #     max_period = self.employee_id.max_excuse_period
+    #     if self.period > max_period:
+    #         raise UserError(_('Period exceeds employee\'s allowed period.'))
+    #     month = self.start_date.month
+    #     year = self.start_date.year
+    #     month_start = datetime(day=1, month=month, year=year, hour=0, minute=0, second=0)
+    #     month_end = datetime(day=calendar.monthrange(year, month)[1], month=month, year=year, hour=23, minute=59, second=59)
+    #     max_month_request = self.employee_id.number_excuse_per_month
+    #     excuses_this_month = self.env['hr.excuse'].search([('employee_id', '=', self.employee_id.id),
+    #                                                        ('start_date', '>=', month_start),
+    #                                                        ('end_date', '<=', month_end),
+    #                                                        ('state', '=', 'draft')])
+    #     if len(excuses_this_month) > max_month_request:
+    #         raise UserError(_('Period exceeds employee\'s allowed requests per month.'))
 
 
-    @api.constrains('start_date', 'end_date')
-    def _check_date(self):
-        max_period = self.employee_id.max_excuse_period
-        excuses_this_month = self.env['hr.excuse'].search([('employee_id', '=', self.employee_id.id),('state','=','validate')])
-        # if len(excuses_this_month) > 1:
-        #     raise UserError(_('this excuse is already existed'))
-        total = 0
-        for rec in excuses_this_month:
-            total += rec.period
-            if total > max_period:
-                raise UserError(_('Period exceeds employee\'s allowed period .'))
+    # @api.constrains('start_date', 'end_date')
+    # def _check_date(self):
+    #     max_period = self.employee_id.max_excuse_period
+    #     excuses_this_month = self.env['hr.excuse'].search([('employee_id', '=', self.employee_id.id),('state','=','validate')])
+    #     # if len(excuses_this_month) > 1:
+    #     #     raise UserError(_('this excuse is already existed'))
+    #     total = 0
+    #     for rec in excuses_this_month:
+    #         total += rec.period
+    #         if total > max_period:
+    #             raise UserError(_('Period exceeds employee\'s allowed period .'))
 
     @api.depends('start_date', 'end_date')
     def _compute_period(self):

@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
+    missing_check = fields.Boolean(string="Missing Check", default=False)
     late_attendance_hours = fields.Float()
     early_leave_hours = fields.Float()
 
@@ -96,7 +97,7 @@ class HrAttendance(models.Model):
             if datetime.strptime(str(att.check_in), '%Y-%m-%d %H:%M:%S').date() == date:
                 return False
 
-        leaves = self.env['resource.calendar.leaves'].search([('holiday_id.employee_id.id', '=', employee.id)])
+        leaves = self.env['resource.calendar.leaves'].search([('resource_id', '=', employee.resource_id.id)])
         for leave in leaves:
             if leave.date_from.date() <= date <= leave.date_to.date():
                 # if (leave.date_to - leave.date_from).total_seconds() / 3600.0 >= 24:

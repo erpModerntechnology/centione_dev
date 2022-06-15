@@ -220,9 +220,43 @@ class HrPayslip(models.Model):
     def _get_policy_idx(self, time, policy):
         time=round(time,2)
         for idx, lp in enumerate(policy):
-            if lp[0][0] <= time <= lp[0][1]:
+            if round(lp[0][0],2) <= time <= round(lp[0][1],2):
                 return idx
         return -1
+
+    def compute_Missing_check_penalty(self,payslip):
+        payslip = payslip.dict
+        resource_calendar = payslip.employee_id.resource_calendar_id
+        wage = payslip.contract_id.wage
+        wage_per_day = wage / 30.0
+        missing_penalty_rate = []
+        date_from = fields.Datetime.to_datetime(payslip.date_from)
+        date_to = fields.Datetime.to_datetime(payslip.date_to) + timedelta(hours=23, minutes=59, seconds=59)
+
+        total_missing_days=len(self.env['hr.attendance'].search([('employee_id', '=', payslip.employee_id.id),
+                                                      ('check_in', '>=', date_from),
+                                                      ('check_in', '<=', date_to),
+                                                      ('missing_check', '=', True)]))
+
+        if resource_calendar.missing_penalty_type == 'fixed':
+            missing_penalty_rate = [resource_calendar.missing_penalty_fixed_rate]
+        elif resource_calendar.missing_penalty_type == 'cumulative':
+            missing_penalty_rate = [it.penalty_rate for it in resource_calendar.missing_penalty_line_ids]
+
+        result = 0
+        while total_missing_days > 0:
+            if len(missing_penalty_rate) > 1:
+                rate = missing_penalty_rate.pop(0)
+                result += rate * wage_per_day
+                total_missing_days -= 1
+            elif len(missing_penalty_rate) == 1:
+                result += missing_penalty_rate[0] * total_missing_days * wage_per_day
+                total_missing_days = 0
+            else:
+                result += total_missing_days * wage_per_day
+                total_missing_days = 0
+
+        return -1 * result
 
     def compute_late_arrive_penalty(self, payslip):
         payslip = payslip.dict
@@ -263,7 +297,7 @@ class HrPayslip(models.Model):
             total_penalty_time = 0
             for it in late_days:
                 idx = self._get_policy_idx(it.late_attendance_hours, late_policy)
-                total_penalty_time += late_policy[idx][1][0] if late_policy and late_policy[idx][1] else it.late_attendance_hours
+                total_penalty_time+=(late_policy[idx][1][0] *it.late_attendance_hours)if (late_policy and late_policy[idx][1]) else it.late_attendance_hours
                 if late_policy and len(late_policy[idx][1]) > 1:
                     late_policy[idx][1].pop(0)
 
@@ -307,7 +341,7 @@ class HrPayslip(models.Model):
             total_penalty_time = 0
             for it in early_days:
                 idx = self._get_policy_idx(it.early_leave_hours, early_policy)
-                total_penalty_time += early_policy[idx][1][0] if early_policy and early_policy[idx][1] else it.early_leave_hours
+                total_penalty_time += (early_policy[idx][1][0]*it.early_leave_hours) if (early_policy and early_policy[idx][1]) else it.early_leave_hours
                 if early_policy and len(early_policy[idx][1]) > 1:
                     early_policy[idx][1].pop(0)
 

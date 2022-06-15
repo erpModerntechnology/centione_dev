@@ -15,11 +15,7 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
             <field name="arch" type="xml">
-                <button name="action_validate" position="replace">
-<!--                    <button string="Validate" name="action_validate" states="confirm"-->
-<!--                            type="object" groups="hr_holidays.group_hr_holidays_manager"-->
-<!--                            class="oe_highlight"/>-->
-                </button>
+                <button name="action_validate" position="replace"/>
                 <button name="action_approve" position="replace">
                     <field name="current_user_is_approver" invisible="True"/>
                     <button string="Approve" name="action_approve" type="object"
@@ -40,7 +36,7 @@
                 <xpath expr="//sheet/group[1]" position="after">
                     <notebook>
                         <page string="Approbations">
-                            <field name="approbations">
+                            <field name="approbations" readonly="1" force_save="1">
                                 <tree>
                                     <field name="approver"/>
                                     <field name="date"/>

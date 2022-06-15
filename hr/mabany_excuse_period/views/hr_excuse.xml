@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+   <record id="hr_excuse_customization_form_inherit" model="ir.ui.view">
+       <field name="name">hr.excuse.customization.form.inherit</field>
+       <field name="model">hr.employee</field>
+       <field name="inherit_id" ref="mabany_hr_self_service.view_he_employee_excuse_form"/>
+       <field name="arch" type="xml">
+           <xpath expr="//field[@name='number_excuse_per_month']" position="attributes">
+             <attribute name="invisible" >True</attribute>
+           </xpath>
+       </field>
+   </record>
+  </data>
+</odoo>
