@@ -1,0 +1,251 @@
+<odoo>
+    <data>
+        <!--        &lt;!&ndash;error message when required filed not set   &ndash;&gt;-->
+
+
+        <!--        <template id="redirect_fail_page" name="Failure Code Page">-->
+        <!--            <div>-->
+        <!--                <span>Required Fields Not set</span>-->
+        <!--            </div>-->
+        <!--            <script>-->
+        <!--                setTimeout(function(){-->
+        <!--                window.location.href = '/my/employees';-->
+        <!--                }, 1100)-->
+        <!--            </script>-->
+        <!--        </template>-->
+
+        <!--error message when no email on the outgoing mail        -->
+        <record id="employees_partner_with_no_mail" model="ir.ui.view">
+            <field name="name">employees_partner_with_no_mail</field>
+            <field name="type">qweb</field>
+            <field name="key">mabany_portal_employee_profile.employees_partner_with_no_mail</field>
+            <field name="arch" type="xml">
+                <t t-name="employees_management_portal_users.employees_partner_with_no_mail">
+                    <t t-call="website.layout">
+                        <div id="wrap">
+                            <t t-raw="0"/>
+                            <div class="oe_structure oe_empty">
+                                <div class="container">
+                                    <h1 class="mt32">Contact with the system administrator.</h1>
+                                    <p>Unable to send email, please configure the sender's email address.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!--employee form-->
+        <template id="my_employee" name="My employee">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <div class="oe_structure">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <ol class="breadcrumb mt8">
+                                        <li>
+                                            <a href="/my/home">
+                                                <i class="fa fa-home"/>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a t-attf-href="/my/employees?#{keep_query()}">My Employees</a>
+                                        </li>
+                                        <li t-if="employee">
+                                            <span t-field="employee.name"/>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        New Employee Request-->
+                        <!--                        <h1 t-if="not employee">-->
+                        <!--                            New Employee Request-->
+                        <!--                        </h1>-->
+                        <form action="/my/employee/update" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="row o_employees_management_portal_users">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div t-if="error_message" class="alert alert-danger">
+                                                <!--<t t-foreach="error_message" t-as="err">-->
+                                                <t t-esc="error_message"/>
+                                                <br/>
+                                                <!--</t>-->
+                                            </div>
+                                        </div>
+                                        <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} col-lg-6">
+                                            <label class="control-label" for="name">Name</label>
+                                            <input type="text" name="name" class="form-control"
+                                                   t-att-disabled="employee and employee.name"
+                                                   t-att-value="name or (employee and employee.name)"/>
+                                        </div>
+                                        <!--                                        <div t-attf-class="form-group #{error.get('employee_id') and 'has-error' or ''} col-lg-6">-->
+                                        <!--                                            <label class="control-label" for="employee_id">Employee</label>-->
+                                        <!--                                            <input type="text" name="employee_id" class="form-control"-->
+                                        <!--                                                   t-att-disabled="employee and employee.state in ['closed', 'sent']"-->
+                                        <!--                                                   t-att-value="employee_id.name or (employee and employee.employee_id.name)"/>-->
+                                        <!--                                        </div>-->
+                                        <div t-attf-class="form-group #{error.get('department_id') and 'has-error' or ''} col-lg-6">
+                                            <label class="control-label" for="department_id">Department</label>
+                                            <input type="text" name="department_id" class="form-control"
+                                                   t-att-disabled="employee and employee.department_id"
+                                                   t-att-value="'' or (employee.department_id and employee.department_id.name)"/>
+                                        </div>
+
+                                        <input type="hidden" name="id" t-att-value="employee and employee.id"/>
+                                        <input type="hidden" id="input_state" name="state"
+                                               t-att-value="employee and employee.id"/>
+                                    </div>
+                                    <div class="clearfix">
+                                        <input type="checkbox" id="to_delete_checkbox" name="to_delete"
+                                               style="opacity:0; position:absolute;"/>
+
+<!--                                        <button t-if="not employee or employee.state == 'draft' "-->
+<!--                                                type="submit" id="to_confirm_checkbox"-->
+<!--                                                class="btn btn-default btn-primary pull-right mb32 ">-->
+<!--                                            Approve-->
+<!--                                            <span class="fa fa-long-arrow-right"/>-->
+<!--                                        </button>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--        all employees page-->
+        <template id="my_employees" name="My employees">
+            <t t-call="portal.portal_layout">
+                <div class="row">
+                    <t t-if="request.session.get('error_unlink')">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <t t-esc="request.session.get('error_unlink')"/>
+                            </div>
+                        </div>
+                    </t>
+                    <h3 class="page-header">
+                        Employees
+                    </h3>
+                </div>
+                <form id="delete_form" action="/my/employee/delete" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+<!--                    <div class="clearfix">-->
+<!--                        <a t-attf-href="/my/employee/create" class="btn btn-default btn-primary mb32">Create</a>-->
+<!--                        <button type="submit" id="button_to_remove_employees"-->
+<!--                                class="btn btn-default btn-danger mb32 o_hidden">-->
+<!--                            Delete-->
+<!--                        </button>-->
+<!--                    </div>-->
+                    <div class="panel panel-default o_employees_management_portal_users">
+                        <t t-if="not employees">
+                            <div class="alert alert-warning mt8" role="alert">
+                                There are no employees yet.
+                            </div>
+                        </t>
+                        <table t-if="employees" class="table table-hover status_table">
+                            <thead>
+                                <tr class="active">
+                                    <th class="col-md-1 o_list_record_selector">
+                                        <div class="o_checkbox">
+                                            <input type="checkbox" name="select_all"/>
+                                            <span/>
+                                        </div>
+                                    </th>
+                                    <!--                                    <th class="col-md-6" id="employee_header">Employee</th>-->
+                                    <th class="col-md-6" id="description_header">Name</th>
+                                    <th class="col-md-6" id="start_date_header">Department</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="employees" t-as="employee">
+                                    <td class="o_list_record_selector">
+                                        <div class="o_checkbox">
+                                            <input type="checkbox" t-att-name="employee.id"
+                                                   t-att-checked="checked"/>
+                                            <span/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/employee/#{employee.id}?{{ keep_query() }}">
+                                            <span t-field="employee.name"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/employee/#{employee.id}?{{ keep_query() }}">
+                                            <span t-field="employee.department_id.name"/>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div t-if="pager" class="o_portal_pager text-center">
+                    <t t-call="website.pager"/>
+                </div>
+            </t>
+        </template>
+
+        <template id='portal_layout' inherit_id="portal.portal_my_home"
+                  name="Portal layout: employees menu entry" priority="40">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <!--<li t-att-class="page_name == 'employees' and 'active' or ''">-->
+                <!--<a href="/my/employees">Employees</a>-->
+                <!--</li>-->
+                <li t-if="page_name == 'employees' or employees">
+                    <a t-if="employee" t-attf-href="/my/employees?{{ keep_query() }}">Employees</a>
+                    <t t-else="">Employees</t>
+                </li>
+            </xpath>
+        </template>
+
+        <!--add request in Home Portal Page        -->
+        <template id='portal_my_home' inherit_id="portal.portal_my_home"
+                  name="Portal My Home: employees" priority="40">
+            <xpath expr="//div[contains(@class,'o_portal_my_home')]" position="inside">
+                <h3 class="page-header">
+                    <a href="/my/employees">Your Employees</a>
+                </h3>
+            </xpath>
+        </template>
+    </data>
+</odoo>
+
+
+        <!--<div class="dropdown pull-right mr8">-->
+        <!--<button id="sortby" class="btn btn-default" type="button" data-toggle="dropdown">-->
+        <!--<span class="fa fa-sort fa-lg"/>-->
+        <!--<span t-esc="sortings.get(sortby, {}).get('label', sortings.get('start_date', {}).get('label', translate_func('Newest')))"/>-->
+        <!--<span class="caret"/>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu" aria-labelledby="sortby">-->
+        <!--<li t-foreach="sortings" t-as="option"-->
+        <!--t-attf-class="#{sortby == option and 'active'}">-->
+        <!--<a t-att-href="default_url + '?' + keep_query('date', sortby=option)">-->
+        <!--<span t-esc="sortings.get(option).get('label')"/>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="dropdown pull-right mr8">-->
+        <!--<button id="date_filters" class="btn btn-default" type="button"-->
+        <!--data-toggle="dropdown">-->
+        <!--<span t-esc="date_filters.get(date, {}).get('label', date_filters.get('future_employees', {}).get('label', translate_func('Future employees')))"/>-->
+        <!--<span class="caret"/>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu" aria-labelledby="date_filters">-->
+        <!--<li t-foreach="date_filters" t-as="option"-->
+        <!--t-att-class="employee == option and 'active'">-->
+        <!--<a t-attf-href="/my/employees?{{ keep_query('sortby', date=option) }}">-->
+        <!--<span t-esc="date_filters.get(option).get('label')"/>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
