@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','centione_hr_payroll_base','hr_payroll','hr','hr_work_entry_contract','hr_contract'],
+    'depends': ['base','mabany_hr_payroll_base','hr_payroll','hr','hr_work_entry_contract','hr_contract'],
 
     # always loaded
     'data': [

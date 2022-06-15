@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+mail_activity_type,mail_activity_type,mail.model_mail_activity_type,,1,1,1,1
+calendar_event,calendar_event,calendar.model_calendar_event,,1,1,1,1
+calendar_attendee,calendar_attendee,calendar.model_calendar_attendee,,1,1,1,1
+mail_activity,mail_activity,mail.model_mail_activity,,1,1,1,1
