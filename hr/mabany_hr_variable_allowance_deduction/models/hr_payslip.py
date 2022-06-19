@@ -14,7 +14,7 @@ class HrPayslip(models.Model):
         data = {}
         for it in variable_allowance_deduction:
             if it.type.code not in data:
-                data.update({it.type.code: {'amount': -it.amount if it.type.type == 'deduction' else it.amount, 'input_type_id': it.type.payslip_input_type_id.id}})
+                data.update({it.type.code: {'amount': it.amount if it.type.type == 'deduction' else it.amount, 'input_type_id': it.type.payslip_input_type_id.id}})
             else:
                 data[it.type.code]['amount'] += it.amount
 
