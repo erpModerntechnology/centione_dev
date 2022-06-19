@@ -12,6 +12,12 @@ class HrContract(models.Model):
     num_working_hours_day = fields.Integer(default=8,
                                            help="Used as standard rate for overtime calculations regardless "
                                                 "the true working hours")
+    other_earning = fields.Float('Other Earning')
+    house_allowance = fields.Float('House Allowance')
+    mobile_allowance = fields.Float('Mobile Allowance')
+    work_nature_allowance = fields.Float('Work Nature Allowance')
+    profit_share = fields.Float('Profit Share')
+    variable = fields.Float('variable')
 
     @api.constrains('state')
     def constrain_state(self):

@@ -9,6 +9,23 @@
                     <field name="num_working_days_month"/>
                     <field name="num_working_hours_day"/>
                 </xpath>
+                <xpath expr="//page[@name='information']" position="after">
+                    <page name="allowances" string="Allowances">
+                        <group>
+                            <field name="other_earning"/>
+                            <field name="house_allowance"/>
+                            <field name="mobile_allowance"/>
+                            <field name="work_nature_allowance"/>
+                            <field name="profit_share"/>
+                            <field name="variable"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//group[@name='salary_info']" position="after">
+                    <group>
+                        <field name="variable"/>
+                    </group>
+                </xpath>
             </field>
         </record>
     </data>
