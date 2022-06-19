@@ -18,6 +18,18 @@ class HrMission(models.Model):
             if rec.end_date and rec.start_date:
                 rec.period = (rec.end_date - rec.start_date).total_seconds() / 3600.0
 
+    def refuse(self):
+        # delete if created before a record in calendar leaves
+        found = self.env['resource.calendar.leaves'].search([('mission_id', '=', self.id)])
+        if found:
+            found.unlink()
+
+        super(HrMission, self).refuse()
+
+    def validate_all(self):
+        for rec in self:
+            rec.validate()
+
     def validate(self):
         super(HrMission, self).validate()
 

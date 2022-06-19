@@ -1,0 +1,326 @@
+<odoo>
+    <data>
+        <!--        &lt;!&ndash;error message when required filed not set   &ndash;&gt;-->
+
+
+        <!--        <template id="redirect_fail_page" name="Failure Code Page">-->
+        <!--            <div>-->
+        <!--                <span>Required Fields Not set</span>-->
+        <!--            </div>-->
+        <!--            <script>-->
+        <!--                setTimeout(function(){-->
+        <!--                window.location.href = '/my/terminations';-->
+        <!--                }, 1100)-->
+        <!--            </script>-->
+        <!--        </template>-->
+
+        <!--error message when no email on the outgoing mail        -->
+        <record id="terminations_partner_with_no_mail" model="ir.ui.view">
+            <field name="name">terminations_partner_with_no_mail</field>
+            <field name="type">qweb</field>
+            <field name="key">mabany_portal_termination.terminations_partner_with_no_mail</field>
+            <field name="arch" type="xml">
+                <t t-name="terminations_management_portal_users.terminations_partner_with_no_mail">
+                    <t t-call="website.layout">
+                        <div id="wrap">
+                            <t t-raw="0"/>
+                            <div class="oe_structure oe_empty">
+                                <div class="container">
+                                    <h1 class="mt32">Contact with the system administrator.</h1>
+                                    <p>Unable to send email, please configure the sender's email address.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!--termination form-->
+        <template id="my_termination" name="My termination">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <div class="oe_structure">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <ol class="breadcrumb mt8">
+                                        <li>
+                                            <a href="/my/home">
+                                                <i class="fa fa-home"/>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a t-attf-href="/my/terminations?#{keep_query()}">My Terminations</a>
+                                        </li>
+                                        <li t-if="termination">
+                                            <span t-field="termination.employee_id.name"/>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <h1 t-if="not termination">
+                            New Termination Request
+                        </h1>
+                        <form action="/my/termination/update" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="row o_terminations_management_portal_users">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div t-if="error_message" class="alert alert-danger">
+                                                <!--<t t-foreach="error_message" t-as="err">-->
+                                                <t t-esc="error_message"/>
+                                                <br/>
+                                                <!--</t>-->
+                                            </div>
+                                        </div>
+                                        <!--                                        <div t-attf-class="form-group #{error.get('employee_id') and 'has-error' or ''} col-lg-6">-->
+                                        <!--                                            <label class="control-label" for="employee_id">Employee Name</label>-->
+                                        <!--                                            <input type="text" name="employee_id" class="form-control"-->
+                                        <!--                                                   t-att-disabled="termination and termination.state in ['cancel', 'approved']"-->
+                                        <!--                                                   t-att-value="employee_id or (termination and termination.employee_id.name)"/>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div t-attf-class="form-group #{error.get('employee_id') and 'has-error' or ''} col-lg-6">-->
+                                        <!--                                            <label class="control-label" for="employee_id">Employee</label>-->
+                                        <!--                                            <input type="text" name="employee_id" class="form-control"-->
+                                        <!--                                                   t-att-disabled="termination and termination.state in ['closed', 'sent']"-->
+                                        <!--                                                   t-att-value="employee_id.name or (termination and termination.employee_id.name)"/>-->
+                                        <!--                                        </div>-->
+                                        <div id="request_date"
+                                             t-attf-class="form-group #{error.get('request_date') and 'has-error' or ''} col-lg-6">
+                                            <div>
+                                                <label class="control-label" for="request_date">Request Date</label>
+                                                <div id="datepicker-container-date-from">
+                                                    <div id="datepicker_request_date"
+                                                         t-attf-class="input-group date datepicker col-lg-6">
+                                                        <input id="request_date_input" name="request_date"
+                                                               type="date"
+                                                               t-att-disabled="termination and termination.state in ['cancel', 'approved']"
+                                                               data-depends="true"
+                                                               t-att-value="request_date or (termination and termination.request_date and convert_datetime_to_date(termination.request_date))"
+                                                               class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="termination_date"
+                                             t-attf-class="form-group #{error.get('termination_date') and 'has-error' or ''} col-lg-6">
+                                            <div>
+                                                <label class="control-label" for="termination_date">Termination Date
+                                                </label>
+                                                <div id="datepicker-container-date-to">
+                                                    <div id="datepicker_termination_date"
+                                                         t-attf-class="input-group date datepicker col-lg-6">
+                                                        <input id="termination_date_input" name="termination_date"
+                                                               t-att-disabled="termination and termination.state in ['cancel', 'approved']"
+                                                               data-depends="true"
+                                                               t-att-value="termination_date or (termination and termination.termination_date and convert_datetime_to_date(termination.termination_date))"
+                                                               type="date" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div t-attf-class="form-group #{error.get('reason') and 'has-error' or ''} col-lg-6">
+                                            <label class="control-label" for="reason">Termination Reason</label>
+                                            <input type="text" id="input_reason" name="reason"
+                                                   class="form-control"
+                                                   t-att-value="reason or (termination and termination.reason.name)"
+                                                   t-att-disabled="termination or not termination"
+                                            />
+                                        </div>
+
+                                        <div t-if="termination and termination.state == 'cancel'" class="col-md-12">
+                                            <div t-if="termination and termination.name" class="alert alert-danger">
+                                                <label>The request has been cancelled due to:</label>
+                                                <br/>
+                                                <t t-esc="termination.reason.name"/>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="termination_id"
+                                               t-att-value="termination and termination.id"/>
+                                        <input type="hidden" id="input_state" name="state"
+                                               t-att-value="termination and termination.state"/>
+                                    </div>
+                                    <div class="clearfix">
+                                        <input type="checkbox" id="to_delete_checkbox" name="to_delete"
+                                               style="opacity:0; position:absolute;"/>
+                                        <button t-if="termination and termination.state not in ['cancel', 'approved']"
+                                                id="delete_termination_id" type="submit" class="btn btn-danger mb32">
+                                            <span class="fa fa-trash-o"/>
+                                            Delete
+                                        </button>
+                                        <!--                                        <button t-if="termination and termination.state == 'cancel'" type="submit"-->
+                                        <!--                                                id="to_reset_state"-->
+                                        <!--                                                class="btn btn-default btn-primary pull-right mb32 ">-->
+                                        <!--                                            Reset to draft-->
+                                        <!--                                            <span class="fa fa-refresh"/>-->
+                                        <!--                                        </button>-->
+                                        <button t-if="not termination or termination.state == 'draft' "
+                                                type="submit" id="to_confirm_checkbox"
+                                                class="btn btn-default btn-primary pull-right mb32 ">
+                                            Approve
+                                            <span class="fa fa-long-arrow-right"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--        all terminations page-->
+        <template id="my_terminations" name="My terminations">
+            <t t-call="portal.portal_layout">
+                <div class="row">
+                    <t t-if="request.session.get('error_unlink')">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <t t-esc="request.session.get('error_unlink')"/>
+                            </div>
+                        </div>
+                    </t>
+                    <h3 class="page-header">
+                        Terminations
+                    </h3>
+                </div>
+                <form id="delete_form" action="/my/termination/delete" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="clearfix">
+                        <a t-attf-href="/my/termination/create" class="btn btn-default btn-primary mb32">Create</a>
+                        <button type="submit" id="button_to_remove_terminations"
+                                class="btn btn-default btn-danger mb32 o_hidden">
+                            Delete
+                        </button>
+                    </div>
+                    <div class="panel panel-default o_terminations_management_portal_users">
+                        <t t-if="not terminations">
+                            <div class="alert alert-warning mt8" role="alert">
+                                There are no terminations yet.
+                            </div>
+                        </t>
+                        <table t-if="terminations" class="table table-hover status_table">
+                            <thead>
+                                <tr class="active">
+                                    <th class="col-md-1 o_list_record_selector">
+                                        <div class="o_checkbox">
+                                            <input type="checkbox" name="select_all"/>
+                                            <span/>
+                                        </div>
+                                    </th>
+                                    <th class="col-md-6" id="description_header">Employee Name</th>
+                                    <th class="col-md-6" id="start_date_header">Request Date</th>
+                                    <th class="col-md-6" id="end_date_header">Termination Date</th>
+                                    <th class="col-md-6" id="number_of_days_header">Reason</th>
+                                    <th class="col-md-6" id="state_header">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="terminations" t-as="termination">
+                                    <td class="o_list_record_selector">
+                                        <div class="o_checkbox">
+                                            <input type="checkbox" t-att-name="termination.id"
+                                                   t-att-checked="checked"/>
+                                            <span/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/termination/#{termination.id}?{{ keep_query() }}">
+                                            <span t-field="termination.employee_id.name"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/termination/#{termination.id}?{{ keep_query() }}">
+                                            <span t-field="termination.request_date"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/termination/#{termination.id}?{{ keep_query() }}">
+                                            <span>
+                                                <t t-esc="convert_datetime_to_date(termination.termination_date)"/>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/termination/#{termination.id}?{{ keep_query() }}">
+                                            <span>
+                                                <t t-esc="termination.reason.name"/>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span t-att-class="get_class_state_dict.get(termination.state, 'label label-success')"
+                                              title="Current state of the termination"
+                                              t-esc="get_description_state_dict.get(termination.state)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div t-if="pager" class="o_portal_pager text-center">
+                    <t t-call="website.pager"/>
+                </div>
+            </t>
+        </template>
+
+        <template id='portal_layout' inherit_id="portal.portal_my_home"
+                  name="Portal layout: terminations menu entry" priority="40">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <!--<li t-att-class="page_name == 'terminations' and 'active' or ''">-->
+                <!--<a href="/my/terminations">Terminations</a>-->
+                <!--</li>-->
+                <li t-if="page_name == 'terminations' or terminations">
+                    <a t-if="termination" t-attf-href="/my/terminations?{{ keep_query() }}">Terminations</a>
+                    <t t-else="">Terminations</t>
+                </li>
+            </xpath>
+        </template>
+
+        <!--add request in Home Portal Page        -->
+        <template id='portal_my_home' inherit_id="portal.portal_my_home"
+                  name="Portal My Home: terminations" priority="40">
+            <xpath expr="//div[contains(@class,'o_portal_my_home')]" position="inside">
+                <h3 class="page-header">
+                    <a href="/my/terminations">Your Terminations</a>
+                </h3>
+            </xpath>
+        </template>
+    </data>
+</odoo>
+
+
+        <!--<div class="dropdown pull-right mr8">-->
+        <!--<button id="sortby" class="btn btn-default" type="button" data-toggle="dropdown">-->
+        <!--<span class="fa fa-sort fa-lg"/>-->
+        <!--<span t-esc="sortings.get(sortby, {}).get('label', sortings.get('start_date', {}).get('label', translate_func('Newest')))"/>-->
+        <!--<span class="caret"/>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu" aria-labelledby="sortby">-->
+        <!--<li t-foreach="sortings" t-as="option"-->
+        <!--t-attf-class="#{sortby == option and 'active'}">-->
+        <!--<a t-att-href="default_url + '?' + keep_query('date', sortby=option)">-->
+        <!--<span t-esc="sortings.get(option).get('label')"/>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="dropdown pull-right mr8">-->
+        <!--<button id="date_filters" class="btn btn-default" type="button"-->
+        <!--data-toggle="dropdown">-->
+        <!--<span t-esc="date_filters.get(date, {}).get('label', date_filters.get('future_terminations', {}).get('label', translate_func('Future terminations')))"/>-->
+        <!--<span class="caret"/>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu" aria-labelledby="date_filters">-->
+        <!--<li t-foreach="date_filters" t-as="option"-->
+        <!--t-att-class="termination == option and 'active'">-->
+        <!--<a t-attf-href="/my/terminations?{{ keep_query('sortby', date=option) }}">-->
+        <!--<span t-esc="date_filters.get(option).get('label')"/>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
