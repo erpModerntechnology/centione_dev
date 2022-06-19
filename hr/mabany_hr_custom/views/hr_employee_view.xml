@@ -1,6 +1,18 @@
 <odoo>
     <data>
 
+        <!-- Inherit Form View to Modify it -->
+        <record id="job_level_job_divison_form" model="ir.ui.view">
+            <field name="name">job.level.job.divison.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="job_level"/>
+                    <field name="job_divison"/>
+                </xpath>
+            </field>
+        </record>
 
 
          <record id="view_attned_form_inherit" model="ir.ui.view">

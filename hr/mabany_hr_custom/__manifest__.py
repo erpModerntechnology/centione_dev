@@ -25,6 +25,8 @@
         'security/ir.model.access.csv',
         'views/hr_employee_view.xml',
         'views/job_grade.xml',
+        'views/job_divison.xml',
+        'views/job_level.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

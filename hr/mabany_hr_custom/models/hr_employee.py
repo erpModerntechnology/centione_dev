@@ -30,6 +30,8 @@ class HrEmployee(models.Model):
                               required=False, )
     nbe_code = fields.Char('NBE Code', required=False)
     arabic_name = fields.Char('Arabic Name', required=False)
+    job_level = fields.Many2one('job.level','Job Level')
+    job_divison = fields.Many2one('job.divison','Job Divison')
 
     _sql_constraints = [
         ('attendance_code_unique', 'unique("zk_emp_id")', 'Attendance ID Already Exists!!')
