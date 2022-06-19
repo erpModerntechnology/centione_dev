@@ -54,5 +54,17 @@
                 parent="hr_holidays.menu_hr_holidays_root"
         />
 
+        <record id="action_validate_all_mission" model="ir.actions.server">
+            <field name="name">Validate All</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="mabany_hr_self_service.model_hr_mission"/>
+            <field name="binding_model_id" ref="mabany_hr_self_service.model_hr_mission"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records.validate_all()
+            </field>
+        </record>
+
     </data>
 </odoo>
