@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+          <record id="view_job_level_action" model="ir.actions.act_window">
+            <field name="name">Job Level</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">job.level</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_job_level"
+                  name="Job Level"
+                  parent="hr.menu_human_resources_configuration"
+                  action="view_job_level_action"
+                  sequence="17"/>
+    </data>
+</odoo>
