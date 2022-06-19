@@ -5,6 +5,11 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="domain">[]</attribute>
+                </xpath>
+
                 <xpath expr="//page[@name='hr_settings']" position="after">
                     <page name="employee_follower" string="Employee Followers" groups="hr.group_hr_manager">
                         <field name="follower_ids">
@@ -23,9 +28,9 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_filter"/>
             <field name="arch" type="xml">
-                  <field name="name" position="before">
-                      <field name="attendance_id" string="Attendance Id" filter_domain="[('zk_emp_id','=',self)]"/>
-                  </field>
+                <field name="name" position="before">
+                    <field name="attendance_id" string="Attendance Id" filter_domain="[('zk_emp_id','=',self)]"/>
+                </field>
             </field>
         </record>
 

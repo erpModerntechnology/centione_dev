@@ -52,6 +52,20 @@ class HrExcuse(models.Model):
             if self.period < 1:
                 self.period = 1
 
+    def validate_all(self):
+        for rec in self:
+            rec.validate()
+
+    def refuse(self):
+        #delete if created before a record in calendar leaves
+        found=self.env['resource.calendar.leaves'].search([('excuse_id','=',self.id)])
+        if found:
+            found.unlink()
+
+        super(HrExcuse, self).refuse()
+
+
+
     def validate(self):
         super(HrExcuse, self).validate()
         #delete if created before a record in calendar leaves
