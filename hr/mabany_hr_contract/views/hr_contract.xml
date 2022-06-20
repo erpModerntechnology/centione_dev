@@ -17,7 +17,7 @@
                             <field name="mobile_allowance"/>
                             <field name="work_nature_allowance"/>
                             <field name="profit_share"/>
-                            <field name="variable"/>
+                            <field name="variable" invisible="1"/>
                         </group>
                     </page>
                 </xpath>
