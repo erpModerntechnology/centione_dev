@@ -66,7 +66,12 @@ class HrEmployee(models.Model):
             mail_id = notification_temp.with_context(mail_to=emails_str).send_mail(emp.id)
 
     def action_active(self):
+        if self.state == 'suspended':
+            self.contract_id.state = 'open'
         return self.write({'state':'active'})
+
+
+
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
 

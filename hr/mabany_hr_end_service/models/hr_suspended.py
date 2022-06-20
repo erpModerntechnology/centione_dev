@@ -39,6 +39,7 @@ class HrSuspended(models.Model):
 
     def action_approved(self):
         self.employee_id.state = 'suspended'
+        self.employee_id.contract_id.state = 'cancel'
         return self.write({'state':'approved','approve_date':fields.Date.today()})
 
 
