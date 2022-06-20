@@ -20,7 +20,7 @@ class CustodyReturnWizard(models.TransientModel):
     type = fields.Selection(string="Type", selection=[('item', 'Item'), ('money', 'Money'), ],default=lambda self:self.default_type())
     return_date = fields.Date(string="Return Date", required=False, )
     currency_id = fields.Many2one(comodel_name="res.currency", string="Currency", default=lambda self:self.env.user.company_id.currency_id.id)
-    amount = fields.Monetary(string="Amount",  required=False, )
+    amount = fields.Monetary(string="Amount",  required=False,readonly=True )
     status = fields.Selection(string="Status When Returned", selection=[('good', 'Good and Working'), ('fix','Need Some Fix'),('scrap', 'Scrap') ], required=False, )
 
 
