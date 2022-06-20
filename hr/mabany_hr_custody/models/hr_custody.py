@@ -55,6 +55,7 @@ class HrCustody(models.Model):
             'res_model': 'custody.return.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'context' : {'default_amount': self.amount},
             'target': 'new',
         }
 
