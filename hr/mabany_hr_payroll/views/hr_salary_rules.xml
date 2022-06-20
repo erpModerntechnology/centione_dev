@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_salary_rule_custommize" model="ir.ui.view">
+            <field name="name">hr.salary.rule.custommize</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sequence']" position="after">
+                    <field name="new_seq"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

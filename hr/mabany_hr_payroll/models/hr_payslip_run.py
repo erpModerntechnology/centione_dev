@@ -65,7 +65,7 @@ class HrPayslipRun(models.Model):
         # :labels: Contains all salary rules defined in the system.
         labels = {}
         for sal in salary_rules:
-            labels.update({str(sal.id): {'name': sal.name, 'code': sal.code, 'sequence': sal.sequence + 100}})
+            labels.update({str(sal.id): {'name': sal.name, 'code': sal.code, 'sequence': sal.new_seq + 100}})
 
         # :data: List of rows of the report.
         data = self._fetch_data()
