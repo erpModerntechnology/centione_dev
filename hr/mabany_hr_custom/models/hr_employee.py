@@ -32,10 +32,20 @@ class HrEmployee(models.Model):
     arabic_name = fields.Char('Arabic Name', required=False)
     job_level = fields.Many2one('job.level','Job Level')
     job_divison = fields.Many2one('job.divison','Job Divison')
+    military_end_date = fields.Date('Military End Date')
+    manager_job = fields.Char('Manager Position')
 
     _sql_constraints = [
         ('attendance_code_unique', 'unique("zk_emp_id")', 'Attendance ID Already Exists!!')
     ]
+
+
+    @api.onchange('parent_id')
+    def onchange_parent(self):
+        for rec in self:
+            if rec.parent_id.job_id:
+                rec.manager_job = rec.parent_id.job_id.name
+
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
