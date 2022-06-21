@@ -6,6 +6,7 @@ from odoo import models, fields, api
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
+
     def get_unpaid_day(self, payslip, contract):
         total_deduct = []
         emp = self.env['hr.leave'].search(
