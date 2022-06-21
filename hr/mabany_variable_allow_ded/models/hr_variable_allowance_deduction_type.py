@@ -31,7 +31,7 @@ class VariableAllowanceDeductionType(models.Model):
                     'category_id': self.env.ref('hr_payroll.DED').id,
                     'sequence': 5,
                     'amount_select': 'code',
-                    'amount_python_compute': 'result = - inputs.%s.amount' % self.code,
+                    'amount_python_compute': 'result = inputs.%s.amount' % self.code,
                     'condition_select': 'python',
                     'condition_python': 'result = inputs.%s' % self.code,
                     'struct_id': self.env.ref('mabany_hr_payroll_base.custom_default_payroll_structure').id
