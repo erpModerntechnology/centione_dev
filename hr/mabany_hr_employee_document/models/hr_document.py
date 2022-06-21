@@ -9,7 +9,7 @@ class HrDocument(models.Model):
     documents_ids = fields.One2many('hr.document.binary', 'document_id')
     done = fields.Boolean()
     comment = fields.Char('Comment')
-    states = fields.Selection([('recieved','Recieved'),('not_recieved','Not Recieved'),('loaned','Loaned')],string='State')
+    states = fields.Selection([('recieved','Recieved'),('not_recieved','Not Recieved'),('loaned','Loaned')],string='Status')
 
     # @api.depends('documents_ids')
     # def _compute_done(self):
