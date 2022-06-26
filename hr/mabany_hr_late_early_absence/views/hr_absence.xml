@@ -37,7 +37,7 @@
 
         <menuitem id="menu_hr_absence"
                   name="Absence"
-                  parent="hr_attendance.menu_hr_attendance_view_attendances"
+                  parent="hr_attendance.menu_hr_attendance_root"
                   action="action_hr_absence"
                   sequence="15"/>
 

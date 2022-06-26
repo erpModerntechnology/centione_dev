@@ -274,7 +274,9 @@ class HrPayslip(models.Model):
         late_days = self.env['hr.attendance'].search([('employee_id', '=', payslip.employee_id.id),
                                                       ('check_in', '>=', date_from),
                                                       ('check_in', '<=', date_to),
-                                                      ('late_attendance_hours', '>', 0)])
+                                                      ('late_attendance_hours', '>', 0),
+                                                      ('missing_check', '=', False)
+                                                      ])
         late_days = [DummyAttendance(it) for it in late_days]
         leaves = self.env['resource.calendar.leaves'].search([('resource_id', '=', payslip.employee_id.resource_id.id)])
         for idx in range(0, len(late_days)):

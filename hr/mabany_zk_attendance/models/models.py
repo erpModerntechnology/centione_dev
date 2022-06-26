@@ -21,7 +21,7 @@ class HrEmployee(models.Model):
         args = args or []
         domain = []
         if name:
-            domain = ['|', ('name', operator, name), ('attendance_id', operator, name)]
+            domain = ['|', ('name', operator, name), ('zk_emp_id', operator, name)]
         return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
 
 
@@ -62,7 +62,7 @@ class zk_attendance_tmp(models.Model):
             if rec.user_number:
                 emps = self.env['hr.employee'].search([])
                 for emp in emps:
-                    if emp.attendance_id == rec.user_number:
+                    if emp.zk_emp_id == rec.user_number:
                         rec.user = emp.id
 
     @api.depends('date')
@@ -121,7 +121,7 @@ class zk_attendance_tmp(models.Model):
         employees = list(set(self.search([('logged', '=', False), ('user', "!=", False),
                                           ('date_temp', '!=', today_date_val)]).mapped('user_number')))
         for emp in employees:
-            emp_obj = self.env['hr.employee'].search([('attendance_id', '=', emp)])
+            emp_obj = self.env['hr.employee'].search([('zk_emp_id', '=', emp)])
             if not emp_obj:
                 continue
             datetime_list = records.filtered(lambda x: x.user_number == emp).mapped('date')
@@ -266,7 +266,7 @@ class zk_attendance_machine(models.Model):
             self.date_sync_success = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def check_overlapping_shift(self, vals):
-        employee = self.env['hr.employee'].search([('attendance_id', '=', vals['user_number'])])
+        employee = self.env['hr.employee'].search([('zk_emp_id', '=', vals['user_number'])])
         if employee:
             shift = employee.resource_calendar_id.attendance_rel_ids
             shift_from = sum(shift.mapped('hour_from'))
