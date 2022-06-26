@@ -1,18 +1,18 @@
 <odoo>
     <data>
-        <!--        &lt;!&ndash;error message when required filed not set   &ndash;&gt;-->
 
+        <record id="action_create_portal_user" model="ir.actions.server">
+            <field name="name">Create Portal User</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_model_id" ref="hr.model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records.create_portal_user()
+            </field>
+        </record>
 
-        <!--        <template id="redirect_fail_page" name="Failure Code Page">-->
-        <!--            <div>-->
-        <!--                <span>Required Fields Not set</span>-->
-        <!--            </div>-->
-        <!--            <script>-->
-        <!--                setTimeout(function(){-->
-        <!--                window.location.href = '/my/employees';-->
-        <!--                }, 1100)-->
-        <!--            </script>-->
-        <!--        </template>-->
 
         <!--error message when no email on the outgoing mail        -->
         <record id="employees_partner_with_no_mail" model="ir.ui.view">
@@ -104,12 +104,12 @@
                                         <input type="checkbox" id="to_delete_checkbox" name="to_delete"
                                                style="opacity:0; position:absolute;"/>
 
-<!--                                        <button t-if="not employee or employee.state == 'draft' "-->
-<!--                                                type="submit" id="to_confirm_checkbox"-->
-<!--                                                class="btn btn-default btn-primary pull-right mb32 ">-->
-<!--                                            Approve-->
-<!--                                            <span class="fa fa-long-arrow-right"/>-->
-<!--                                        </button>-->
+                                        <!--                                        <button t-if="not employee or employee.state == 'draft' "-->
+                                        <!--                                                type="submit" id="to_confirm_checkbox"-->
+                                        <!--                                                class="btn btn-default btn-primary pull-right mb32 ">-->
+                                        <!--                                            Approve-->
+                                        <!--                                            <span class="fa fa-long-arrow-right"/>-->
+                                        <!--                                        </button>-->
                                     </div>
                                 </div>
                             </div>
@@ -136,13 +136,13 @@
                 </div>
                 <form id="delete_form" action="/my/employee/delete" method="post">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-<!--                    <div class="clearfix">-->
-<!--                        <a t-attf-href="/my/employee/create" class="btn btn-default btn-primary mb32">Create</a>-->
-<!--                        <button type="submit" id="button_to_remove_employees"-->
-<!--                                class="btn btn-default btn-danger mb32 o_hidden">-->
-<!--                            Delete-->
-<!--                        </button>-->
-<!--                    </div>-->
+                    <!--                    <div class="clearfix">-->
+                    <!--                        <a t-attf-href="/my/employee/create" class="btn btn-default btn-primary mb32">Create</a>-->
+                    <!--                        <button type="submit" id="button_to_remove_employees"-->
+                    <!--                                class="btn btn-default btn-danger mb32 o_hidden">-->
+                    <!--                            Delete-->
+                    <!--                        </button>-->
+                    <!--                    </div>-->
                     <div class="panel panel-default o_employees_management_portal_users">
                         <t t-if="not employees">
                             <div class="alert alert-warning mt8" role="alert">
