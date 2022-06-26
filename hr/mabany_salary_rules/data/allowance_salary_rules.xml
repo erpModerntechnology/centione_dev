@@ -6,7 +6,7 @@
             <field name="category_id" ref="mabany_insurance.ANET"/>
             <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.ALW</field>
+            <field name="amount_python_compute">result = categories.ALW + categories.BASIC</field>
         </record>
 
         <record id="other_earning" model="hr.salary.rule">
