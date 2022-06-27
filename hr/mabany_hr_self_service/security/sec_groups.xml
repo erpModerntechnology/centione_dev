@@ -4,6 +4,9 @@
         <record id="group_second_approve_leave" model="res.groups">
             <field name="name">Self Service Second Approval</field>
         </record>
+        <record id="group_see_my_employees_self_service" model="res.groups">
+            <field name="name">Self Service See my employees</field>
+        </record>
 
     </data>
 </odoo>
