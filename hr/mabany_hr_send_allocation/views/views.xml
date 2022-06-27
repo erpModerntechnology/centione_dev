@@ -7,12 +7,15 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//header" position="inside">
-                    <button string="Send Allocation" name="send_allocation" type="object" class="oe_highlight"/>
-                </xpath>
                 <xpath expr="//field[@name='lang']" position="after">
                     <field name="over_fifty"/>
                     <field name="years_insurance_ten"/>
+                    <field name="sent_check_box" invisible="1"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Send Allocation" name="send_allocation" type="object" class="oe_highlight"/>
+<!--                            attrs="{'invisible': [('sent_check_box', '=', True)]}"/>-->
+                    <button string="Allocation Sent" name="allocation_sent" type="object" attrs="{'invisible': [('sent_check_box', '=', False)]}"/>
                 </xpath>
 
             </field>
