@@ -27,7 +27,7 @@
     'data': [
         'security/sec_groups.xml',
         'security/record_rules.xml',
-        # 'views/hr_leave_inherit.xml',
+        'views/hr_leave_inherit.xml',
         'views/resource_calendar_leaves_inherit.xml',
         'views/self_service.xml',
         'views/hr_hiring_request.xml',
