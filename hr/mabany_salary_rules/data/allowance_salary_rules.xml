@@ -1,0 +1,79 @@
+<odoo>
+    <data>
+        <record id="sum_allowances" model="hr.salary.rule">
+            <field name="name">Total Allowances</field>
+            <field name="code">TOTA</field>
+            <field name="category_id" ref="mabany_insurance.ANET"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ALW + categories.BASIC</field>
+        </record>
+
+        <record id="other_earning" model="hr.salary.rule">
+            <field name="name">Other Earning</field>
+            <field name="code">OTE</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.other_earning</field>
+        </record>
+
+
+        <record id="house_allowance" model="hr.salary.rule">
+            <field name="name">House Allowance</field>
+            <field name="code">HAR</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.house_allowance</field>
+        </record>
+
+        <record id="parking_allowance" model="hr.salary.rule">
+            <field name="name">Parking Allowance</field>
+            <field name="code">PARKING</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.parking_allowance</field>
+        </record>
+
+        <record id="mobile_allowance" model="hr.salary.rule">
+            <field name="name">Mobile Allowance</field>
+            <field name="code">MAR</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.mobile_allowance</field>
+        </record>
+
+
+        <record id="work_nature_allowance" model="hr.salary.rule">
+            <field name="name">Work Nature Allowance</field>
+            <field name="code">WNA</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.work_nature_allowance</field>
+        </record>
+
+
+        <record id="profit_share" model="hr.salary.rule">
+            <field name="name">Profit Share</field>
+            <field name="code">PSR</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.profit_share</field>
+        </record>
+
+
+        <record id="variable" model="hr.salary.rule">
+            <field name="name">Variable</field>
+            <field name="code">VA</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.variable</field>
+        </record>
+    </data>
+</odoo>

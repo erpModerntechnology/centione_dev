@@ -9,7 +9,7 @@ class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
 
     holiday_type = fields.Selection(
-        [('marriage', 'جواز'), ('casual', 'عارضة'), ('sick', 'مرضى'), ('unpaid', 'غير مدفوع')])
+        [('marriage', 'جواز'), ('casual', 'عارضة'), ('sick', 'مرضى'), ('unpaid', 'غير مدفوع'), ('annual', 'سنوي')])
     exception_constraint = fields.Boolean('Exception Constraint')
 
 

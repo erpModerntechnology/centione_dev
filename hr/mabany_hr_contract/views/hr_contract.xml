@@ -14,10 +14,11 @@
                         <group>
                             <field name="other_earning"/>
                             <field name="house_allowance"/>
+                            <field name="parking_allowance"/>
                             <field name="mobile_allowance"/>
                             <field name="work_nature_allowance"/>
                             <field name="profit_share"/>
-                            <field name="variable" invisible="1"/>
+                            <field name="variable"/>
                         </group>
                     </page>
                 </xpath>

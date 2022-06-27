@@ -24,5 +24,6 @@
     # always loaded
     'data': [
         'views/hr_payslip_run.xml',
+        'views/hr_salary_rules.xml',
     ],
 }

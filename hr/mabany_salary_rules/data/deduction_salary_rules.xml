@@ -10,7 +10,7 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = -1*employee.get_unpaid_day(payslip,contract)</field>
         </record>
-        
+
         <record id="rule_sick_leave" model="hr.salary.rule">
             <field name="name">Sick Leave</field>
             <field name="code">SIL</field>
@@ -27,6 +27,25 @@
             <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = contract.get_basic_wage_val(payslip)</field>
+        </record>
+
+          <record id="sum_deductions" model="hr.salary.rule">
+            <field name="name">Total Deduction</field>
+            <field name="code">TOTD</field>
+            <field name="category_id" ref="mabany_insurance.ANET"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.DED</field>
+        </record>
+
+          <record id="five_pound" model="hr.salary.rule">
+            <field name="name">5 EGP</field>
+            <field name="code">FIVEEGP</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+              <field name="sequence" eval="103"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.GROSS * 0.0005 * -1</field>
         </record>
     </data>
 </odoo>

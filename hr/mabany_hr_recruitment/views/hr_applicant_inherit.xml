@@ -22,8 +22,13 @@
             <field name="model">hr.applicant</field>
             <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
             <field name="arch" type="xml">
-
-
+                <xpath expr="//div[@class='o_row'][2]" position="after">
+                    <field name="notice_period"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_ids']" position="after">
+                    <field name="closed_date" attrs="{'invisible':[('is_closed','=',False)]}"/>
+                    <field name="is_closed" invisible="1"/>
+                </xpath>
                 <xpath expr="//field[@name='salary_expected_extra']" position="attributes">
                     <attribute name="invisible">True</attribute>
 
