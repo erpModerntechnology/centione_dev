@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
 
 class HrMission(models.Model):
@@ -10,6 +10,21 @@ class HrMission(models.Model):
     start_date = fields.Datetime()
     end_date = fields.Datetime()
     period = fields.Float(compute='_compute_period')
+
+
+
+    my_manager = fields.Boolean(string='Current user is my_manager',
+                                              compute='_compute_my_manager')
+
+
+    #button will appear for manager of the employee
+    def _compute_my_manager(self):
+        if self.sudo().employee_id.parent_id.user_id.id == self.env.user.id:
+            self.my_manager = True
+        else:
+            self.my_manager = False
+
+
 
     @api.depends('start_date', 'end_date')
     def _compute_period(self):
@@ -30,6 +45,7 @@ class HrMission(models.Model):
         for rec in self:
             rec.validate()
 
+
     def validate(self):
         super(HrMission, self).validate()
 
@@ -48,6 +64,22 @@ class HrMission(models.Model):
         })
 
 
+
+
+    def first_approve(self):
+        for rec in self:
+            if rec.filtered(lambda holiday: holiday.state != 'draft'):
+                raise UserError(_('Mission request must be in Draft state in order to approve it.'))
+            rec.write({'state': 'approve'})
+
+
+
+    def second_approve(self):
+        for rec in self:
+            if rec.filtered(lambda holiday: holiday.state != 'approve'):
+                raise UserError(_('Time off request must be in approved state in order to validate it.'))
+
+            rec.validate()
 
 
 
