@@ -9,6 +9,8 @@
                     <header>
                         <field name="state" readonly="1" widget="statusbar"/>
 
+                        <field name="my_manager" invisible="1"/>
+
                         <button string="First Approve" name="first_approve" type="object" class="oe_highlight"
                                 attrs="{'invisible': [ ('my_manager', '!=', True)]}"
                         />
