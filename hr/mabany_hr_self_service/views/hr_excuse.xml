@@ -8,7 +8,7 @@
                 <form>
                     <header>
                         <field name="state" readonly="1" widget="statusbar"/>
-                                          
+
                         <button name="draft" type="object" string="Draft" states="approve,validate,refuse"/>
                         <button name="approve" type="object" string="Approve" class="oe_highlight" states="draft"/>
                         <button name="validate" type="object" string="Validate" class="oe_highlight" states="approve"/>
