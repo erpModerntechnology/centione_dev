@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+
+        <record id="group_second_approve_leave" model="res.groups">
+            <field name="name">Leave Second Approval</field>
+        </record>
+
+    </data>
+</odoo>

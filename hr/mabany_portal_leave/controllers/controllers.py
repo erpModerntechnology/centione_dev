@@ -148,6 +148,7 @@ class LeavePortal(Controller):
                 post['holiday_status_id']=int (post['holiday_status_id'])
                 post['request_date_from']=post['date_from']
                 post['request_date_to']=post['date_to']
+                post['state']='draft'
                 del post['date_from']
                 del post['date_to']
 

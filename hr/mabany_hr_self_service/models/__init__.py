@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from . import abstract_model
+from . import hr_leave_inherit
 from . import hr_mission
 from . import hr_transport
 from . import hr_excuse
