@@ -6,9 +6,8 @@
             <field name="inherit_id" ref="hr_holidays.model_hr_leave"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button string="First Approve" name="first_approve" type="object" class="oe_highlight"
-                    />
-                    <button string="Second Approve" groups="mabany_hr_self_service.group_second_approve_leave" name="second_approve" type="object" class="oe_highlight"/>
+                    <button string="First Approve" name="first_approve" type="object" class="oe_highlight"/>
+                    <button string="Second Approve"  name="second_approve" type="object" class="oe_highlight"/>
 
                 </xpath>
             </field>
