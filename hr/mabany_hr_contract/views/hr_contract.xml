@@ -9,6 +9,9 @@
                     <field name="num_working_days_month"/>
                     <field name="num_working_hours_day"/>
                 </xpath>
+                <xpath expr="//field[@name='employee_id']" position="after">
+                    <field name="is_part_time"/>
+                </xpath>
                 <xpath expr="//page[@name='information']" position="after">
                     <page name="allowances" string="Allowances">
                         <group>

@@ -21,7 +21,9 @@
     'depends': ['hr_holidays', 'hr_payroll',
                 # 'sure_hr_loan',
                 'hr_work_entry_contract',
-                'hr_recruitment'],
+                'hr_recruitment',
+                'mabany_leave_customizations'
+                ],
 
     # always loaded
     'data': [

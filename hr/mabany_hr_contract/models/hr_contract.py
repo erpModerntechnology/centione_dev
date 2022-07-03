@@ -19,6 +19,7 @@ class HrContract(models.Model):
     work_nature_allowance = fields.Float('Work Nature Allowance')
     profit_share = fields.Float('Profit Share')
     variable = fields.Float('variable')
+    is_part_time = fields.Boolean('Part Time')
 
     @api.constrains('state')
     def constrain_state(self):
