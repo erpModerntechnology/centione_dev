@@ -34,7 +34,7 @@ result = -1 * (contract.wage + categories.ALW + categories.DED) * (payslip.env['
                 <field name="amount_select">code</field>
                 <field name="amount_python_compute">
 effective_salary = categories.BASIC + categories.ALW + categories.BINCTAX + categories.DED
-result = -1 * payslip.env['income.tax.settings'].sudo().calc_income_tax(effective_salary)
+result = -1 * payslip.env['income.tax.settings'].sudo().calc_income_tax(effective_salary,payslip)
                 </field>
            </record>
 
