@@ -6,7 +6,7 @@ odoo.define('portal_leave', function(require) {
     var utils = require('web.utils');
     var lang = utils.get_cookie('website_lang') || $('html').attr('lang') || 'en_US';
     lang = lang.substring(0,2);
-
+console.log('hrerr');
     $(document).ready(function(){
         var datepicker_date_from_input = $('#datepicker-container-date-from .input-group.date input');
         var datepicker_date_to_input = $('#datepicker-container-date-to .input-group.date input');
@@ -94,6 +94,8 @@ odoo.define('portal_leave', function(require) {
             }
         });
         $('#delete_leave_id').click(function () {
+        alert('ddd');
+        console.log('clikkk');
             if ( ! confirm(_t('Do you really want to remove these records?'))) {
                 event.preventDefault();
             } else {
