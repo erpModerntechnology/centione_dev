@@ -82,20 +82,20 @@
                                                    t-att-disabled="mission and mission.state in ['refuse', 'validate']"
                                                    t-att-value="comment or (mission and mission.comment)"/>
                                         </div>
-                                        <div t-attf-class="form-group #{error.get('mission_types') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="mission_types">Mission Type</label>
-                                            <select name="mission_types"
-                                                    t-att-disabled="mission and mission.state in ['refuse', 'validate']"
-                                                    class="form-control">
-                                                <t t-foreach="mission_types_ or []" t-as="mission_type">
-                                                    <option t-att-value="mission_type"
-                                                            t-att-selected="mission_type == (mission_types or (mission and mission.mission_types))">
-                                                        <t t-esc="mission_type"/>
-                                                    </option>
-                                                </t>
+<!--                                        <div t-attf-class="form-group #{error.get('mission_types') and 'has-error' or ''} col-lg-6">-->
+<!--                                            <label class="control-label" for="mission_types">Mission Type</label>-->
+<!--                                            <select name="mission_types"-->
+<!--                                                    t-att-disabled="mission and mission.state in ['refuse', 'validate']"-->
+<!--                                                    class="form-control">-->
+<!--                                                <t t-foreach="mission_types_ or []" t-as="mission_type">-->
+<!--                                                    <option t-att-value="mission_type"-->
+<!--                                                            t-att-selected="mission_type == (mission_types or (mission and mission.mission_types))">-->
+<!--                                                        <t t-esc="mission_type"/>-->
+<!--                                                    </option>-->
+<!--                                                </t>-->
 
-                                            </select>
-                                        </div>
+<!--                                            </select>-->
+<!--                                        </div>-->
 
                                         <div id="start_date"
                                              t-attf-class="form-group #{error.get('start_date') and 'has-error' or ''} col-lg-6">
@@ -161,11 +161,11 @@
                                         </div>
 
 
-                                        <div t-attf-class="form-group #{error.get('num_of_days') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="num_of_days">Number of Days</label>
-                                            <output type="number" id="input_number_of_days" name="num_of_days"
+                                        <div t-attf-class="form-group #{error.get('period') and 'has-error' or ''} col-lg-6">
+                                            <label class="control-label" for="period">Number of Days</label>
+                                            <output type="number" id="input_number_of_days" name="period"
                                                     class="form-control"
-                                                    t-att-value="num_of_days or (mission and mission.num_of_days)"
+                                                    t-att-value="period or (mission and mission.period)"
                                                     t-field-options="{&quot;widget&quot;: &quot;duration&quot;, &quot;unit&quot;: &quot;day&quot;, &quot;round&quot;: &quot;day&quot;}"
                                             />
                                         </div>
@@ -250,7 +250,6 @@
                                         </div>
                                     </th>
                                     <th class="col-md-6" id="employee_header">Employee</th>
-                                    <th class="col-md-6" id="mission_type_header">Mission type</th>
                                     <th class="col-md-6" id="description_header">Comment</th>
                                     <th class="col-md-6" id="start_date_header">Start date</th>
                                     <th class="col-md-6" id="end_date_header">End date</th>
@@ -272,11 +271,11 @@
                                             <span t-field="mission.employee_id.name"/>
                                         </a>
                                     </td>
-                                    <td>
-                                        <a t-attf-href="/my/mission/#{mission.id}?{{ keep_query() }}">
-                                            <span t-field="mission.mission_types"/>
-                                        </a>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        <a t-attf-href="/my/mission/#{mission.id}?{{ keep_query() }}">-->
+<!--                                            <span t-field="mission.mission_types"/>-->
+<!--                                        </a>-->
+<!--                                    </td>-->
                                     <td>
                                         <a t-attf-href="/my/mission/#{mission.id}?{{ keep_query() }}">
                                             <span t-field="mission.comment"/>
@@ -298,7 +297,7 @@
                                     </td>
                                     <td>
                                         <a t-attf-href="/my/mission/#{mission.id}?{{ keep_query() }}">
-                                            <span t-field="mission.num_of_days"
+                                            <span t-field="mission.period"
                                                   t-field-options="{&quot;widget&quot;: &quot;duration&quot;, &quot;unit&quot;: &quot;day&quot;, &quot;round&quot;: &quot;day&quot;}"/>
                                         </a>
                                     </td>

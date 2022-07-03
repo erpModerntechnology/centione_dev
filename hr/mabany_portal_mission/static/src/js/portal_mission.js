@@ -15,8 +15,8 @@ odoo.define('portal_mission', function(require) {
             var end_date = datepicker_end_date_input.datepicker("getDate");
             if (start_date !='' && end_date !='')
             {
-                var num_of_days= (end_date-start_date)/(1000*60*60*24);
-                $('#input_number_of_days').val(num_of_days);
+                var period= (end_date-start_date)/(1000*60*60*24);
+                $('#input_number_of_days').val(period);
             }
         });
 
@@ -53,9 +53,9 @@ odoo.define('portal_mission', function(require) {
                 datepicker_start_date_input.datepicker("setDate", e.currentTarget.value);
             }
             datepicker_start_date_input.datepicker("option", "maxDate", end_date);
-            var num_of_days= (end_date-start_date)/(1000*60*60*24);
-//            console.log(num_of_days);
-            $('#input_number_of_days').val(num_of_days);
+            var period= (end_date-start_date)/(1000*60*60*24);
+//            console.log(period);
+            $('#input_number_of_days').val(period);
         });
 
         var missions_headers = $('.o_missions_management_portal_users thead .o_list_record_selector input');
