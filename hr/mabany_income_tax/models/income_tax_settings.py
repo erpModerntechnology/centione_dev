@@ -32,7 +32,8 @@ class IncomeTaxSettings(models.Model):
         income_tax_settings = self.env.ref('mabany_income_tax.income_tax_settings0')
         functional_exemption = income_tax_settings.is_functional_exempt and income_tax_settings.functional_exempt_value or 0
         if payslip.contract_id.is_part_time == True:
-            effective_salary = tax_pool + functional_exemption + 1250
+            effective_salary_be = tax_pool + functional_exemption + 1250
+            effective_salary = effective_salary_be - functional_exemption
         else:
             effective_salary = tax_pool - functional_exemption
         income_tax = 0.0
