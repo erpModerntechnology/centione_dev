@@ -28,10 +28,13 @@ class IncomeTaxSettings(models.Model):
     #             #     raise ValidationError('Tax Division Is Missing')
     #             prev = line.max_value
 
-    def calc_income_tax(self, tax_pool):
+    def calc_income_tax(self, tax_pool,payslip):
         income_tax_settings = self.env.ref('mabany_income_tax.income_tax_settings0')
         functional_exemption = income_tax_settings.is_functional_exempt and income_tax_settings.functional_exempt_value or 0
-        effective_salary = tax_pool - functional_exemption
+        if payslip.contract_id.is_part_time == True:
+            effective_salary = tax_pool + functional_exemption + 1250
+        else:
+            effective_salary = tax_pool - functional_exemption
         income_tax = 0.0
         income_tax_after_exemption = 0.0
 
