@@ -43,7 +43,7 @@ class MissionPortal(Controller):
         if employee_id:
             missions = request.env['hr.mission'].sudo().search(
                 [('employee_id', '=', employee_id.id),
-                 ('mission_types', 'in', types)])
+                 ])
         vals['missions'] = missions
 
         return request.render("mabany_portal_mission.my_missions", vals)
@@ -54,7 +54,6 @@ class MissionPortal(Controller):
         if 'error' not in vals:
             vals['error'] = {}
 
-        vals['mission_types_'] = ['normal','external','overnight']
 
         return request.render("mabany_portal_mission.my_mission", vals)
 
@@ -72,7 +71,6 @@ class MissionPortal(Controller):
         vals = {}
         vals['error'] = {}
         vals['add_2hours_to_datetime'] = add_2hours_to_datetime
-        vals['mission_types_'] =  ['normal','external','overnight']
 
         if mission_id > 0:
             vals['mission'] = request.env['hr.mission'].sudo().browse(mission_id)

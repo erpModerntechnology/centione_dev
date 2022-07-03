@@ -129,11 +129,13 @@ class LeavePortal(Controller):
                     post['holiday_status_id']=int(post['holiday_status_id'])
                     post['request_date_from'] = post['date_from']
                     post['request_date_to'] = post['date_to']
-                    del post['date_from']
-                    del post['date_to']
+                    # del post['date_from']
+                    # del post['date_to']
 
 
                     leave_id.update(post)
+                    leave_id._compute_date_from_to()
+
         else:
             post['number_of_days'] = (
                     datetime.strptime(post['date_to'], "%Y-%m-%d") - datetime.strptime(post['date_from'],
@@ -149,10 +151,11 @@ class LeavePortal(Controller):
                 post['request_date_from']=post['date_from']
                 post['request_date_to']=post['date_to']
                 post['state']='draft'
-                del post['date_from']
-                del post['date_to']
+                # del post['date_from']
+                # del post['date_to']
 
                 leave_id = request.env['hr.leave'].sudo().create(post)
+                leave_id._compute_date_from_to()
 
                 # send mail to leaves approve responsible persons
                 # 1- for manager of the employee

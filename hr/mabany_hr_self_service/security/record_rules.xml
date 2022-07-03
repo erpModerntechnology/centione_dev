@@ -1,5 +1,36 @@
 <odoo>
     <data>
+
+
+
+
+        <record id="hr_attendance_rule_see_my_employees_hr_attendance" model="ir.rule">
+            <field name="name">see_my_employees_attendance</field>
+            <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+            <field name="domain_force">['|',('employee_id.user_id', '=', user.id),('employee_id.parent_id.user_id', '=',
+                user.id) ]
+            </field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="groups" eval="[(4, ref('mabany_hr_self_service.group_see_my_employees_self_service'))]"/>
+        </record>
+        <record id="hr_attendance_rule_see_my_employees_hr_payslip" model="ir.rule">
+            <field name="name">see_my_employees_payslip</field>
+            <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="domain_force">['|',('employee_id.user_id', '=', user.id),('employee_id.parent_id.user_id', '=',
+                user.id) ]
+            </field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="groups" eval="[(4, ref('mabany_hr_self_service.group_see_my_employees_self_service'))]"/>
+        </record>
+
+
+
         <record id="hr_leave_rule_see_my_employees_leaves" model="ir.rule">
             <field name="name">see_my_employees_leaves</field>
             <field name="model_id" ref="hr_holidays.model_hr_leave"/>
