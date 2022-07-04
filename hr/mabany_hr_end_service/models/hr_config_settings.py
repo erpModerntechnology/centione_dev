@@ -12,6 +12,7 @@ class ResConfigSettings(models.TransientModel):
 
     end_service_incentive = fields.Integer(string="EoS Months Incentives Per Year",  required=False, )
     is_calculated = fields.Boolean(string="Is Calculated",  )
+    # account_fiscal_country_id = fields.Many2one('res.country',invisble=True)
 
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()

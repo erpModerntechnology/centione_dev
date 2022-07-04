@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import logging
 
@@ -36,6 +36,22 @@ class HrTermination(models.Model):
                                        default=lambda self: self.env["ir.config_parameter"].sudo().get_param(
                                            "is_calculated"))
     legal_leaves_incentive = fields.Float()
+
+
+
+    def archive_terminated(self):
+        emp = self.env['hr.termination'].search([('state','=','approved')])
+        for rec in emp:
+            if rec.employee_id.state == 'terminated':
+                date_today = datetime.now()
+                currentDay = datetime.now().day
+                currentMonth = datetime.now().month
+                today = str(currentMonth) + '/' + str(currentDay)
+                last_day = date_today.replace(day=31)
+                last_month = date_today.replace(month=12)
+                last = str(last_month)[5:7] + '/' + str(last_day)[8:10]
+                if today == last:
+                    rec.employee_id.active = False
 
     @api.model
     def create(self, vals):
