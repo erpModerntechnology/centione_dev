@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
+from datetime import timedelta, date
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
@@ -34,6 +34,16 @@ class HrLeave(models.Model):
 
         return result
 
+    @api.constrains('request_date_from','request_date_to')
+    def constraint_holiday_annual(self):
+        leave_annual = self.env['hr.leave'].search(
+            [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'annual')])
+        for leave in leave_annual:
+            if leave.exception_constraint == False:
+                if leave.request_date_from >= date.today() <= leave.request_date_to:
+                    raise ValidationError(_("annual Holiday must be day before"))
+
+
     @api.constrains('number_of_days')
     def constraint_number_of_days_casual(self):
         total_dur_casual = []
@@ -49,7 +59,7 @@ class HrLeave(models.Model):
                     raise ValidationError(_("Casual Holiday must not exceeds 2 days per month"))
         for lem in leave_marriage:
             total_dur_marriage.append(lem.number_of_days)
-            if sum(total_dur_marriage) > 7:
+            if sum(total_dur_marriage) > 5:
                 raise ValidationError(_("Marriage Holiday must not exceeds a week maximum"))
 
     def send_notification(self, partner_id, employee_name, leave_page_url):
