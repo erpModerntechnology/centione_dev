@@ -34,7 +34,7 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
                 <field name="mobile_phone" position="before">
-                    <field name="zk_emp_id"/>
+                    <field name="zk_emp_id" required="False" readonly="True"/>
                     <field name="employee_code" invisible="True"/>
                 </field>
                 <field name="passport_id" position="after">
