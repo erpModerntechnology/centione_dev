@@ -6,3 +6,4 @@ from . import interview_comment2
 from . import interview_comment3
 from . import interview_comment4
 from . import hr_job
+from . import job_hired
