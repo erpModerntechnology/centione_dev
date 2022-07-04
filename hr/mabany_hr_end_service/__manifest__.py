@@ -13,6 +13,7 @@
         'data/data.xml',
         'data/salary_rules.xml',
         'data/turn_over_reasons.xml',
+        'data/ir_cron.xml',
     ],
     'author': 'Centione'
     , 'depends': ['hr',
