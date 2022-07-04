@@ -37,11 +37,12 @@ class HrLeave(models.Model):
     @api.constrains('request_date_from','request_date_to')
     def constraint_holiday_annual(self):
         leave_annual = self.env['hr.leave'].search(
-            [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'annual')])
+            [('employee_id', '=', self.employee_id.id)])
         for leave in leave_annual:
             if leave.exception_constraint == False:
-                if leave.request_date_from >= date.today() <= leave.request_date_to:
-                    raise ValidationError(_("annual Holiday must be day before"))
+                if self.holiday_status_id.holiday_type == 'annual':
+                    if leave.request_date_from >= date.today() <= leave.request_date_to:
+                        raise ValidationError(_("annual Holiday must be day before"))
 
 
     @api.constrains('number_of_days')
