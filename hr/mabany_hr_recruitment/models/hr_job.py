@@ -10,3 +10,4 @@ class HrJob(models.Model):
     _inherit = 'hr.job'
 
     budget = fields.Float('Budget')
+    job_hired = fields.One2many('job.hire','job_hire_id','Job Hire')
