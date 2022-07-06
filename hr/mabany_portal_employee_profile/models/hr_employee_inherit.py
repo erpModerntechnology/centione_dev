@@ -10,8 +10,8 @@ class hr_employee_inherit(models.Model):
             if not rec.user_id:
                 created_user=self.env['res.users'].create({
                     'name':rec.name,
-                    'email':rec.work_email,
-                    'login':rec.work_email,
+                    'email':rec.work_email if rec.work_email else rec.zk_emp_id,
+                    'login':rec.work_email if rec.work_email else rec.zk_emp_id,
                     'password':'123g',
                 })
                 portal_user_group = rec.env.ref('base.group_portal')
