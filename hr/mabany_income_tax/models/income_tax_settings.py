@@ -19,6 +19,28 @@ class IncomeTaxSettings(models.Model):
     class_ids = fields.One2many('income.tax.class', inverse_name='income_tax_id', string='Taxes Classes',
                                 ondelete='cascade')
 
+
+    def get_old_tax_gross(self,payslip):
+        old_payslip = self.env['hr.payslip.line'].search([
+            ('slip_id', '!=', payslip.id),
+            ('code', 'in', ['GROSS','INCTAX']),
+            ('slip_id.employee_id', '=', payslip.employee_id),
+            ('slip_id.date_from', '>=', payslip.date_from),
+            ('slip_id.date_from', '<=', payslip.date_to),
+        ])
+        old_tax = 0
+        old_gross = 0
+        if old_payslip:
+            for line in old_payslip:
+                if line.code == 'GROSS':
+                    old_gross += line.total
+                if line.code == 'INCTAX':
+                    old_tax += line.total
+        return  old_tax,old_gross
+        # else:
+        #     return 0,0
+
+
     # @api.constrains('line_ids')
     # def check_line_ids(self):
     #     if self.line_ids:
@@ -29,6 +51,8 @@ class IncomeTaxSettings(models.Model):
     #             prev = line.max_value
 
     def calc_income_tax(self, tax_pool,payslip):
+        old_tax,old_gross  = self.get_old_tax_gross(payslip)
+        tax_pool += old_gross
         income_tax_settings = self.env.ref('mabany_income_tax.income_tax_settings0')
         functional_exemption = income_tax_settings.is_functional_exempt and income_tax_settings.functional_exempt_value or 0
         if payslip.contract_id.is_part_time == True:
@@ -61,7 +85,7 @@ class IncomeTaxSettings(models.Model):
             else:
                 income_tax += (line.tax_ratio / 100.0) * effective_salary
                 break
-        return income_tax_after_exemption
+        return income_tax_after_exemption - old_tax
 
     def calc_next_tax(self, tax_pool, employee, payslip):
         previous_tax = 0
