@@ -42,5 +42,13 @@ class HolidaysTypePortal(models.Model):
                     'count': _('%g remaining out of %g') % (
                     record.virtual_remaining_leaves or 0.0, record.max_leaves or 0.0)
                 }
+            #
+            else:
+                name = "%(name)s (%(count)s)" % {
+                    'name': name,
+                    'count': _('%g remaining out of %g') % (
+                        record.virtual_remaining_leaves or 0.0, record.max_leaves or 0.0)
+                }
+            #
             res.append((record.id, name))
         return res
