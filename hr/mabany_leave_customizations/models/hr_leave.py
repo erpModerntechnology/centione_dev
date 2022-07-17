@@ -39,8 +39,8 @@ class HrLeave(models.Model):
         for rec in self:
             if rec.exception_constraint == False:
                 if rec.holiday_status_id.holiday_type == 'annual':
-                    if rec.request_date_from >= date.today() <= rec.request_date_to:
-                        raise ValidationError(_("annual Holiday must be day before"))
+                    if rec.request_date_from < date.today():
+                        raise ValidationError(_("Annual Holiday must be day after!"))
 
 
     @api.constrains('number_of_days')
