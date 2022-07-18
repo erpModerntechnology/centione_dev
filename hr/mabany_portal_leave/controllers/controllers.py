@@ -130,6 +130,7 @@ class LeavePortal(Controller):
                     post['request_date_from'] = post['date_from']
                     post['request_date_to'] = post['date_to']
                     post['holiday_type'] = 'employee'
+                    post['state'] = leave_id.state
 
                     # del post['date_from']
                     # del post['date_to']
@@ -137,6 +138,7 @@ class LeavePortal(Controller):
 
                     leave_id.update(post)
                     leave_id._compute_date_from_to()
+                    leave_id.update({'state': post['state']})
 
         else:
             post['number_of_days'] = (
