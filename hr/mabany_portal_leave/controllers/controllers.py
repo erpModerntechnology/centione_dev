@@ -112,7 +112,7 @@ class LeavePortal(Controller):
             leave_id = int(leave_id)
             if leave_id > 0:
                 leave_id = request.env['hr.leave'].sudo().browse(leave_id)
-                if leave_id and post.get('to_delete') == "on":
+                if leave_id and  'delete_btn' in post and leave_id.state=='draft':
                     leave_id.unlink()
                 elif leave_id:
                     post['number_of_days'] = (
