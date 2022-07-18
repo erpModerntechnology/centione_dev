@@ -182,8 +182,8 @@
                                     <div class="clearfix">
                                         <input type="checkbox" id="to_delete_checkbox" name="to_delete"
                                                style="opacity:0; position:absolute;"/>
-                                        <button t-if="leave and leave.state not in ['cancel', 'validate', 'validate1']"
-                                                id="delete_leave_id" type="submit" class="btn btn-danger mb32">
+                                        <button name="delete_btn" t-if="leave and leave.state not in ['cancel', 'validate', 'validate1']"
+                                                 t-att-value="True" id="delete_leave_id" type="submit" class="btn btn-danger mb32">
                                             <span class="fa fa-trash-o"/>
                                             Delete
                                         </button>
