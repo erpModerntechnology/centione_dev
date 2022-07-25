@@ -15,7 +15,7 @@ class HrContract(models.Model):
                                                 "the true working hours")
     other_earning = fields.Float('Other Earning')
     house_allowance = fields.Float('House Allowance')
-    parking_allowance = fields.Float('Parking Allowance')
+    parking_deduction = fields.Float('Parking Deduction')
     mobile_allowance = fields.Float('Mobile Allowance')
     work_nature_allowance = fields.Float('Work Nature Allowance')
     profit_share = fields.Float('Profit Share')
