@@ -3,6 +3,7 @@ from datetime import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
+
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
@@ -19,6 +20,8 @@ class HrContract(models.Model):
     work_nature_allowance = fields.Float('Work Nature Allowance')
     profit_share = fields.Float('Profit Share')
     variable = fields.Float('variable')
+    purchase_of_ins_period_refund = fields.Float('Purchase of Ins. Period Refund')
+    other_deduction = fields.Float('Other Deduction')
     is_part_time = fields.Boolean('Part Time')
 
     @api.constrains('state')
