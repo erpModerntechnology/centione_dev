@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lone,Lone.Access.rule,mabany_hr_loan_correct.model_hr_loan,,1,1,1,1
+access_lone_line,Lone.Access.rule.line,mabany_hr_loan_correct.model_hr_loan_line,,1,1,1,1
+access_loan_payment,Lone Payment,model_loan_payment,,1,1,1,1
+loan_payment_wizard,loan_payment_wizard,model_loan_payment_wizard,,1,1,1,1
+acc_loan_line,acc_loan_line,model_acc_loan_line,,1,1,1,1
+loan_account_payment_wizard,loan_account_payment_wizard,model_loan_account_payment_wizard,,1,1,1,1
+loan_register_payment_wizard,loan_register_payment_wizard,model_loan_register_payment_wizard,,1,1,1,1
+payment_delay_wizard,payment_delay_wizard,model_payment_delay_wizard,,1,1,1,1
+acc_loan_payment_view_wizard,acc_loan_payment_view_wizard,model_acc_loan_payment_view_wizard,,1,1,1,1
