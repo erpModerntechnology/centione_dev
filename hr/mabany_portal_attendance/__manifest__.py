@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','web','portal','website','hr','hr_attendance','calendar','mail'],
+    'depends': ['base','web','portal','hr','hr_attendance','calendar','mail'],
 
     # always loaded
     'data': [

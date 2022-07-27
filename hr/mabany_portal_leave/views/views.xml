@@ -7,7 +7,7 @@
             <field name="key">mabany_portal_leave.leaves_partner_with_no_mail</field>
             <field name="arch" type="xml">
                 <t t-name="leaves_management_portal_users.leaves_partner_with_no_mail">
-                    <t t-call="website.layout">
+                    <t t-call="portal.portal_layout">
                         <div id="wrap">
                             <t t-raw="0"/>
                             <div class="oe_structure oe_empty">
@@ -24,7 +24,7 @@
 
                 <!--leave form-->
         <template id="my_leave" name="My leave">
-            <t t-call="website.layout">
+            <t t-call="portal.portal_layout">
                 <div id="wrap">
                     <div class="container">
                         <div class="oe_structure">
@@ -310,9 +310,7 @@
                         </table>
                     </div>
                 </form>
-                <div t-if="pager" class="o_portal_pager text-center">
-                    <t t-call="website.pager"/>
-                </div>
+
             </t>
         </template>
 
