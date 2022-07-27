@@ -21,7 +21,7 @@
             <field name="key">mabany_portal_mission.missions_partner_with_no_mail</field>
             <field name="arch" type="xml">
                 <t t-name="missions_management_portal_users.missions_partner_with_no_mail">
-                    <t t-call="website.layout">
+                    <t t-call="portal.portal_layout">
                         <div id="wrap">
                             <t t-raw="0"/>
                             <div class="oe_structure oe_empty">
@@ -38,7 +38,7 @@
 
         <!--mission form-->
         <template id="my_mission" name="My mission">
-            <t t-call="website.layout">
+            <t t-call="portal.portal_layout">
                 <div id="wrap">
                     <div class="container">
                         <div class="oe_structure">
@@ -311,9 +311,7 @@
                         </table>
                     </div>
                 </form>
-                <div t-if="pager" class="o_portal_pager text-center">
-                    <t t-call="website.pager"/>
-                </div>
+
             </t>
         </template>
 
