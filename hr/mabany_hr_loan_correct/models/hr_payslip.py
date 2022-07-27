@@ -52,18 +52,19 @@ class HrPayslip(models.Model):
     @api.depends('employee_id', 'date_from', 'date_to')
     @api.onchange('employee_id', 'date_from', 'date_to')
     def _get_loan_lines(self):
-        line_ids = []
-        if self.employee_id and self.date_from and self.date_to:
-            loans_lines = self.env['hr.loan.line'].search(
-                [('loan_id.employee_id', '=', self.employee_id.id), ('loan_id.state', 'in', ['sent','approved']),
-                 ('state', 'in', ('unpaid', 'partial_paid')),
-                 ('date', '>=', self.date_from),
-                 ('date', '<=', self.date_to)])
-            for line in loans_lines:
-                line_ids.append(line.id)
-                # line.write({'payslip_id': self.id})
+        for rec in self:
+            line_ids = []
+            if rec.employee_id and rec.date_from and rec.date_to:
+                loans_lines = self.env['hr.loan.line'].search(
+                    [('loan_id.employee_id', '=', rec.employee_id.id), ('loan_id.state', 'in', ['sent','approved']),
+                     ('state', 'in', ('unpaid', 'partial_paid')),
+                     ('date', '>=', rec.date_from),
+                     ('date', '<=', rec.date_to)])
+                for line in loans_lines:
+                    line_ids.append(line.id)
+                    # line.write({'payslip_id': self.id})
 
-            self.loan_lines_ids = [[6, 0, line_ids]]
+                rec.loan_lines_ids = [[6, 0, line_ids]]
 
 
 
