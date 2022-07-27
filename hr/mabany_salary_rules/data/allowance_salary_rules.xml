@@ -28,15 +28,6 @@
             <field name="amount_python_compute">result = contract.house_allowance</field>
         </record>
 
-        <record id="parking_allowance" model="hr.salary.rule">
-            <field name="name">Parking Allowance</field>
-            <field name="code">PARKING</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = contract.parking_allowance</field>
-        </record>
-
         <record id="mobile_allowance" model="hr.salary.rule">
             <field name="name">Mobile Allowance</field>
             <field name="code">MAR</field>

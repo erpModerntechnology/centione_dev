@@ -19,27 +19,29 @@ class IncomeTaxSettings(models.Model):
     class_ids = fields.One2many('income.tax.class', inverse_name='income_tax_id', string='Taxes Classes',
                                 ondelete='cascade')
 
-
-    def get_old_tax_gross(self,payslip):
-        old_payslip = self.env['hr.payslip.line'].search([
-            ('slip_id', '!=', payslip.id),
-            ('code', 'in', ['GROSS','INCTAX']),
-            ('slip_id.employee_id', '=', payslip.employee_id),
-            ('slip_id.date_from', '>=', payslip.date_from),
-            ('slip_id.date_from', '<=', payslip.date_to),
+    def get_old_tax_gross(self, payslip):
+        old_payslip = self.env['hr.payslip'].search([
+            ('id', '!=', payslip.id),
+            ('state', 'in', ['done']),
+            ('payslip_run_id', '!=', False),
+            ('employee_id', '=', payslip.employee_id),
+            ('date_from', '>=', payslip.date_from),
+            ('date_from', '<=', payslip.date_to),
         ])
         old_tax = 0
         old_gross = 0
         if old_payslip:
-            for line in old_payslip:
-                if line.code == 'GROSS':
-                    old_gross += line.total
-                if line.code == 'INCTAX':
-                    old_tax += line.total
-        return  old_tax,old_gross
+            for payslip in old_payslip:
+                if payslip.line_ids.filtered(lambda k: k.code == 'INCTAX'):
+                    for line in payslip.line_ids:
+                        if line.code == 'INCTAX':
+                            old_tax += line.total
+                            break
+                        if line.category_id.code in ['ALW', 'DED', 'BASIC']:
+                            old_gross += line.total
+        return old_tax, old_gross
         # else:
         #     return 0,0
-
 
     # @api.constrains('line_ids')
     # def check_line_ids(self):
@@ -50,8 +52,8 @@ class IncomeTaxSettings(models.Model):
     #             #     raise ValidationError('Tax Division Is Missing')
     #             prev = line.max_value
 
-    def calc_income_tax(self, tax_pool,payslip):
-        old_tax,old_gross  = self.get_old_tax_gross(payslip)
+    def calc_income_tax(self, tax_pool, payslip):
+        old_tax, old_gross = self.get_old_tax_gross(payslip)
         tax_pool += old_gross
         income_tax_settings = self.env.ref('mabany_income_tax.income_tax_settings0')
         functional_exemption = income_tax_settings.is_functional_exempt and income_tax_settings.functional_exempt_value or 0
@@ -115,7 +117,7 @@ class IncomeTaxSettings(models.Model):
     def check_date(self, payslip, contract):
         if fields.Date.from_string(payslip.date_from).month == fields.Date.from_string(
                 contract.date_start).month and fields.Date.from_string(
-                payslip.date_from).year == fields.Date.from_string(contract.date_start).year:
+            payslip.date_from).year == fields.Date.from_string(contract.date_start).year:
             return True
         return False
 

@@ -17,11 +17,17 @@
                         <group>
                             <field name="other_earning"/>
                             <field name="house_allowance"/>
-                            <field name="parking_allowance"/>
                             <field name="mobile_allowance"/>
                             <field name="work_nature_allowance"/>
                             <field name="profit_share"/>
                             <field name="variable"/>
+                        </group>
+                    </page>
+                    <page name="deductions" string="Deductions">
+                        <group>
+                            <field name="parking_allowance"/>
+                            <field name="purchase_of_ins_period_refund"/>
+                            <field name="other_deduction"/>
                         </group>
                     </page>
                 </xpath>
@@ -31,6 +37,24 @@
                     </group>
                 </xpath>
             </field>
+        </record>
+
+        <record id="purchase_of_ins_period_refund_salary_rule" model="hr.salary.rule">
+            <field name="name">Purchase of Ins. Period Refund Salary Rule</field>
+            <field name="code">POIPR</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.purchase_of_ins_period_refund * -1</field>
+        </record>
+
+        <record id="other_deduction_salary_rule" model="hr.salary.rule">
+            <field name="name">Other Deduction Salary Rule</field>
+            <field name="code">OTHERDED</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="mabany_hr_payroll_base.custom_default_payroll_structure"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.other_deduction * -1</field>
         </record>
     </data>
 </odoo>
