@@ -12,6 +12,11 @@ class HrPayslipRun(models.Model):
     report = fields.Binary(string='Download', readonly=True)
     report_name = fields.Char()
 
+    def action_draft(self):
+        self.state = 'draft'
+        for rec in self.slip_ids:
+            rec.state = 'draft'
+
     def employee_fields(self):
         # { 'key': ('column_order', 'column_name') }
         employee_fields = {

@@ -31,7 +31,7 @@ class HrEmployeeMedicalLine(models.Model):
         for rec in self:
             spouse_lis = []
             child_lis = []
-            employee_cost = self.medical_grade_id.total_employee_share
+            employee_cost = rec.medical_grade_id.total_employee_share
             number = 0
             for fam in rec.medical_grade_id:
                 for m in fam.medical_id.family_grade_ids:
