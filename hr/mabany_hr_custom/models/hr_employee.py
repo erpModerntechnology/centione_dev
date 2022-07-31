@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
-    zk_emp_id = fields.Char(string="Employee Attendance ID", required=False,readonly=True)
+    zk_emp_id = fields.Char(string="Employee Attendance ID", required=False)
     hire_date = fields.Date(string="Hire Date", required=False, )
     region = fields.Selection(string="Region", selection=[('muslim', 'Muslim'), ('Christian', 'Christian'), ],
                               required=False, )
