@@ -17,6 +17,7 @@ class HrPayslipRun(models.Model):
         for rec in self.slip_ids:
             rec.state = 'draft'
 
+
     def employee_fields(self):
         # { 'key': ('column_order', 'column_name') }
         employee_fields = {
