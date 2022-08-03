@@ -14,6 +14,9 @@
                     <button name="generate_excel" string="Generate Report" type="object"
                             class="btn-primary"/>
 
+                    <button name="action_draft" string="Draft" type="object"
+                            class="btn-primary"/>
+
                 </xpath>
             </field>
         </record>

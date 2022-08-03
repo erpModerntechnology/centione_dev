@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="mabany_attendance_auto.list">
+      <field name="name">mabany_attendance_auto list</field>
+      <field name="model">mabany_attendance_auto.mabany_attendance_auto</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="mabany_attendance_auto.action_window">
+      <field name="name">mabany_attendance_auto window</field>
+      <field name="res_model">mabany_attendance_auto.mabany_attendance_auto</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="mabany_attendance_auto.action_server">
+      <field name="name">mabany_attendance_auto server</field>
+      <field name="model_id" ref="model_mabany_attendance_auto_mabany_attendance_auto"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="mabany_attendance_auto" id="mabany_attendance_auto.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="mabany_attendance_auto.menu_1" parent="mabany_attendance_auto.menu_root"/>
+    <menuitem name="Menu 2" id="mabany_attendance_auto.menu_2" parent="mabany_attendance_auto.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="mabany_attendance_auto.menu_1_list" parent="mabany_attendance_auto.menu_1"
+              action="mabany_attendance_auto.action_window"/>
+    <menuitem name="Server to list" id="mabany_attendance_auto" parent="mabany_attendance_auto.menu_2"
+              action="mabany_attendance_auto.action_server"/>
+-->
+  </data>
+</odoo>

@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
-    zk_emp_id = fields.Char(string="Employee Attendance ID", required=False,readonly=True)
+    zk_emp_id = fields.Char(string="Employee Attendance ID", required=False)
     hire_date = fields.Date(string="Hire Date", required=False, )
     region = fields.Selection(string="Region", selection=[('muslim', 'Muslim'), ('Christian', 'Christian'), ],
                               required=False, )
@@ -87,23 +87,23 @@ class HrEmployee(models.Model):
 
 
 
-    @api.model
-    def create(self,vals):
-        res = super(HrEmployee, self).create(vals)
-        emps_values = []
-        emps = self.env['hr.employee'].search([]).mapped('zk_emp_id')
-        for i in emps:
-            if i != False:
-                if i.isdigit():
-                    emps_values.append(int(i))
-                else:
-                    emps_values.append(0)
-            else:
-                emps_values.append(0)
-        # emps_values = [int(i) for i in emps]
-        maxed_emps = max(emps_values)
-        maxed = maxed_emps + 1
-        res.zk_emp_id = str(maxed)
-        return res
+    # @api.model
+    # def create(self,vals):
+    #     res = super(HrEmployee, self).create(vals)
+    #     emps_values = []
+    #     emps = self.env['hr.employee'].search([]).mapped('zk_emp_id')
+    #     for i in emps:
+    #         if i != False:
+    #             if i.isdigit():
+    #                 emps_values.append(int(i))
+    #             else:
+    #                 emps_values.append(0)
+    #         else:
+    #             emps_values.append(0)
+    #     # emps_values = [int(i) for i in emps]
+    #     maxed_emps = max(emps_values)
+    #     maxed = maxed_emps + 1
+    #     res.zk_emp_id = str(maxed)
+    #     return res
 
 
