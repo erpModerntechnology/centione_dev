@@ -24,22 +24,22 @@ class MissionPortal(Controller):
 
         get_class_state_dict = {'refuse': 'label label-danger', 'approve': 'label label-info',
                                 'draft': 'label label-warning',
-                                 'validate': 'label label-success'}
-        get_description_state_dict = {'draft': 'Draft',  'approve': 'Approved',
+                                'validate': 'label label-success'}
+        get_description_state_dict = {'draft': 'Draft', 'approve': 'Approved',
                                       'refuse': 'Refused', 'validate': 'Validated', }
         vals = {}
         vals['add_2hours_to_datetime'] = add_2hours_to_datetime
         vals['get_description_state_dict'] = get_description_state_dict
         vals['get_class_state_dict'] = get_class_state_dict
 
-        #get employee has the current user as related user
+        # get employee has the current user as related user
         employee_id = request.env['hr.employee'].sudo().search([('user_id', '=', request.uid)])
 
-        #get mission types
+        # get mission types
         missions = {}
-        types = ['normal','external','overnight']
+        types = ['normal', 'external', 'overnight']
 
-        #get missions for these mission types
+        # get missions for these mission types
         if employee_id:
             missions = request.env['hr.mission'].sudo().search(
                 [('employee_id', '=', employee_id.id),
@@ -48,17 +48,15 @@ class MissionPortal(Controller):
 
         return request.render("mabany_portal_mission.my_missions", vals)
 
-    #prepare mission creation form
+    # prepare mission creation form
     @route(['/my/mission/create'], type='http', auth="user", website=True)
     def myMissionsCreate(self, vals={}, **kw):
         if 'error' not in vals:
             vals['error'] = {}
 
-
         return request.render("mabany_portal_mission.my_mission", vals)
 
-
-    #specific mission page
+    # specific mission page
     @route(['/my/mission/<int:mission_id>'], type='http', auth="user", website=True)
     def myMission(self, mission_id=0, **kw):
         def add_2hours_to_datetime(date):
@@ -103,23 +101,25 @@ class MissionPortal(Controller):
             mission_id = int(mission_id)
             if mission_id > 0:
                 mission_id = request.env['hr.mission'].sudo().browse(mission_id)
-                if mission_id and post.get('to_delete') == "on":
+                if mission_id and 'delete_btn' in post and mission_id.state == 'draft':
                     mission_id.unlink()
                 elif mission_id:
-                    post['start_date'] = (datetime.strptime(post['start_date'], "%m/%d/%Y %I:%M %p")- timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
-                    post['end_date'] = (datetime.strptime(post['end_date'], "%m/%d/%Y %I:%M %p")- timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
-
+                    post['start_date'] = (datetime.strptime(post['start_date'], "%m/%d/%Y %I:%M %p") - timedelta(
+                        hours=2)).strftime("%Y-%m-%d %H:%M:%S")
+                    post['end_date'] = (
+                                datetime.strptime(post['end_date'], "%m/%d/%Y %I:%M %p") - timedelta(hours=2)).strftime(
+                        "%Y-%m-%d %H:%M:%S")
 
                     mission_id.write(post)
         else:
             post['employee_id'] = request.env['hr.employee'].sudo().search([('user_id', '=', request.env.uid)]).id
             try:
-                post['state']='draft'
+                post['state'] = 'draft'
                 post['start_date'] = (
-                            datetime.strptime(post['start_date'], "%m/%d/%Y %I:%M %p") - timedelta(hours=2)).strftime(
+                        datetime.strptime(post['start_date'], "%m/%d/%Y %I:%M %p") - timedelta(hours=2)).strftime(
                     "%Y-%m-%d %H:%M:%S")
                 post['end_date'] = (
-                            datetime.strptime(post['end_date'], "%m/%d/%Y %I:%M %p") - timedelta(hours=2)).strftime(
+                        datetime.strptime(post['end_date'], "%m/%d/%Y %I:%M %p") - timedelta(hours=2)).strftime(
                     "%Y-%m-%d %H:%M:%S")
 
                 mission_id = request.env['hr.mission'].sudo().create(post)
@@ -132,7 +132,6 @@ class MissionPortal(Controller):
                 # approvers = approvers.mapped('email')
                 # for approver_user in approvers:
                 #     self.sudo().send_email_to_approvers(mission_id.employee_id, approver_user)
-
 
                 # mission_id._onchange_start_date()
             except Exception as exc:

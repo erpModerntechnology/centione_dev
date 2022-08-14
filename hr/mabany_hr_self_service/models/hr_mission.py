@@ -47,6 +47,10 @@ class HrMission(models.Model):
         for rec in self:
             rec.validate()
 
+    def first_approve_all(self):
+        for rec in self:
+            rec.first_approve()
+
 
     def validate(self):
         super(HrMission, self).validate()
@@ -77,6 +81,7 @@ class HrMission(models.Model):
 
 
     def second_approve(self):
+        self=self.sudo()
         for rec in self:
             if rec.filtered(lambda holiday: holiday.state != 'approve'):
                 raise UserError(_('Time off request must be in approved state in order to validate it.'))
