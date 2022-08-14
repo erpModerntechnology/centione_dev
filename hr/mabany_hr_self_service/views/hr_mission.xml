@@ -70,7 +70,6 @@
             <field name="model_id" ref="mabany_hr_self_service.model_hr_mission"/>
             <field name="binding_model_id" ref="mabany_hr_self_service.model_hr_mission"/>
             <field name="state">code</field>
-            <field name="groups">mabany_hr_self_service.group_second_approve_leave</field>
             <field name="code">
                 if records:
                 action = records.validate_all()
