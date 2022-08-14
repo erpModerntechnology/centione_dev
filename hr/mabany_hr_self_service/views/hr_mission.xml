@@ -20,7 +20,7 @@
 
                         <button name="draft" type="object" string="Draft" states="approve,validate,refuse"/>
                         <button name="approve" type="object" string="Approve" class="oe_highlight" states="draft"/>
-                        <button name="validate" type="object" string="Validate" class="oe_highlight" states="approve"/>
+                        <button name="validate" type="object" string="Validate" class="oe_highlight" invisible="True"/>
                         <button name="refuse" type="object" string="Refuse" states="approve,validate"/>
                     </header>
                     <sheet>
@@ -65,14 +65,26 @@
         />
 
         <record id="action_validate_all_mission" model="ir.actions.server">
-            <field name="name">Validate All</field>
+            <field name="name">Second Approve</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="mabany_hr_self_service.model_hr_mission"/>
+            <field name="binding_model_id" ref="mabany_hr_self_service.model_hr_mission"/>
+            <field name="state">code</field>
+            <field name="groups">mabany_hr_self_service.group_second_approve_leave</field>
+            <field name="code">
+                if records:
+                action = records.validate_all()
+            </field>
+        </record>
+        <record id="action_first_approve_all_missions" model="ir.actions.server">
+            <field name="name">First  Approve</field>
             <field name="type">ir.actions.server</field>
             <field name="model_id" ref="mabany_hr_self_service.model_hr_mission"/>
             <field name="binding_model_id" ref="mabany_hr_self_service.model_hr_mission"/>
             <field name="state">code</field>
             <field name="code">
                 if records:
-                action = records.validate_all()
+                action = records.first_approve_all()
             </field>
         </record>
 

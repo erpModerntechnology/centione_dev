@@ -184,7 +184,7 @@
                                     <div class="clearfix">
                                         <input type="checkbox" id="to_delete_checkbox" name="to_delete"
                                                style="opacity:0; position:absolute;"/>
-                                        <button t-if="mission and mission.state not in ['refuse', 'validate']"
+                                        <button name="delete_btn" t-if="mission and mission.state not in ['refuse', 'validate']"
                                                 id="delete_mission_id" type="submit" class="btn btn-danger mb32">
                                             <span class="fa fa-trash-o"/>
                                             Delete
