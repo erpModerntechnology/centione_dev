@@ -39,6 +39,7 @@
             <field name="type">ir.actions.server</field>
             <field name="binding_model_id" ref="hr_holidays.model_hr_leave" />
             <field name="model_id" ref="hr_holidays.model_hr_leave" />
+            <field name="groups_id" eval="[(4,ref('mabany_hr_self_service.group_second_approve_leave'))]" />
             <field name="state">code</field>
             <field name="code">
                 if records:
