@@ -39,8 +39,11 @@ class recalculate_attendance_wizard(models.TransientModel):
 
 
     def recalculate_data(self):
+        self=self.sudo()
         if self.recalculate_attendance:
             #delete last attendance from starting date
             self.delete_last_days_attendance(str(self.start_date))
+            self.env.cr.commit()
             #recalculate again
             self.env['hr.attendance.zk.temp'].process_data()
+            self.env.cr.commit()
