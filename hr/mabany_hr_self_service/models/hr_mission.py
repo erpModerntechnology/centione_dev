@@ -44,6 +44,7 @@ class HrMission(models.Model):
         super(HrMission, self).refuse()
 
     def validate_all(self):
+        self=self.sudo()
         for rec in self:
             rec.validate()
 
