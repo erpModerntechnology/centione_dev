@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import hr_payslip_employees
 from . import abstract_model
 from . import hr_leave_inherit
 from . import hr_mission
