@@ -35,6 +35,7 @@ class HrExcuse(models.Model):
                 self.period = 1
 
     def validate_all(self):
+        self=self.sudo()
         for rec in self:
             rec.validate()
 
