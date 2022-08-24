@@ -1,7 +1,7 @@
 from odoo import models, fields, api, _
 
 
-class HrPayslipEmployees(models.Model):
+class HrPayslipEmployees(models.TransientModel):
     _inherit = 'hr.payslip.employees'
 
 
