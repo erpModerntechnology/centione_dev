@@ -1,8 +1,10 @@
 <odoo>
     <data>
 
+        
 
-        <record model="ir.rule" id="resource_calendar_leaves_rule_all_access">
+
+        <record model="ir.rule" id="resource.resource_calendar_leaves_rule_group_admin_modify">
             <field name="name">resource.calendar.leaves: for all</field>
             <field name="model_id" ref="resource.model_resource_calendar_leaves"/>
             <!--            <field name="groups" eval="[(4, ref('base.group_erp_manager'))]"/>-->
