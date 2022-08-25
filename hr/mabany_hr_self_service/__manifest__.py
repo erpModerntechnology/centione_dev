@@ -18,7 +18,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr_holidays', 'hr_payroll','resource'
+    'depends': ['hr_holidays', 'hr_payroll','resource',
                 # 'sure_hr_loan',
                 'hr_work_entry_contract',
                 'hr_recruitment',
