@@ -29,6 +29,7 @@
     'data': [
         'security/sec_groups.xml',
         'security/record_rules.xml',
+        'security/ir.model.access.csv',
         'views/hr_leave_inherit.xml',
         'views/resource_calendar_leaves_inherit.xml',
         'views/self_service.xml',
@@ -38,6 +39,5 @@
         'views/hr_mission.xml',
         'views/hr_employee.xml',
         'views/hr_transport_rate.xml',
-        'security/ir.model.access.csv',
     ],
 }

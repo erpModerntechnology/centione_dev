@@ -4,3 +4,4 @@ access_hr_transport,access hr transport,model_hr_transport,,1,1,1,1
 access_hiring_request,access_hiring_request,model_hr_hiring_request,,1,1,1,1
 access_hr_excuse,access hr excuse,model_hr_excuse,,1,1,1,1
 access_hr_transport_configuration,access hr transport configuration,model_hr_transport_configuration,,1,1,1,1
+resource_calendar_leaves,resource_calendar_leaves,resource.model_resource_calendar_leaves,,1,1,1,1
