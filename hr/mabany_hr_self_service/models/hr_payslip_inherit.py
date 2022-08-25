@@ -19,6 +19,7 @@ class HrPayslip(models.Model):
             raise UserError(_('Duplicated payslip in same month!'))
 
     def compute_sheet(self):
+        self=self.sudo()
         for rec in self:
             leaves = self.env['resource.calendar.leaves'].search(
                 ['|', '|', ('holiday_id.employee_id.id', '=', rec.employee_id.id),
