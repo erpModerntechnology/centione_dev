@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-        
+
 
 
         <record model="ir.rule" id="resource.resource_calendar_leaves_rule_group_admin_modify">
