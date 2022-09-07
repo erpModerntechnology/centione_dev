@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+
+        <record model="hr.excuse.conf" id="hr_excuse_conf_1">
+
+        </record>
+        <record id="hr_excuse_conf_view_form" model="ir.ui.view">
+            <field name="name">hr_excuse_conf_view_form</field>
+            <field name="model">hr.excuse.conf</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+
+                        <field name="hr_excuse_conf_lines">
+                            <tree editable="top">
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </tree>
+                        </field>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_excuse_conf_action" model="ir.actions.act_window">
+            <field name="name">Hr Excuse Conf</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.excuse.conf</field>
+            <field name="view_mode">form</field>
+            <field name="res_id" ref="hr_excuse_conf_1"/>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="hr_excuse_conf_menu" name="Hr Excuse Conf" parent="hr_holidays.menu_hr_holidays_root"
+                  action="hr_excuse_conf_action" sequence="30"/>
+    </data>
+</odoo>
