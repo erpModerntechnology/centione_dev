@@ -14,8 +14,8 @@ class HrExcuse(models.Model):
     @api.constrains('period', 'employee_id', 'start_date')
     def _check_period(self):
         max_period = self.employee_id.max_excuse_period
-        if self.period > max_period:
-            raise UserError(_('Period exceeds employee\'s allowed period.'))
+        # if self.period > max_period:
+        #     raise UserError(_('Period exceeds employee\'s allowed period.'))
         # month = self.start_date.month
         # year = self.start_date.year
         # month_start = datetime(day=1, month=month, year=year, hour=0, minute=0, second=0)
@@ -35,7 +35,8 @@ class HrExcuse(models.Model):
                                                     ('start_date', '>=', hr_excuse_conf_line.start_date),
                                                     ('start_date', '<=', hr_excuse_conf_line.end_date),
                                                     ('state', '!=', 'refuse')])
-            if len(excuses) > max_month_request:
-                raise UserError(_('Period exceeds employee\'s allowed requests per interval.'))
+            periods = sum(excuses.mapped('period'))
+            if periods > max_period:
+                raise UserError(_('Period exceeds employee\'s allowed period.'))
         else:
-            raise UserError(_('Excuse Start Date doesn\'t Existed in any Period'))
+            raise UserError(_('Period exceeds employee\'s allowed period.'))
