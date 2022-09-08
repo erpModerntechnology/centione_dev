@@ -39,4 +39,4 @@ class HrExcuse(models.Model):
             if periods > max_period:
                 raise UserError(_('Period exceeds employee\'s allowed period.'))
         else:
-            raise UserError(_('Period exceeds employee\'s allowed period.'))
+            raise UserError(_('You Can Not Make Excuse Outside The Allowed Interval '))
