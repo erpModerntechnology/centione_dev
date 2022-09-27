@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="payslip_remove_month_slip_inherit" inherit_id="hr_payroll.report_payslip">
+            <xpath expr="//h2[@t-field='o.name']" position="replace">
+                <h2 style="display: inline">
+                    Salary Slip -
+                        <h2  style="display: inline" t-field="o.employee_id.name"/>
+                        <h2 t-esc="o.date_from.year"/>
+                </h2>
+            </xpath>
+        </template>
+    </data>
+</odoo>

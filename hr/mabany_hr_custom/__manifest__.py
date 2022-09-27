@@ -18,7 +18,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','mabany_hr'],
+    'depends': ['base','hr','mabany_hr','hr_contract'],
 
     # always loaded
     'data': [
@@ -27,6 +27,7 @@
         'views/job_grade.xml',
         'views/job_divison.xml',
         'views/job_level.xml',
+        'views/hr_contract.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

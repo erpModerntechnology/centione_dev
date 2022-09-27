@@ -15,8 +15,8 @@ class HrPayslip(models.Model):
             ('date_from', '=', self.date_from),
             ('date_to', '=', self.date_to),
         ])
-        if created_before:
-            raise UserError(_('Duplicated payslip in same month!'))
+        # if created_before:
+        #     raise UserError(_('Duplicated payslip in same month!'))
 
     def compute_sheet(self):
         self=self.sudo()

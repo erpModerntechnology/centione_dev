@@ -26,5 +26,6 @@
         'data/server_action.xml',
         'views/hr_payslip_run.xml',
         'views/hr_salary_rules.xml',
+        'views/hr_payslip_report.xml',
     ],
 }
