@@ -53,7 +53,8 @@ class IncomeTaxSettings(models.Model):
     #             prev = line.max_value
 
     def calc_income_tax(self, tax_pool, payslip):
-        old_tax, old_gross = self.get_old_tax_gross(payslip)
+        # self.get_old_tax_gross(payslip)
+        old_tax, old_gross = 0,0
         tax_pool += old_gross
         income_tax_settings = self.env.ref('mabany_income_tax.income_tax_settings0')
         functional_exemption = income_tax_settings.is_functional_exempt and income_tax_settings.functional_exempt_value or 0
@@ -87,7 +88,7 @@ class IncomeTaxSettings(models.Model):
             else:
                 income_tax += (line.tax_ratio / 100.0) * effective_salary
                 break
-        return income_tax_after_exemption - old_tax
+        return income_tax_after_exemption
 
     def calc_next_tax(self, tax_pool, employee, payslip):
         previous_tax = 0
