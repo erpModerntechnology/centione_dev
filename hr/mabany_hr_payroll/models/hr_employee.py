@@ -41,7 +41,7 @@ class HrContract(models.Model):
         #
         # # The case of employee that join and resigned on the same month
         # else:
-        num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+        num_work_days = (salary_end_datetime - salary_start_datetime).days
 
         # num_work_days = num_work_days + month_days_count - payslip_days
         print(num_work_days)
