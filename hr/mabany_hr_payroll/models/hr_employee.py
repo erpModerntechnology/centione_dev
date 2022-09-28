@@ -19,8 +19,8 @@ class HrContract(models.Model):
         salary_end = min(self.date_end,date_to) if self.date_end else date_to
 
         # This the case of normal payslip (month does not contain join date or contract end )
-        # if salary_start == date_from and salary_end == date_to:
-        #     return 1
+        if salary_start == date_from and salary_end == date_to:
+            return 1
 
         salary_start_datetime = fields.Datetime.from_string(salary_start)
         salary_end_datetime = fields.Datetime.from_string(salary_end)
@@ -31,21 +31,66 @@ class HrContract(models.Model):
         payslip_days = (month_end - month_start).days + 1
 
         # The case of month contain contract end i.e. employee termination or resignation
-        # if salary_start == date_from:
-        #     num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
-        #
-        # # The case of month contain join date i.e. first month for an employee (new employee)
-        # elif salary_end == date_to:
-        #     num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
-        #
-        #
-        # # The case of employee that join and resigned on the same month
-        # else:
-        num_work_days = (salary_end_datetime - salary_start_datetime).days
+        if salary_start == date_from:
+            num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
 
-        # num_work_days = num_work_days + month_days_count - payslip_days
+        # The case of month contain join date i.e. first month for an employee (new employee)
+        elif salary_end == date_to:
+            num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+
+
+        # The case of employee that join and resigned on the same month
+        else:
+            num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+
+        num_work_days = num_work_days + month_days_count - payslip_days
         print(num_work_days)
         return (1.0 * num_work_days) / (1.0 * month_days_count)
+
+    # def get_work_ratio(self,date_from,date_to):
+    #
+    #     salary_start = max(self.date_start,date_from)
+    #     salary_end = min(self.date_end,date_to) if self.date_end else date_to
+    #
+    #     # This the case of normal payslip (month does not contain join date or contract end )
+    #     # if salary_start == date_from and salary_end == date_to:
+    #     #     return 1
+    #
+    #     salary_start_datetime = fields.Datetime.from_string(salary_start)
+    #     salary_end_datetime = fields.Datetime.from_string(salary_end)
+    #     month_days_count = 30
+    #     month_end = fields.Datetime.from_string(date_to)
+    #     month_start = fields.Datetime.from_string(date_from)
+    #
+    #     payslip_days = (month_end - month_start).days + 1
+    #
+    #     # The case of month contain contract end i.e. employee termination or resignation
+    #     # if salary_start == date_from:
+    #     #     num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+    #     #
+    #     # # The case of month contain join date i.e. first month for an employee (new employee)
+    #     # elif salary_end == date_to:
+    #     #     num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+    #     #
+    #     #
+    #     # # The case of employee that join and resigned on the same month
+    #     # else:
+    #     # The case of month contain contract end i.e. employee termination or resignation
+    #     if salary_start == date_from:
+    #         num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+    #
+    #     # The case of month contain join date i.e. first month for an employee (new employee)
+    #     elif salary_end == date_to:
+    #         num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+    #
+    #
+    #     # The case of employee that join and resigned on the same month
+    #     else:
+    #         num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
+    #
+    #     # num_work_days = num_work_days + month_days_count - payslip_days
+    #     print(num_work_days)
+    #     return (1.0 * num_work_days) / (1.0 * month_days_count)
 
 class HrEmployeeInherit(models.Model):
     _inherit = 'hr.employee'
