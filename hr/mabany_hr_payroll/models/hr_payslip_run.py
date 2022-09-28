@@ -52,7 +52,7 @@ class HrPayslipRun(models.Model):
 
             salary_rules = {}
             for line in payslip.line_ids:
-                salary_rules.update({str(line.salary_rule_id.id): line.total})
+                salary_rules.update({str(line.salary_rule_id.id): line.amount})
 
             row.update({'salary_rules': salary_rules})
             data.append(row)
