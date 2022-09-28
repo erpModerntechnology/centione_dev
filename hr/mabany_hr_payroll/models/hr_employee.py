@@ -43,7 +43,7 @@ class HrContract(models.Model):
         else:
             num_work_days = (salary_end_datetime - salary_start_datetime).days + 1
 
-        num_work_days = num_work_days + month_days_count - payslip_days
+        # num_work_days = num_work_days + month_days_count - payslip_days
         print(num_work_days)
         return (1.0 * num_work_days) / (1.0 * month_days_count)
 
