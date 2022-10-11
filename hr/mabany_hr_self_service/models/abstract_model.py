@@ -5,7 +5,13 @@ from odoo.exceptions import UserError
 class AbstractModel(models.AbstractModel):
     _name = 'hr.self.service'
 
-    employee_id = fields.Many2one('hr.employee')
+    def employee_domain(self):
+        if self.env.user.has_group('mabany_hr_self_service.group_see_my_employees_self_service'):
+            domain = ['|',('user_id','=',self.env.user.id),('parent_id.user_id', '=',
+                self.env.user.id)]
+            return domain
+
+    employee_id = fields.Many2one('hr.employee',domain=employee_domain)
     start_date = fields.Date()
     end_date = fields.Date()
     comment = fields.Char()
