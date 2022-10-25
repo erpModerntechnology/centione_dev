@@ -35,6 +35,10 @@ class HrEmployee(models.Model):
     military_end_date = fields.Date('Military End Date')
     manager_job = fields.Char('Manager Position')
 
+    # _sql_constraints = [
+    #     ('attendance_code_unique', 'unique("zk_emp_id")', 'Attendance ID Already Exists!!')
+    # ]
+
     _sql_constraints = [
         ('attendance_code_unique', 'unique("zk_emp_id")', 'Attendance ID Already Exists!!')
     ]
