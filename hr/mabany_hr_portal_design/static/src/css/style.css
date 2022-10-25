@@ -1,0 +1,103 @@
+.portal_banner_bg {
+    background-image: url("../img/Cover.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    max-height: 320px;
+    position: absolute;
+    top:55px;
+    left: 0;
+    padding: 13rem 0 !important;
+}
+.portal_head_contain{
+    margin-top: 0rem;
+}
+.portal_info_sec
+{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    margin-top: 26rem;
+}
+.text-center.portal_info_card {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    height: 225px;
+}
+.portal_info_card_ex{
+    background-image: url("../img/Excuses.png");
+}
+.portal_info_card_at{
+    background-image: url("../img/Attendance.png");
+}
+.portal_info_card_emp{
+    background-image: url("../img/Employees.png");
+}
+.portal_info_card_lon{
+    background-image: url("../img/Loans.png");
+}
+.portal_info_card_hi{
+    background-image: url("../img/Hiring.png");
+}
+.portal_info_card_lv{
+    background-image: url("../img/Leaves.png");
+}
+.portal_info_card_mi{
+    background-image: url("../img/Missions.png");
+}
+.portal_info_card_pay{
+    background-image: url("../img/Payslips.png");
+}
+.portal_info_card_ex{
+    background-image: url("../img/Excuses.png");
+}
+.portal_info_card_req{
+    background-image: url("../img/requests.png");
+}
+.portal_info_card_term{
+    background-image: url("../img/Termination.png");
+}
+.portal_info_card_exep{
+    background-image: url("../img/Expanses_Back.png");
+}
+.portal_info_card_res{
+    background-image: url("../img/Resignation.png");
+}
+.portal_info_card_before{
+    position: relative;
+}
+/*
+.portal_info_card_before:before{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgba(103, 96, 73, 75%);
+    top: 0;
+    left: 0;
+    z-index: 9;
+}*/
+.svg_portal_bg{
+    width: 80px !important;
+    height: 80px;
+}
+.card_portal_title
+{
+    color: #fff;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 22px;
+    text-decoration: none;
+}
+.card_portal_title:hover{
+    color: #f7d03e;
+}
+.portal_info_card a:hover path {
+    fill: #f7d03e !important;
+}

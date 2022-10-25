@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <template id="asset_frontend" inherit_id="portal.frontend_layout" name="Theme Hub Frontend">
+      <xpath expr="//head/link[last()]" position="after">
+        <!-- Libraries CSS Files -->
+        <!-- stylesheet -->
+        <link href="/mabany_hr_portal_design/static/src/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="/mabany_hr_portal_design/static/src/css/responsive.css" rel="stylesheet" type="text/css"/>
+      </xpath>
+
+
+<!--      <xpath expr="//head/script[last()]" position="after">-->
+<!--        <script src="/mabany_hr_portal_design/static/src/js/script.js" type="text/javascript" ></script>-->
+<!--      </xpath>-->
+    </template>
+
+
+  </data>
+</odoo>
