@@ -18,12 +18,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr'],
+    'depends': ['hr', 'hr_payroll'],
 
     # always loaded
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/hr_grade.xml',
         'views/hr_employee.xml',
-        'security/ir.model.access.csv',
     ],
 }

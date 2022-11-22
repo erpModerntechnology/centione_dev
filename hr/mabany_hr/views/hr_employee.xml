@@ -47,5 +47,103 @@
 
             </field>
         </record>
+
+        <record id="hr_payslip_tree_no_create" model="ir.ui.view">
+            <field name="name">hr_payslip_tree_no_create</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="groups_id" eval="[(6, 0, [ref('hr_payroll.group_hr_payroll_user')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_form_no_create" model="ir.ui.view">
+            <field name="name">hr_payslip_form_no_create</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('hr_payroll.group_hr_payroll_user')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_run_tree_no_create" model="ir.ui.view">
+            <field name="name">hr_payslip_run_tree_no_create</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_tree"/>
+            <field name="groups_id" eval="[(6, 0, [ref('hr_payroll.group_hr_payroll_manager')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_run_form_no_create" model="ir.ui.view">
+            <field name="name">hr_payslip_run_form_no_create</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('hr_payroll.group_hr_payroll_manager')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_payslip_tree_create" model="ir.ui.view">
+            <field name="name">hr_payslip_tree_create</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="groups_id" eval="[(6, 0, [ref('mabany_hr.group_payslip_creation') ])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_form_create" model="ir.ui.view">
+            <field name="name">hr_payslip_form_create</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('mabany_hr.group_payslip_creation') ])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_run_tree_create" model="ir.ui.view">
+            <field name="name">hr_payslip_run_tree_create</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_tree"/>
+            <field name="groups_id" eval="[(6, 0, [ref('mabany_hr.group_payslip_creation') ])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_payslip_run_form_create" model="ir.ui.view">
+            <field name="name">hr_payslip_run_form_create</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('mabany_hr.group_payslip_creation') ])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
