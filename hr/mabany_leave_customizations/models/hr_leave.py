@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 from odoo.http import request
 import base64
 
+
 class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
 
@@ -18,23 +19,20 @@ class HrLeaveType(models.Model):
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
 
-
-
     exception_constraint = fields.Boolean('Exception Constraint')
 
-    @api.depends('date_from', 'date_to', 'employee_id','request_date_from','request_date_to',)
+    @api.depends('date_from', 'date_to', 'employee_id', 'request_date_from', 'request_date_to', )
     def _compute_number_of_days(self):
         result = super(HrLeave, self)._compute_number_of_days()
 
-
-        #if sick leave type,compute the number of days as diff bet dates +1
+        # if sick leave type,compute the number of days as diff bet dates +1
         for holiday in self:
-            if holiday.holiday_status_id.holiday_type=='sick' and holiday.request_date_from and holiday.request_date_to:
-                holiday.number_of_days= (holiday.request_date_to-holiday.request_date_from).days+1
+            if holiday.holiday_status_id.holiday_type == 'sick' and holiday.request_date_from and holiday.request_date_to:
+                holiday.number_of_days = (holiday.request_date_to - holiday.request_date_from).days + 1
 
         return result
 
-    @api.constrains('request_date_from','request_date_to')
+    @api.constrains('request_date_from', 'request_date_to')
     def constraint_holiday_annual(self):
         for rec in self:
             if rec.exception_constraint == False:
@@ -42,18 +40,20 @@ class HrLeave(models.Model):
                     if rec.request_date_from < date.today():
                         raise ValidationError(_("Annual Holiday must be day after!"))
 
-
     @api.constrains('number_of_days')
     def constraint_number_of_days_casual(self):
         total_dur_casual = []
         total_dur_marriage = []
         leave_casual = self.env['hr.leave'].search(
-            [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'casual')])
+            [('employee_id', '=', self.employee_id.id)])
+        # , ('holiday_status_id.holiday_type', '=', 'casual')])
         leave_marriage = self.env['hr.leave'].search(
             [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'marriage')])
         for lec in leave_casual:
             if lec.exception_constraint == False:
-                total_dur_casual.append(lec.number_of_days)
+                # if lec.holiday_status_id.holiday_type == 'casual':
+                if self.request_date_from.month == lec.date_from.month and self.request_date_to.month == lec.date_to.month:
+                    total_dur_casual.append(lec.number_of_days)
                 if sum(total_dur_casual) > 2:
                     raise ValidationError(_("Casual Holiday must not exceeds 2 days per month"))
         for lem in leave_marriage:
@@ -74,7 +74,6 @@ class HrLeave(models.Model):
                           author_id=self.env.user.partner_id.id,
                           notification_ids=notification_ids)
 
-
     def leave_page(self):
         menu_id = self.env.ref('hr_holidays.menu_hr_holidays_root')
         base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
@@ -92,11 +91,9 @@ class HrLeave(models.Model):
     def notify_approvers(self):
         self.sudo().notify_with_notification()
 
-
     @api.model
     def create(self, values):
         """ Override to avoid automatic logging of creation """
         leave = super(HrLeave, self).create(values)
         leave.notify_approvers()
         return leave
-
