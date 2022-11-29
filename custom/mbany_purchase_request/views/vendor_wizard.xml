@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="import_git_from" model="ir.ui.view">
+            <field name="name">import_git_from</field>
+            <field name="model">vendor.wizard</field>
+            <field name="arch" type="xml">
+                <form string="name">
+                    <group>
+                        <field name="vendor"/>
+                    </group>
+                    <footer>
+                        <button string="Done" class="btn-primary" type="object" name="done"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+
+            </field>
+        </record>
+        <record id="import_action" model="ir.actions.act_window">
+            <field name="name">Select Vendor</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vendor.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target" eval="'new'"/>
+        </record>
+        <record id="qfq_git_from" model="ir.ui.view">
+            <field name="name">import_git_from</field>
+            <field name="model">rfq.wizard</field>
+            <field name="arch" type="xml">
+                <form string="name">
+                    <group>
+                        <field name="purchase"/>
+                    </group>
+                    <footer>
+                        <button string="Done" class="btn-primary" type="object" name="done"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+
+            </field>
+        </record>
+        <record id="rfq_action" model="ir.actions.act_window">
+            <field name="name">Select RFQ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rfq.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target" eval="'new'"/>
+        </record>
+
+
+    </data>
+</odoo>

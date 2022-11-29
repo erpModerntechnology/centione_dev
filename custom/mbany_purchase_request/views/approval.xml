@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sales_approvals_tree_view" model="ir.ui.view">
+            <field name="name">sales.approvals.tree.view</field>
+            <field name="model">res.approvals</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="type" required="1"/>
+                    <field name="users" widget="many2many_tags" required="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_approvals_act_window" model="ir.actions.act_window">
+            <field name="name">Approvals</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.approvals</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click create to add new Approvals.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Approvals" id="approvals_users_menu" parent="parent_menu_purchase_request"
+                  action="sales_approvals_act_window"/>
+
+    </data>
+</odoo>
