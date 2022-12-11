@@ -4,8 +4,8 @@
             <field name="name">User Broker</field>
         </record>
 
-<!--        <record id="admin_broker" model="res.groups">-->
-<!--            <field name="name">Admin Broker</field>-->
-<!--        </record>-->
+        <record id="admin_broker" model="res.groups">
+            <field name="name">Admin Broker</field>
+        </record>
     </data>
 </odoo>
