@@ -1,0 +1,257 @@
+<odoo>
+    <data>
+        <menuitem id="broker_configuration_menu" name="Broker Configuration"
+                  parent="crm.crm_menu_root" sequence="8"/>
+
+        <record id="broker_status_action" model="ir.actions.act_window">
+            <field name="name">Broker Status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">broker.status</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="broker_status_menu" name="Broker Status" parent="broker_configuration_menu"
+                  action="broker_status_action" sequence="1"/>
+
+        <record id="broker_type_action" model="ir.actions.act_window">
+            <field name="name">Broker Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">broker.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="broker_type_menu" name="Broker Type" parent="broker_configuration_menu"
+                  action="broker_type_action" sequence="2"/>
+
+        <record id="broker_category_action" model="ir.actions.act_window">
+            <field name="name">Broker Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">broker.category</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="broker_category_menu" name="Broker Category" parent="broker_configuration_menu"
+                  action="broker_category_action" sequence="3"/>
+<!--        broker-->
+        <record id="action_broker_user_form" model="ir.actions.act_window">
+            <field name="name">Brokers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('is_broker','=',1)]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_is_broker':1,'default_customer_rank':1}</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to add a Broker.</p>
+                <p>
+                    Odoo helps you easily track all activities related to a Brokers
+                </p>
+            </field>
+        </record>
+<!--        <record id="action_broker_admin_form" model="ir.actions.act_window">-->
+<!--            <field name="name">Brokers</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">res.partner</field>-->
+<!--            <field name="domain">[('is_broker','=',1)]</field>-->
+<!--            <field name="view_mode">kanban,tree,form</field>-->
+<!--            <field name="context">{'default_is_broker':1,'default_customer_rank':1}</field>-->
+<!--            <field name="search_view_id" ref="base.view_res_partner_filter"/>-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="oe_view_nocontent_create">Click to add a Broker.</p>-->
+<!--                <p>-->
+<!--                    Odoo helps you easily track all activities related to a Brokers-->
+<!--                </p>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+        <menuitem parent="crm.crm_menu_root"
+                  id="menu_crm_brokers_user"
+                  name="Brokers"
+                  groups="mabany_crm_customization.user_broker"
+                  action="action_broker_user_form"
+                  sequence="4"
+        />
+<!--        <menuitem parent="crm.crm_menu_root"-->
+<!--                  id="menu_crm_brokers_admin"-->
+<!--                  name="Brokers"-->
+<!--                  groups="mabany_crm_customization.admin_broker"-->
+<!--                  action="action_broker_admin_form"-->
+<!--                  sequence="5"-->
+<!--        />-->
+
+
+        <record id="client_source_action" model="ir.actions.act_window">
+            <field name="name">Unit Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">client.source</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="client_source_menu" name="Client Source" parent="crm.crm_menu_config"
+                  action="client_source_action" sequence="7"/>
+
+        <record id="unit_category_action" model="ir.actions.act_window">
+            <field name="name">Unit Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">unit.category</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="unit_category_menu" name="Unit Category" parent="crm.crm_menu_config"
+                  action="unit_category_action" sequence="7"/>
+
+        <record id="unit_type_action" model="ir.actions.act_window">
+            <field name="name">Unit Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">unit.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="unit_type_menu" name="Unit Type" parent="crm.crm_menu_config"
+                  action="unit_type_action" sequence="7"/>
+
+
+        <record id="transferred_resale_action" model="ir.actions.act_window">
+            <field name="name">Transferred Resale</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">transferred.resale</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="transferred_resale_menu" name="Transferred Resale" parent="crm.crm_menu_config"
+                  action="transferred_resale_action" sequence="7"/>
+
+        <record id="unqualified_reason_action" model="ir.actions.act_window">
+            <field name="name">Unqualified Reason</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">unqualified.reason</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="unqualified_reason_menu" name="Unqualified Reason" parent="crm.crm_menu_config"
+                  action="unqualified_reason_action" sequence="7"/>
+
+        <record id="request_stage_action" model="ir.actions.act_window">
+            <field name="name">Request Stage</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">request.stage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="request_stage_menu" name="Request Stage" parent="crm.crm_menu_config"
+                  action="request_stage_action" sequence="7"/>
+
+        <record id="call_status_action" model="ir.actions.act_window">
+            <field name="name">Call Status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">call.status</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="call_status_menu" name="Call Status" parent="crm.crm_menu_config"
+                  action="call_status_action" sequence="7"/>
+
+
+        <record id="client_interested_action" model="ir.actions.act_window">
+            <field name="name">Client Interested</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">client.interested</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="client_interested_menu" name="Client Interested" parent="crm.crm_menu_config"
+                  action="client_interested_action" sequence="7"/>
+
+
+        <record id="res_organization_action" model="ir.actions.act_window">
+            <field name="name">Organization</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.organization</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="res_organization_menu" name="Organizations" parent="crm.crm_menu_config"
+                  action="res_organization_action" sequence="7"/>
+
+        <record id="utm_channel_action" model="ir.actions.act_window">
+            <field name="name">Channel</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">utm.channel</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="utm_channel_menu" name="Channels" parent="crm.crm_menu_config"
+                  action="utm_channel_action" sequence="7"/>
+
+        <record id="outdoor_location_action" model="ir.actions.act_window">
+            <field name="name">Outdoor Location</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">outdoor.location</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="outdoor_location_menu" name="Outdoor Locations" parent="crm.crm_menu_config"
+                  action="outdoor_location_action" sequence="7"/>
+
+        <record id="client_request_action" model="ir.actions.act_window">
+            <field name="name">Client Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">client.request</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="client_request_menu" name="Client Request" parent="crm.crm_menu_config"
+                  action="client_request_action" sequence="7"/>
+
+
+        <record id="client_request_type_action" model="ir.actions.act_window">
+            <field name="name">Client Request Contact Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">client.request.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="client_request_type_menu" name="Client Request Contact Type" parent="crm.crm_menu_config"
+                  action="client_request_type_action" sequence="7"/>
+
+        <record id="support_contract_action" model="ir.actions.act_window">
+            <field name="name">Support Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">support.contract</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="support_contract_menu" name="Support Contract" parent="crm.crm_menu_config"
+                  action="support_contract_action" sequence="7"/>
+
+
+        <record id="support_visit_action" model="ir.actions.act_window">
+            <field name="name">Support Visit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">support.visit</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="support_visit_menu" name="Support Visit" parent="crm.crm_menu_config"
+                  action="support_visit_action" sequence="7"/>
+
+        <record id="support_reservation_action" model="ir.actions.act_window">
+            <field name="name">Support Reservation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">support.reservation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="support_reservation_menu" name="Support Reservation" parent="crm.crm_menu_config"
+                  action="support_reservation_action" sequence="7"/>
+
+        <record id="support_call_action" model="ir.actions.act_window">
+            <field name="name">Support Call</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">support.call</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="support_call_menu" name="Support Call" parent="crm.crm_menu_config"
+                  action="support_call_action" sequence="7"/>
+
+        <record id="reassigned_reason_action" model="ir.actions.act_window">
+            <field name="name">Reassigned Reason</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reassigned.reason</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="reassigned_reason_menu" name="Reassigned Reason" parent="crm.crm_menu_config"
+                  action="reassigned_reason_action" sequence="7"/>
+
+        <record id="commission_type_action" model="ir.actions.act_window">
+            <field name="name">Commission Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">commission.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="commission_type_menu" name="Commission Types" parent="crm.crm_menu_config"
+                  action="commission_type_action" sequence="7"/>
+    </data>
+</odoo>

@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        <record id="seq_visit_registration_card" model="ir.sequence">
+            <field name="name">Visit Registration Card Sequence</field>
+            <field name="code">visit.registration.card</field>
+            <field name="prefix">Visit /</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="visit_registration_card_form" model="ir.ui.view">
+            <field name="name">visit.registration.card.form</field>
+            <field name="model">visit.registration.card</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <style>
+                            .o_horizontal_separator {
+                            font-size: 20px !important;
+                            }
+                        </style>
+                        <group name="visit_registration_card_details" string="Visit Registration Card Details">
+                            <group>
+                                <field name="name"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="occupation"/>
+                                <field name="notes"/>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                                <field name="project_interested_in"/>
+                                <field name="broker_id" context="{'default_is_broker': True}"/>
+                                <field name="next_action_date"/>
+                                <field name="user_id"/>
+                            </group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="email"/>
+                                <field name="project_awareness"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="visit_duration"/>
+                                <field name="project_id"/>
+                                <field name="next_action"/>
+                                <field name="campaign_id"/>
+                                <field name="client_request_id" context="{'default_is_lost': False}"/>
+                            </group>
+
+                        </group>
+                        <group name="campaign_source" string="Campaign Source">
+                            <group>
+                                <field name="client_source_id"/>
+                                <field name="sub_channel_id"/>
+                                <field name="sub_source_id"/>
+                            </group>
+                            <group>
+                                <field name="channel_id"/>
+                                <field name="source_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="visit_registration_card_action" model="ir.actions.act_window">
+            <field name="name">Visit Registration Card</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">visit.registration.card</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="visit_registration_card_menu" name="Visit Registration Card"
+                  parent="crm.crm_menu_root" action="visit_registration_card_action" sequence="7"/>
+    </data>
+</odoo>
