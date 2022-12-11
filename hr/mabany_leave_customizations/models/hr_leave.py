@@ -50,7 +50,7 @@ class HrLeave(models.Model):
             [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'marriage')])
         for lec in leave_casual:
             if lec.exception_constraint == False:
-                # if lec.holiday_status_id.holiday_type == 'casual':
+                # if lec.holiday_status_id.holiday_type == 'casual': 
                 if self.request_date_from.month == lec.date_from.month and self.request_date_to.month == lec.date_to.month:
                     total_dur_casual.append(lec.number_of_days)
                 if sum(total_dur_casual) > 2:
