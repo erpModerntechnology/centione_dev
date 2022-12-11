@@ -45,8 +45,7 @@ class HrLeave(models.Model):
         total_dur_casual = []
         total_dur_marriage = []
         leave_casual = self.env['hr.leave'].search(
-            [('employee_id', '=', self.employee_id.id)])
-        # , ('holiday_status_id.holiday_type', '=', 'casual')])
+            [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'casual')])
         leave_marriage = self.env['hr.leave'].search(
             [('employee_id', '=', self.employee_id.id), ('holiday_status_id.holiday_type', '=', 'marriage')])
         for lec in leave_casual:
