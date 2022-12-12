@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+mbany_check_managment.access_payment_approve,access_payment_approve,model_payment_approves,,1,1,1,1
+upi_git_reports.access_git_cgit,access_git_cgit,mbany_cash_managment.model_git_cgit,,1,1,1,1

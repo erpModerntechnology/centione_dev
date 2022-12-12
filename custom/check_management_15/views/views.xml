@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_account_journal_form_inh" model="ir.ui.view">
+            <field name="name">account.journal</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='inbound_payment_method_line_ids']/tree/field[@name='payment_method_id']" position="before">
+                  <field name="is_base"/>
+                </xpath>
+                <xpath expr="//field[@name='outbound_payment_method_line_ids']/tree/field[@name='payment_method_id']" position="before">
+                  <field name="is_base"/>
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>
