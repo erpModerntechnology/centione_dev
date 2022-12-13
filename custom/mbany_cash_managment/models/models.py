@@ -79,9 +79,12 @@ class PaymentApprove(models.Model):
         if self._origin.amount < self.amount:
             self.operator = '+'
 
+    # and (self.payment_approve_id.state == 'posted' or (
+    #             self.payment_approve_id.state_check == 'collected' and self.payment_approve_id.payment_method_id.name == 'Checks'))
+
     @api.constrains('amount','state_check','payment_method_id')
     def constrains_amount(self):
-        if self.item_id.diff_amount - self.amount >= 0 and (self.payment_approve_id.state=='posted' or (self.payment_approve_id.state_check=='collected' and self.payment_approve_id.payment_method_id.name=='Checks')):
+        if self.item_id.diff_amount - self.amount >= 0 :
             if self.operator == '+':
                 self.item_id.diff_amount -= self.amount
             if self.operator == '-':

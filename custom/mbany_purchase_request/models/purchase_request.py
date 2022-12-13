@@ -87,8 +87,8 @@ class PurchaseRequest(models.Model):
         default="draft",
     )
     is_editable = fields.Boolean(compute="_compute_is_editable", readonly=True)
-    employee = fields.Many2one('hr.employee')
-    department = fields.Many2one('hr.department')
+    employee = fields.Many2one('hr.employee',default=lambda self: self.env.user.employee_id)
+    department = fields.Many2one('hr.department',related='employee.department_id')
 
     def copy(self, default=None):
         default = dict(default or {})
@@ -103,14 +103,40 @@ class PurchaseRequest(models.Model):
             vals["name"] = self._get_default_name()
         request = super(PurchaseRequest, self).create(vals)
         return request
+    def approval_request(self):
+        users = self.approvals_users
+        if users:
+            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            base_url += '/web#id=%d&view_type=form&model=%s' % (self.id, self._name)
+            message_text = f'<strong>Reminder</strong> ' \
+                           f'<p>This <a href=%s>PR</a> Check Approval On Purchase Request</p>' % base_url
+
+            uid = self.env.user
+
+            notification_ids = []
+            for user in users:
+                notification_ids.append((0, 0, {
+                    'res_partner_id': user.partner_id.id,
+                    'notification_type': 'inbox'
+                }))
+            self.message_post(record_name='Invoice',
+                              body=message_text,
+                              message_type="notification",
+                              subtype_xmlid="mail.mt_comment",
+                              author_id=uid.partner_id.id,
+                              notification_ids=notification_ids)
+
     def request(self):
         self.state = 'requester'
     def head_dep(self):
         self.state = 'head_of_dep'
+        self.approval_request()
     def budget_control(self):
         self.state = 'budget_control'
+        self.approval_request()
     def finance_section_head(self):
         self.state = 'finance_section_head'
+        self.approval_request()
 
     approvals_users = fields.Many2many('res.users', compute='get_approvals_users')
     attr_boolean = fields.Boolean(compute='calc_attr_boolean')
@@ -178,18 +204,14 @@ class PurchaseRequest(models.Model):
         for rec in self:
             approval_users = False
             if rec.state == 'requester':
-                approval_record = self.env['res.approvals'].search([('type', '=', 'head_of_dep')], limit=1)
+                approval_record = self.env['res.approvals'].search([('type', '=', 'head_of_dep'),('department','=',rec.department.id)], limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'head_of_dep':
-                approval_record = self.env['res.approvals'].search([('type', '=', 'budget_control')], limit=1)
+                approval_record = self.env['res.approvals'].search([('type', '=', 'budget_control'),('department','=',rec.department.id)], limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'budget_control':
-                approval_record = self.env['res.approvals'].search([('type', '=', 'finance_section_head')], limit=1)
+                approval_record = self.env['res.approvals'].search([('type', '=', 'finance_section_head'),('department','=',rec.department.id)], limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
-            # elif rec.state == 'finance_section_head':
-            #     approval_record = self.env['res.approvals'].search([('type', '=', 'done')], limit=1)
-            #     approval_users = [(6, 0, approval_record.users.ids)]
-
             rec.approvals_users = approval_users
 
 

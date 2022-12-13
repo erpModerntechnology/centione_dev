@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <tree editable="top">
                     <field name="type" required="1"/>
+                    <field name="department" required="1"/>
                     <field name="users" widget="many2many_tags" required="1"/>
                 </tree>
             </field>

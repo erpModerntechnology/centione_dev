@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 class VendorWizard(models.TransientModel):
     _name = 'vendor.wizard'
 
-    vendor = fields.Many2one('res.partner',required=True)
+    vendor = fields.Many2one('res.partner',required=True,domain=[('supplier_rank','>',0)])
 
     def done(self):
         request = self.env['purchase.request'].browse(self.env.context.get('active_id'))
