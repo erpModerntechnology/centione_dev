@@ -284,6 +284,8 @@ class PaymentCheque(models.Model):
             self.hide_bank = False
             self.hide_del = False
 
+    # check real working
+
     def delete_check_from_batch(self):
         if self.batch_payment_id.state == 'draft':
             self.write({'batch_payment_id': False})
@@ -588,6 +590,9 @@ class PaymentCheque(models.Model):
 
         if self.payment_method_code == 'manual':
             return super(PaymentCheque, self).sudo().post()
+        if self.is_internal_transfer == True:
+            return super(PaymentCheque, self).sudo().post()
+
         ctx_del = self._context.get('delivery_aml')
         ctx_bank = self._context.get('bank_aml')
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>DEEEEEEEEEEEEEELLLLLL ",ctx_del,ctx_bank)
@@ -816,6 +821,8 @@ class PaymentCheque(models.Model):
         '''
         if self.payment_method_code == 'manual':
             return super(PaymentCheque, self)._prepare_payment_moves()
+        if self.is_internal_transfer == True:
+            return super(PaymentCheque, self)._prepare_payment_moves()
         all_move_vals = []
         for payment in self:
             liq_move = payment._get_liquidity_move_line_vals(payment.amount)
@@ -867,9 +874,9 @@ class PaymentCheque(models.Model):
             else:
                 # Multi-currencies.
                 balance = payment.currency_id._convert(counterpart_amount, company_currency, payment.company_id,
-                                                       payment.payment_date)
+                                                       payment.date)
                 write_off_balance = payment.currency_id._convert(write_off_amount, company_currency, payment.company_id,
-                                                                 payment.payment_date)
+                                                                 payment.date)
                 currency_id = payment.currency_id.id
 
             # Manage custom currency on journal for liquidity line.
@@ -881,7 +888,7 @@ class PaymentCheque(models.Model):
                 else:
                     liquidity_line_currency_id = payment.journal_id.currency_id.id
                 liquidity_amount = company_currency._convert(
-                    balance, payment.journal_id.currency_id, payment.company_id, payment.payment_date)
+                    balance, payment.journal_id.currency_id, payment.company_id, payment.date)
             else:
                 # Use the payment currency.
                 liquidity_line_currency_id = currency_id
@@ -997,7 +1004,7 @@ class PaymentCheque(models.Model):
                     # Custom currency on journal.
                     liquidity_line_currency_id = journal.currency_id.id
                     transfer_amount = company_currency._convert(balance, journal.currency_id, payment.company_id,
-                                                                payment.payment_date)
+                                                                payment.date)
                 else:
                     # Use the payment currency.
                     liquidity_line_currency_id = currency_id
@@ -1245,88 +1252,117 @@ class PaymentCheque(models.Model):
 
 
         """
+        if self.is_internal_transfer == True:
+            self.destination_account_id = False
+            for pay in self:
+                if pay.is_internal_transfer:
+                    pay.destination_account_id = pay.journal_id.company_id.transfer_account_id
+                elif pay.partner_type == 'customer':
+                    # Receive money from invoice or send money to refund it.
+                    if pay.partner_id:
+                        pay.destination_account_id = pay.partner_id.with_company(
+                            pay.company_id).property_account_receivable_id
+                    else:
+                        pay.destination_account_id = self.env['account.account'].search([
+                            ('company_id', '=', pay.company_id.id),
+                            ('internal_type', '=', 'receivable'),
+                            ('deprecated', '=', False),
+                        ], limit=1)
+                elif pay.partner_type == 'supplier':
+                    # Send money to pay a bill or receive money to refund it.
+                    if pay.partner_id:
+                        pay.destination_account_id = pay.partner_id.with_company(
+                            pay.company_id).property_account_payable_id
+                    else:
+                        pay.destination_account_id = self.env['account.account'].search([
+                            ('company_id', '=', pay.company_id.id),
+                            ('internal_type', '=', 'payable'),
+                            ('deprecated', '=', False),
+                        ], limit=1)
+
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>||||11")
+        if self.is_internal_transfer == False:
 
-        for rec in self:
-            ctx_loan_batch = rec._context.get('loan_check')
+            for rec in self:
+                ctx_loan_batch = rec._context.get('loan_check')
 
-            des_batch_account = rec._get_last_journal_batch()
-            des_account = rec._get_last_journal()
+                des_batch_account = rec._get_last_journal_batch()
+                des_account = rec._get_last_journal()
 
-            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",des_batch_account , ' || ',des_account)
+                print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",des_batch_account , ' || ',des_account)
 
-            # if rec.invoice_ids and (not des_batch_account or not des_account):
-            #     rec.destination_account_id = rec.invoice_ids[0].account_id.id
-            if rec.payment_type == 'transfer':
-                if not rec.company_id.transfer_account_id.id:
-                    raise UserError(_('Transfer account not defined on the company.'))
-                rec.destination_account_id = rec.company_id.transfer_account_id.id
-            elif rec.partner_id:
+                # if rec.invoice_ids and (not des_batch_account or not des_account):
+                #     rec.destination_account_id = rec.invoice_ids[0].account_id.id
+                if rec.payment_type == 'transfer':
+                    if not rec.company_id.transfer_account_id.id:
+                        raise UserError(_('Transfer account not defined on the company.'))
+                    rec.destination_account_id = rec.company_id.transfer_account_id.id
+                elif rec.partner_id:
 
-                if rec.partner_type == 'customer':
-                    print("sadadasdada")
-                    if rec.payment_method_code == 'batch_payment' and rec._get_last_journal_batch():
-                        print("sadadasdada222")
-                        print("sadadasdada222 : ",des_batch_account[0])
-                        account_obj = self.env['account.account']
-                        account_des_batch_account = account_obj.search([('id', '=', des_batch_account[0])], limit=1)
-                        print("rec.destination_account_id : ",account_des_batch_account)
-                        print("rec.destination_account_id : ",rec.destination_account_id)
-                        if not  rec.destination_account_id :
-                            rec.destination_account_id = account_des_batch_account
-                        # print(".>>>>>>>>>>>>>>>>>>>>>>>>>>>>",des_batch_account[0])
-                        #run when create debosit and click first multi under collection
-
-                        #also run after second click of approve
-                        # 1/0
-                    # elif rec.payment_method_code == 'check' :
-                    elif rec._get_last_journal_batch():
-                        print("dddddddddddddddddddddddddddddddd")
-                        rec.destination_account_id = des_batch_account[0]
-                        # 2/0
-                    else:
-                        rec.destination_account_id = rec.partner_id.property_account_receivable_id.id
-                        #run when create payment and click validate
-                        # 3/0
-                    if ctx_loan_batch:
-                        loan_bank = rec.batch_payment_id.bank_id.loan_account.id
-                        if not loan_bank:
-                            raise ValidationError(
-                                "Your Bank journal {} doesn't have A Loan account".format(
-                                    rec.batch_payment_id.bank_id.name))
-                        rec.destination_account_id = loan_bank
-                        # 4/0
-
-                else:
-                    print("1234")
-
-                    if ctx_loan_batch:
-                        print("1234_")
-                        loan_bank = rec.batch_payment_id.bank_id.loan_account.id
-                        if not loan_bank:
-                            raise ValidationError(
-                                "Your Bank journal {} doesn't have A Loan account".format(
-                                    rec.batch_payment_id.bank_id.name))
-                        rec.destination_account_id = loan_bank
-
-                    elif rec.cheque_books_id:
-                        print("1234_1")
-
-                        if des_account:
-                            print("1234_1_1")
-
-                            rec.destination_account_id = rec.journal_id.notes_payable.id
-                        else:
-                            print("1234_1_2")
-                            rec.destination_account_id = rec.partner_id.property_account_payable_id.id
-
-
-                    else:
-                        print("1234_2")
+                    if rec.partner_type == 'customer':
+                        print("sadadasdada")
                         if rec.payment_method_code == 'batch_payment' and rec._get_last_journal_batch():
+                            print("sadadasdada222")
+                            print("sadadasdada222 : ",des_batch_account[0])
+                            account_obj = self.env['account.account']
+                            account_des_batch_account = account_obj.search([('id', '=', des_batch_account[0])], limit=1)
+                            print("rec.destination_account_id : ",account_des_batch_account)
+                            print("rec.destination_account_id : ",rec.destination_account_id)
+                            if not  rec.destination_account_id :
+                                rec.destination_account_id = account_des_batch_account
+                            # print(".>>>>>>>>>>>>>>>>>>>>>>>>>>>>",des_batch_account[0])
+                            #run when create debosit and click first multi under collection
+
+                            #also run after second click of approve
+                            # 1/0
+                        # elif rec.payment_method_code == 'check' :
+                        elif rec._get_last_journal_batch():
+                            print("dddddddddddddddddddddddddddddddd")
                             rec.destination_account_id = des_batch_account[0]
+                            # 2/0
                         else:
-                            rec.destination_account_id = rec.partner_id.property_account_payable_id.id
+                            rec.destination_account_id = rec.partner_id.property_account_receivable_id.id
+                            #run when create payment and click validate
+                            # 3/0
+                        if ctx_loan_batch:
+                            loan_bank = rec.batch_payment_id.bank_id.loan_account.id
+                            if not loan_bank:
+                                raise ValidationError(
+                                    "Your Bank journal {} doesn't have A Loan account".format(
+                                        rec.batch_payment_id.bank_id.name))
+                            rec.destination_account_id = loan_bank
+                            # 4/0
+
+                    else:
+                        print("1234")
+
+                        if ctx_loan_batch:
+                            print("1234_")
+                            loan_bank = rec.batch_payment_id.bank_id.loan_account.id
+                            if not loan_bank:
+                                raise ValidationError(
+                                    "Your Bank journal {} doesn't have A Loan account".format(
+                                        rec.batch_payment_id.bank_id.name))
+                            rec.destination_account_id = loan_bank
+
+                        elif rec.cheque_books_id:
+                            print("1234_1")
+
+                            if des_account:
+                                print("1234_1_1")
+
+                                rec.destination_account_id = rec.journal_id.notes_payable.id
+                            else:
+                                print("1234_1_2")
+                                rec.destination_account_id = rec.partner_id.property_account_payable_id.id
+
+
+                        else:
+                            print("1234_2")
+                            if rec.payment_method_code == 'batch_payment' and rec._get_last_journal_batch():
+                                rec.destination_account_id = des_batch_account[0]
+                            else:
+                                rec.destination_account_id = rec.partner_id.property_account_payable_id.id
 
     def _get_destination_account_id(self):
         """""
@@ -1830,9 +1866,9 @@ class PaymentCheque(models.Model):
                 #         print("enter cond")
                 #         liquidity_lines.account_id = self.journal_id.notes_payable.id
                 #         liquidity_lines.currency_id = self.journal_id.currency_id.id
-                if self.payment_method_code == 'check_printing'   :
+                if pay.payment_method_code == 'check_printing'   :
                         print("enter cond new test")
-                        print("enter cond new test",self.journal_id)
+                        print("enter cond new test",pay.journal_id)
                         print("enter cond new test",pay.journal_id)
                         print("enter cond new test",pay.journal_id.notes_payable)
                         liquidity_lines.account_id = pay.journal_id.notes_payable.id
@@ -1843,7 +1879,7 @@ class PaymentCheque(models.Model):
                         })
                         print("liquidity_lines : ", liquidity_lines.account_id.id)
 
-                if self.payment_method_code == 'batch_payment':
+                if pay.payment_method_code == 'batch_payment':
                         print("enter cond 2")
                         liquidity_lines.account_id = pay.journal_id.default_account_id.id
                         liquidity_lines.currency_id = pay.currency_id.id
@@ -1903,8 +1939,15 @@ class PaymentCheque(models.Model):
 
     def action_post(self):
         ''' draft -> posted '''
-        self.move_id._post(soft=False)
-        self.state_check= 'posted'
+        if self.is_internal_transfer != True:
+            self.move_id._post(soft=False)
+            self.state_check= 'posted'
+        elif self.is_internal_transfer == True :
+            self.move_id._post(soft=False)
+
+            self.filtered(
+                lambda pay: pay.is_internal_transfer and not pay.paired_internal_transfer_payment_id
+            )._create_paired_internal_transfer_payment()
 
 
     @api.model

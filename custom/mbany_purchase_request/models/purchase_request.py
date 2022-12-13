@@ -192,6 +192,7 @@ class PurchaseRequest(models.Model):
             'journal_id': self.journal_id.id,
             'date': self.date_request,
             'ref':self.name,
+            'partner_type':'supplier',
             'payment_method_line_id': self.env['account.payment.method.line'].search([('code','=','manual'),('journal_id','=',self.journal_id.id),('payment_type','=','outbound')]).id
         })
         item = self.env['account.move.line'].search([('payment_id','=',payment.id),('debit','>',0)],limit=1)
