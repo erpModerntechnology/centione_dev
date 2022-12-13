@@ -82,7 +82,7 @@
                         <group>
                             <field name="employee" required="1"/>
                             <field name="department"/>
-                            <field name="approvals_users" widget="many2many_tags"/>
+                            <field name="approvals_users" widget="many2many_tags" invisible="1"/>
                             <field name="attr_boolean" invisible="1"/>
                             <field name="done" invisible="1"/>
 
