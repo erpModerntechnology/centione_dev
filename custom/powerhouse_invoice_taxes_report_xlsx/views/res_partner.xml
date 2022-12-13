@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="res_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group/group[1]" position="inside">
+                    <field name="customer_rank" invisible="1"/>
+                    <field name="national_id" placeholder="e.g. BE0477472701"/>
+                    <field name="tax_file_no" placeholder="e.g. 34340477472701"/>
+                    <field name="errand_name" placeholder="Errand Name ..."
+                           attrs="{'invisible':[('customer_rank','!=',1)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
