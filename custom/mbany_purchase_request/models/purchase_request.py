@@ -173,7 +173,7 @@ class PurchaseRequest(models.Model):
         return {
             'name': _('Payments'),
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'form',
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
             'domain': [('ref', '=', self.name)],
