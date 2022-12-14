@@ -29,6 +29,7 @@
         'views/purchase_request.xml',
         'views/approval.xml',
         'views/product.xml',
+        'views/account_account.xml',
     ],
     # only loaded in demonstration mode
 }

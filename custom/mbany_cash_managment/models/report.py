@@ -73,27 +73,27 @@ class ItemCardWizard(models.TransientModel):
         sheet.set_column(6, 6, 15)
         sheet.set_column(7, 7, 15)
         sheet.set_column(9, 9, 15)
-        domain = [('item_id.diff_amount','>',0)]
+        domain = [('diff_amount','>',0),('approved','=',True)]
         if self.date_from:
-            domain.append(('item_id.move_id.invoice_date','>=',self.date_from))
+            domain.append(('move_id.invoice_date','>=',self.date_from))
         if self.date_to:
-            domain.append(('item_id.move_id.invoice_date','<=',self.date_to))
+            domain.append(('move_id.invoice_date','<=',self.date_to))
 
 
-        git = self.env['payment.approves'].search(domain)
+        git = self.env['account.move.line'].search(domain)
 
 
         for r in git:
-            sheet.write(row, 0,str(r.item_id.move_id.invoice_date) or '', cell_format)
-            sheet.write(row, 1,r.item_id.move_id.partner_id.name or '', cell_format)
-            sheet.write(row, 2,r.item_id.product_id.display_name or '', cell_format)
-            sheet.write(row, 3,r.item_id.name or '', cell_format)
-            sheet.write(row, 4,r.item_id.analytic_account_id.name or '', cell_format)
-            sheet.write(row, 5,r.item_id.move_id.name or '', cell_format)
-            sheet.write(row, 6,r.item_id.price_total or '', cell_format)
-            sheet.write(row, 7,r.amount or '', cell_format)
-            sheet.write(row, 8,r.item_id.diff_amount or '', cell_format)
-            sheet.write(row, 9,r.journal_line_id.name or '', cell_format)
+            sheet.write(row, 0,str(r.move_id.invoice_date) or '', cell_format)
+            sheet.write(row, 1,r.move_id.partner_id.name or '', cell_format)
+            sheet.write(row, 2,r.product_id.display_name or '', cell_format)
+            sheet.write(row, 3,r.name or '', cell_format)
+            sheet.write(row, 4,r.analytic_account_id.name or '', cell_format)
+            sheet.write(row, 5,r.move_id.name or '', cell_format)
+            sheet.write(row, 6,r.price_total, cell_format)
+            sheet.write(row, 7,r.price_total - r.diff_amount, cell_format)
+            sheet.write(row, 8,r.diff_amount, cell_format)
+            sheet.write(row, 9,r.approve_journal_id.name or '', cell_format)
             row += 1
 
         workbook.close()
@@ -104,5 +104,5 @@ class ItemCardWizard(models.TransientModel):
             'name': 'Cash Management Report',
             'url': '/web/content/git.cgit/%s/gentextfile/Cash Management Report.xlsx?download=true' % (
                 self.id),
-            'target': 'new'
+            'target': 'current'
         }

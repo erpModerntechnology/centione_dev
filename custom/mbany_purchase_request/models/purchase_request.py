@@ -1,4 +1,6 @@
 from odoo import models, fields, api,_
+from odoo.exceptions import ValidationError
+
 
 
 _STATES = [
@@ -170,11 +172,11 @@ class PurchaseRequest(models.Model):
     def delivery_payment_action(self):
         return {
             'name': _('Payments'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
             'domain': [('ref', '=', self.name)],
+            'res_id': self.id,
         }
 
     done = fields.Boolean(default=False, compute='calc_done',copy=False)
@@ -193,10 +195,13 @@ class PurchaseRequest(models.Model):
             'date': self.date_request,
             'ref':self.name,
             'partner_type':'supplier',
+            'partner_id': self.employee.address_home_id.id,
             'payment_method_line_id': self.env['account.payment.method.line'].search([('code','=','manual'),('journal_id','=',self.journal_id.id),('payment_type','=','outbound')]).id
         })
         item = self.env['account.move.line'].search([('payment_id','=',payment.id),('debit','>',0)],limit=1)
         item.product_id = self.product_id
+        item.account_id = self.env['account.account'].sudo().search([('custody','=',True)],limit=1).id
+        # payment.destination_account_id = self.env['account.account'].sudo().search([('custody','=',True)],limit=1).id
         payment.action_post()
         self.state = 'done'
 
@@ -254,6 +259,10 @@ class PurchaseRequestLine(models.Model):
     def calc_subtotal(self):
         for r in self:
             r.subtotal = r.unit_price * r.product_qty
+    @api.constrains('consumed','budget_palanned')
+    def constraint_budget(self):
+        if self.consumed > self.budget_palanned:
+            raise ValidationError("Must Select Consumed less Than Or Equal Budget Planned")
 
 
 
@@ -294,7 +303,7 @@ class PurchaseRequestLine(models.Model):
                 select = "SELECT sum(credit)-sum(debit) from " + from_clause + " where " + where_clause
 
             self.env.cr.execute(select, where_clause_params)
-            r.consumed = self.env.cr.fetchone()[0] or 0.0
+            r.consumed = abs(self.env.cr.fetchone()[0]) or 0.0
             r.remained = r.budget_palanned - r.consumed
 
 class BudgetLine(models.Model):

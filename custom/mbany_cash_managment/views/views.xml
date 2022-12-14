@@ -24,6 +24,11 @@
 
 
                 </xpath>
+                <xpath expr="//notebook" position="before">
+                    <button string="Approve" type="object" name="all_approves"
+                            attrs="{'invisible':[('move_type','not in',['in_invoice','in_refund'])]}"/>
+
+                </xpath>
 
             </field>
         </record>
@@ -35,17 +40,17 @@
             <field name="inherit_id" ref="check_management_15.view_account_payment_form_inh_method"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook/page[1]" position="after">
-                        <page string="Item Approved">
-                            <field name="item_approve" context="{'default_journal_line_id':journal_id}">
-                                <tree editable="bottom">
-                                    <field name="item_id" domain="[('approved', '=', True),('exclude_from_invoice_tab', '=', False), ('move_id.move_type', 'in', ('in_invoice', 'in_refund')),('diff_amount', '>', 0),('approve_journal_id','=',journal_line_id)]"
-                                    />
-                                    <field name="journal_line_id" invisible="1"/>
-                                    <field name="operator"/>
-                                    <field name="amount" sum="Total"/>
-                                </tree>
-                            </field>
-                        </page>
+                    <page string="Item Approved">
+                        <field name="item_approve" attrs="{'readonly': [('state', '!=', 'draft')]}" >
+                            <tree editable="bottom">
+                                <field name="item_id"
+                                       domain="[('approved', '=', True),('exclude_from_invoice_tab', '=', False), ('move_id.move_type', 'in', ('in_invoice', 'in_refund')),('diff_amount', '>', 0)]"
+                                />
+                                <field name="journal_id"/>
+                                <field name="amount" sum="Total"/>
+                            </tree>
+                        </field>
+                    </page>
                 </xpath>
             </field>
         </record>
