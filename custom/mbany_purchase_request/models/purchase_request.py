@@ -177,7 +177,6 @@ class PurchaseRequest(models.Model):
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
             'domain': [('ref', '=', self.name)],
-            'res_id': self.id,
         }
 
     done = fields.Boolean(default=False, compute='calc_done',copy=False)
