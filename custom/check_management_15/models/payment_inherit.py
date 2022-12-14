@@ -572,7 +572,7 @@ class PaymentCheque(models.Model):
         self.with_context(delivery_aml=1).sudo().post()
 
 
-    def post(self,date_under_collect=False):
+    def post(self,date_under_collect=None):
         """ Create the journal items for the payment and update the payment's state to 'posted'.
             A journal entry is created containing an item in the source liquidity account (selected journal's default_debit or default_credit)
             and another in the destination reconciliable account (see _compute_destination_account_id).
@@ -769,7 +769,8 @@ class PaymentCheque(models.Model):
                 rec.write({'state_check': 'under_coll'})
 
                 # move.date = fields.Date.today()
-                move.date = date_under_collect
+                if date_under_collect:
+                    move.date = date_under_collect
 
             elif ctx_del:
                 rec.write({'state_check': 'deliver'})

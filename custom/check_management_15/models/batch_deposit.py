@@ -195,8 +195,7 @@ class BatchDepositChecks(models.Model):
         for r in self.payment_ids:
 
             if r.state_check == 'posted' or r.state_check == 'refunded_under_collection':
-                r.post(r.date)
-                
+                r.post()
                 r.multi_select = False
                 r.ref_coll_batch = False
         self.read_only = 'under_collection'
