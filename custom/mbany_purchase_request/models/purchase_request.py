@@ -171,9 +171,9 @@ class PurchaseRequest(models.Model):
         }
     def delivery_payment_action(self):
         return {
-            'name': _('Payments'),
+            'name': 'Payments',
             'view_type': 'form',
-            'view_mode': 'form',
+            'view_mode': 'tree,form',
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
             'domain': [('ref', '=', self.name)],
@@ -304,7 +304,8 @@ class PurchaseRequestLine(models.Model):
                 select = "SELECT sum(credit)-sum(debit) from " + from_clause + " where " + where_clause
 
             self.env.cr.execute(select, where_clause_params)
-            r.consumed = abs(self.env.cr.fetchone()[0]) or 0.0
+            consumed = (self.env.cr.fetchone()[0]) or 0.0
+            r.consumed = abs(consumed)
             r.remained = r.budget_palanned - r.consumed
 
 class BudgetLine(models.Model):
