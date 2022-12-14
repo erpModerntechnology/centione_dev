@@ -172,6 +172,7 @@ class PurchaseRequest(models.Model):
     def delivery_payment_action(self):
         return {
             'name': _('Payments'),
+            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
