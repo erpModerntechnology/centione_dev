@@ -168,8 +168,11 @@ class PurchaseRequest(models.Model):
             'res_model': 'purchase.order',
             'type': 'ir.actions.act_window',
             'domain': [('origin', '=', self.name)],
+            'target': 'current',
+
         }
     def delivery_payment_action(self):
+        self.ensure_one()
         return {
             'name': 'Payments',
             'view_type': 'form',
@@ -177,6 +180,8 @@ class PurchaseRequest(models.Model):
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
             'domain': [('ref', '=', self.name)],
+            'target': 'current',
+
         }
 
     done = fields.Boolean(default=False, compute='calc_done',copy=False)
