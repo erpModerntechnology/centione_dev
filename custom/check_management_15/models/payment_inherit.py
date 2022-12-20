@@ -591,7 +591,7 @@ class PaymentCheque(models.Model):
         self.with_context(delivery_aml=1).sudo().post()
 
 
-    def post(self,date_under_collect=False):
+    def post(self,date_under_collect=None):
         """ Create the journal items for the payment and update the payment's state to 'posted'.
             A journal entry is created containing an item in the source liquidity account (selected journal's default_debit or default_credit)
             and another in the destination reconciliable account (see _compute_destination_account_id).
@@ -788,7 +788,8 @@ class PaymentCheque(models.Model):
                 rec.write({'state_check': 'under_coll'})
 
                 # move.date = fields.Date.today()
-                move.date = date_under_collect
+                if date_under_collect:
+                    move.date = date_under_collect
 
             elif ctx_del:
                 rec.write({'state_check': 'deliver'})
@@ -838,12 +839,15 @@ class PaymentCheque(models.Model):
 
         :return: A list of Python dictionary to be passed to env['account.move'].sudo().create.
         '''
-        if self.payment_method_code == 'manual':
-            return super(PaymentCheque, self)._prepare_payment_moves()
-        if self.is_internal_transfer == True:
-            return super(PaymentCheque, self)._prepare_payment_moves()
+
+
         all_move_vals = []
         for payment in self:
+            if payment.payment_method_code == 'manual':
+                return super(PaymentCheque, self)._prepare_payment_moves()
+            if payment.is_internal_transfer == True:
+                return super(PaymentCheque, self)._prepare_payment_moves()
+
             liq_move = payment._get_liquidity_move_line_vals(payment.amount)
 
             lig_account_id = self.env['account.account'].browse(liq_move['account_id'])
@@ -1271,9 +1275,10 @@ class PaymentCheque(models.Model):
 
 
         """
-        if self.is_internal_transfer == True:
-            self.destination_account_id = False
-            for pay in self:
+
+        for pay in self:
+            if pay.is_internal_transfer == True:
+                self.destination_account_id = False
                 if pay.is_internal_transfer:
                     pay.destination_account_id = pay.journal_id.company_id.transfer_account_id
                 elif pay.partner_type == 'customer':
@@ -1300,11 +1305,10 @@ class PaymentCheque(models.Model):
                         ], limit=1)
 
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>||||11")
-        if self.is_internal_transfer == False:
 
-            for rec in self:
+        for rec in self:
+            if rec.is_internal_transfer == False:
                 ctx_loan_batch = rec._context.get('loan_check')
-
                 des_batch_account = rec._get_last_journal_batch()
                 des_account = rec._get_last_journal()
 
