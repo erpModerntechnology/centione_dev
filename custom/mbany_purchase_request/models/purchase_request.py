@@ -73,11 +73,16 @@ class PurchaseRequest(models.Model):
         copy=True,
         tracking=True,
     )
-    product_id = fields.Many2one(
-        comodel_name="product.product",
-        string="Product",
-        readonly=True,
-        default=_get_product,
+    # product_id = fields.Many2one(
+    #     comodel_name="product.product",
+    #     string="Product",
+    #     readonly=True,
+    #     default=_get_product,
+    # )
+
+    item_id = fields.Many2one(
+        comodel_name="item.code",
+        string="Item Code",
     )
     state = fields.Selection(
         selection=_STATES,
@@ -204,7 +209,7 @@ class PurchaseRequest(models.Model):
             'payment_method_line_id': self.env['account.payment.method.line'].search([('code','=','manual'),('journal_id','=',self.journal_id.id),('payment_type','=','outbound')]).id
         })
         item = self.env['account.move.line'].search([('payment_id','=',payment.id),('debit','>',0)],limit=1)
-        item.product_id = self.product_id
+        item.item_id = self.item_id
         item.account_id = self.env['account.account'].sudo().search([('custody','=',True)],limit=1).id
         # payment.destination_account_id = self.env['account.account'].sudo().search([('custody','=',True)],limit=1).id
         payment.action_post()
@@ -251,6 +256,7 @@ class PurchaseRequestLine(models.Model):
         index=True,
         auto_join=True,
     )
+    item_id = fields.Many2one('item.code')
     product_id = fields.Many2one('product.product')
     unit_price = fields.Float('Unit Price')
     subtotal = fields.Float('Subtotal',compute='calc_subtotal',store=True)
@@ -273,7 +279,7 @@ class PurchaseRequestLine(models.Model):
 
     def calc_budget(self):
         for r in self:
-            budget = self.env['crossovered.budget.lines'].search([('date_from','<=',r.request_id.date_request),('date_to','>=',r.request_id.date_request),('product_id','=',r.product_id.id)],limit=1)
+            budget = self.env['crossovered.budget.lines'].search([('date_from','<=',r.request_id.date_request),('date_to','>=',r.request_id.date_request),('item_id','=',r.item_id.id)],limit=1)
             r.budget_palanned = budget.planned_amount
             acc_ids = budget.general_budget_id.account_ids.ids
             date_to = budget.date_to
@@ -283,7 +289,7 @@ class PurchaseRequestLine(models.Model):
                 domain = [('account_id', '=', budget.analytic_account_id.id),
                           ('date', '>=', date_from),
                           ('date', '<=', date_to),
-                          ('product_id', '=', budget.product_id.id)
+                          ('item_id', '=', budget.item_id.id)
                           ]
                 if acc_ids:
                     domain += [('general_account_id', 'in', acc_ids)]
@@ -300,7 +306,7 @@ class PurchaseRequestLine(models.Model):
                           ('date', '>=', date_from),
                           ('date', '<=', date_to),
                           ('move_id.state', '=', 'posted'),
-                          ('product_id','=',budget.product_id.id)
+                          ('item_id','=',budget.item_id.id)
                           ]
                 where_query = aml_obj._where_calc(domain)
                 aml_obj._apply_ir_rules(where_query, 'read')
@@ -316,7 +322,7 @@ class BudgetLine(models.Model):
 
     _inherit = "crossovered.budget.lines"
 
-    product_id = fields.Many2one('product.product','product')
+    item_id = fields.Many2one('item.code')
 
     def _compute_practical_amount(self):
         for line in self:
@@ -328,7 +334,7 @@ class BudgetLine(models.Model):
                 domain = [('account_id', '=', line.analytic_account_id.id),
                           ('date', '>=', date_from),
                           ('date', '<=', date_to),
-                          ('product_id', '=', line.product_id.id)
+                          ('item_id', '=', line.item_id.id)
                           ]
                 if acc_ids:
                     domain += [('general_account_id', 'in', acc_ids)]
@@ -345,7 +351,7 @@ class BudgetLine(models.Model):
                           ('date', '>=', date_from),
                           ('date', '<=', date_to),
                           ('move_id.state', '=', 'posted'),
-                          ('product_id','=',line.product_id.id)
+                          ('item_id','=',line.item_id.id)
                           ]
                 where_query = aml_obj._where_calc(domain)
                 aml_obj._apply_ir_rules(where_query, 'read')
@@ -362,7 +368,7 @@ class BudgetLine(models.Model):
             action['domain'] = [('account_id', '=', self.analytic_account_id.id),
                                 ('date', '>=', self.date_from),
                                 ('date', '<=', self.date_to),
-                                ('product_id', '=', self.product_id.id)
+                                ('item_id', '=', self.item_id.id)
 
                                 ]
             if self.general_budget_id:
@@ -374,7 +380,7 @@ class BudgetLine(models.Model):
                                  self.general_budget_id.account_ids.ids),
                                 ('date', '>=', self.date_from),
                                 ('date', '<=', self.date_to),
-                                ('product_id', '=', self.product_id.id)
+                                ('item_id', '=', self.item_id.id)
                                 ]
         return action
 

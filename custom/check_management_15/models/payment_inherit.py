@@ -95,6 +95,25 @@ class PaymentCheque(models.Model):
             return False
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.CHECK",self.cheque_books_id , self.cheque_number_rel)
 
+
+    def button_open_batch_payment(self):
+        ''' Redirect the user to the batch payments containing this payment.
+        :return:    An action on account.batch.payment.
+        '''
+        self.ensure_one()
+        compose_form = self.env.ref('check_management_15.account_payment_batch_deposite_inherit_form_id')
+        return {
+            'name': _("Batch Payment"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.batch.payment',
+            'context': {'create': False},
+            'view_mode': 'form',
+            'views': [(compose_form.id, 'form')],
+            'view_id': compose_form.id,
+            'res_id': self.batch_payment_id.id,
+        }
+
+
     @api.onchange('due_date')
     def get_default_actual_date(self):
         if self.due_date:

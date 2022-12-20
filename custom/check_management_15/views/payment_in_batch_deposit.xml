@@ -1,5 +1,18 @@
 <odoo>
     <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_batch_payment_search_inherit" model="ir.ui.view">
+            <field name="name">view_batch_payment_search_inherit</field>
+            <field name="model">account.batch.payment</field>
+            <field name="inherit_id" ref="account_batch_payment.view_batch_payment_search"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="check_number"/>
+                </xpath>
+
+            </field>
+        </record>
         <record id="view_account_batch_deposit_tree_inherit" model="ir.ui.view">
             <field name="name">account.batch.deposit.tree.inherit</field>
             <field name="model">account.batch.payment</field>
@@ -58,7 +71,7 @@
                             <field name="company_id" invisible="0"/>
                             <field name="partner_id" string="Partner"
                                    attrs="{'readonly':[('state','!=','draft')]}"/>
-                            <field name="check_number" readonly="1"/>
+                            <field name="check_number_2" readonly="1"/>
                             <field name="bank_name" readonly="1"/>
                             <field name="amount" sum="Total"
                                    attrs="{'invisible':[('state','in',['collect','done'])],'readonly':[('state','!=','draft')]}"/>
@@ -137,8 +150,8 @@
                         <field name="state"
                                attrs="{'invisible':[('state','in',['collect','done'])],'readonly':[('state','!=','draft')]}"
                         />
-                                                    <field name="available_payment_method_line_ids"/>
-                            <field name="payment_method_line_id"/>
+                        <field name="available_payment_method_line_ids"/>
+                        <field name="payment_method_line_id"/>
                         <field name="state_check"/>
                         <field name="batch_state" invisible="1"/>
 
@@ -357,8 +370,8 @@
                                 <field name="state"
                                        attrs="{'invisible':[('state','in',['collect','done'])],'readonly':[('state','!=','draft')]}"
                                 />
-                                                            <field name="available_payment_method_line_ids"/>
-                            <field name="payment_method_line_id"/>
+                                <field name="available_payment_method_line_ids"/>
+                                <field name="payment_method_line_id"/>
                                 <field name="state_check"/>
                                 <field name="batch_state" invisible="1"/>
                                 <field name="ref"
@@ -374,8 +387,8 @@
                                     <group>
                                         <field name="company_id" invisible="0"/>
                                         <field name="payment_type" invisible="1"/>
-<!--                                        <field name="journal_id" invisible="1"/>-->
-<!--                                        <field name="payment_method_line_id" invisible="1"/>-->
+                                        <!--                                        <field name="journal_id" invisible="1"/>-->
+                                        <!--                                        <field name="payment_method_line_id" invisible="1"/>-->
                                         <field name="state" invisible="1"/>
 
                                         <field name="partner_type" widget="selection" required="1"
@@ -444,8 +457,8 @@
                                     <group>
                                         <field name="company_id" invisible="0"/>
                                         <field name="payment_type" invisible="1"/>
-<!--                                        <field name="journal_id" invisible="1"/>-->
-<!--                                        <field name="payment_method_line_id" invisible="1"/>-->
+                                        <!--                                        <field name="journal_id" invisible="1"/>-->
+                                        <!--                                        <field name="payment_method_line_id" invisible="1"/>-->
                                         <field name="state" invisible="1"/>
 
                                         <field name="partner_type" widget="selection" required="1"

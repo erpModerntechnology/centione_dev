@@ -189,7 +189,14 @@ class BatchDepositChecks(models.Model):
                 rec.write({'state': 'done'})
             if rec.change_state_collect():
                 rec.write({'state': 'done'})
-
+    check_number = fields.Text(compute='calc_check_number',store=True)
+    @api.depends('payment_ids_rel.check_number_2')
+    def calc_check_number(self):
+        for record in self:
+            check=''
+            for r in record.payment_ids_rel:
+                check += r.check_number_2 + ','
+            record.check_number = check
     #@api.multi
     def post_under_collection(self):
         for r in self.payment_ids:

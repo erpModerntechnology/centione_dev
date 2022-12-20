@@ -17,6 +17,7 @@ class VendorWizard(models.TransientModel):
                     lines.append((0, 0, {
                             'product_id': s.product_id.id,
                             'product_qty': s.product_qty,
+                            'item_id': s.item_id.id,
                             'price_unit': s.unit_price,
                             'price_subtotal':s.subtotal,
                             'name': s.product_id.display_name
@@ -48,6 +49,7 @@ class VendorWizard(models.TransientModel):
 
                     lines.append((0, 0, {
                             'product_id': s.product_id.id,
+                            'item_id': s.item_id.id,
                             'product_qty': s.product_qty,
                             'price_unit': s.unit_price,
                             'price_subtotal':s.subtotal,

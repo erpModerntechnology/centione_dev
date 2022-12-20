@@ -30,6 +30,7 @@
         'views/approval.xml',
         'views/product.xml',
         'views/account_account.xml',
+        'views/item_code.xml',
     ],
     # only loaded in demonstration mode
 }

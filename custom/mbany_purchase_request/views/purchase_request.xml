@@ -18,7 +18,7 @@
 
             <xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='general_budget_id']"
                    position="before">
-                <field name="product_id" required="1"/>
+                <field name="item_id" required="1"/>
             </xpath>
 
         </field>
@@ -100,15 +100,17 @@
                         <group>
                             <field name="type" required="1"/>
                             <field name="date_request"/>
-                            <field name="product_id" attrs="{'invisible':[('type','!=','custody')]}"/>
+<!--                            <field name="product_id" attrs="{'invisible':[('type','!=','custody')]}"/>-->
+                            <field name="item_id"/>
                         </group>
                     </group>
                     <notebook attrs="{'invisible':[('type','=','custody')]}">
                         <page string="Products">
-                            <field name="line_ids">
+                            <field name="line_ids" context="{'default_item_id':item_id}">
                                 <tree editable="bottom">
                                     <field name="check" string=" " attrs="{'invisible':[('done','=',True)]}"/>
                                     <field name="product_id" required="1"/>
+                                    <field name="item_id" required="1"/>
                                     <field name="type"/>
                                     <field name="product_qty"/>
                                     <field name="unit_price"/>

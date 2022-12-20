@@ -4,6 +4,7 @@ mbany_purchase_request.access_purchase_request_line,access_purchase_request_line
 mbany_purchase_request.access_res_approvals,access_res_approvals,mbany_purchase_request.model_res_approvals,,1,1,1,1
 mbany_purchase_request.access_vendor_wizard,access_vendor_wizard,mbany_purchase_request.model_vendor_wizard,,1,1,1,1
 mbany_purchase_request.access_rfq_wizard,access_rfq_wizard,mbany_purchase_request.model_rfq_wizard,,1,1,1,1
+mbany_purchase_request.access_item_code,access_item_code,mbany_purchase_request.model_item_code,,1,1,1,1
 
 
 
