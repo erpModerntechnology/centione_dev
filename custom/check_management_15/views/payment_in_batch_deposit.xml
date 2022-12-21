@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='journal_id']" position="after">
-                    <field name="check_number"/>
+                    <field name="check_number_search"/>
                 </xpath>
 
             </field>
@@ -47,17 +47,26 @@
                 <xpath expr="//header" position="inside">
                     <button name="draft"
                             type="object" string="Set To Draft"
+                            attrs="{'invisible':[('state','=','done')]}"
+                    />
+                    <button name="insured"
+                            type="object" string="Set To Insured"
+                            attrs="{'invisible':[('state','!=','draft')]}"
+                    />
+                    <button name="validate_insured"
+                            type="object" string="Validate Insured"
+                            attrs="{'invisible':[('state','!=','insured')]}"
                     />
                     <button name="post_under_collection" context="{'delivery_aml_batch':1}"
                             type="object" string="Multi Under Collection"
                             attrs="{'invisible':[('state','!=','draft')]}"/>
                     <button name="refund_under_collections" context="{'ref_und_coll_batch':1}"
                             type="object" string="Multi Refund"
-                            attrs="{'invisible':[('state','in',['draft','discount','collected','done'])]}"/>
+                            attrs="{'invisible':[('state','in',['draft','discount','collected','done','insured'])]}"/>
 
                     <button name="post_bank_entrie" context="{'bank_aml_batch':1}" type="object"
                             string="Multi Collection"
-                            attrs="{'invisible':[('state','in',['draft','discount','collected','done'])]}"/>
+                            attrs="{'invisible':[('state','in',['draft','discount','collected','done','insured'])]}"/>
                     <field name="read_only" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='payment_ids']" position="after">
@@ -132,7 +141,7 @@
                         <field name="company_id" invisible="0"/>
                         <field name="partner_id" string="Partner"
                                attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="check_number" readonly="1"/>
+                        <field name="check_number_2" readonly="1"/>
                         <field name="bank_name" readonly="1"/>
                         <field name="amount" sum="Total"
                                attrs="{'invisible':[('state','in',['collect','done'])],'readonly':[('state','!=','draft')]}"/>
@@ -350,7 +359,7 @@
                                 <field name="company_id" invisible="0"/>
                                 <field name="partner_id" string="Partner"
                                        attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="check_number" readonly="1"/>
+<!--                                <field name="check_number" readonly="1"/>-->
                                 <field name="bank_name" readonly="1"/>
                                 <field name="amount" sum="Total"
                                        attrs="{'invisible':[('state','in',['collect','done'])],'readonly':[('state','!=','draft')]}"/>
@@ -422,7 +431,7 @@
                                 <field name="company_id" invisible="0"/>
                                 <field name="partner_id" string="Partner"
                                        attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="check_number" readonly="1"/>
+<!--                                <field name="check_number" readonly="1"/>-->
                                 <field name="bank_name" readonly="1"/>
                                 <field name="amount" sum="Total"
                                        attrs="{'invisible':[('state','in',['collect','done'])],'readonly':[('state','!=','draft')]}"/>

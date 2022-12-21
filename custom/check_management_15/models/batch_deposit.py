@@ -1,4 +1,4 @@
-from odoo import api, fields, models,_
+from odoo import api, fields, models, _
 
 from odoo.exceptions import UserError, ValidationError
 
@@ -8,14 +8,15 @@ class BatchDepositChecks(models.Model):
 
     def _get_defualt_batch(self):
         payment_method_obj = self.env['account.payment.method']
-        payment  = payment_method_obj.search([('code','=','batch_payment')],limit=1)
+        payment = payment_method_obj.search([('code', '=', 'batch_payment')], limit=1)
         if payment:
             return payment.id
 
     bank_id = fields.Many2one(comodel_name='account.journal')
 
     state = fields.Selection(
-        [('draft', 'New'), ('under_collection', 'Under collection'), ('sent', 'Printed'), ('reconciled', 'Reconciled'),
+        [('draft', 'New'), ('insured', 'Insured'), ('under_collection', 'Under collection'), ('sent', 'Printed'),
+         ('reconciled', 'Reconciled'),
          ('discount', 'Discount'), ('loan', 'Loan'), ('done', 'Done')], readonly=True, default='draft', copy=False)
     read_only = fields.Boolean()
     deposite_move_type = fields.Selection([('discount', 'Discount')
@@ -24,11 +25,12 @@ class BatchDepositChecks(models.Model):
     payment_ids_rel = fields.One2many('account.payment', 'batch_payment_id', string="Payments", required=True,
                                       readonly=True, states={'draft': [('readonly', False)]})
 
-    payment_method_id = fields.Many2one(comodel_name='account.payment.method', string='Payment Method', 
-    required=True, readonly=True, 
-    states={'draft': [('readonly', '=', False)]},
-    default = _get_defualt_batch,
-     help="The payment method used by the payments in this batch." ,domain="[('code','=','batch_payment')]")
+    payment_method_id = fields.Many2one(comodel_name='account.payment.method', string='Payment Method',
+                                        required=True, readonly=True,
+                                        states={'draft': [('readonly', '=', False)]},
+                                        default=_get_defualt_batch,
+                                        help="The payment method used by the payments in this batch.",
+                                        domain="[('code','=','batch_payment')]")
 
     @api.depends('payment_ids.move_id.is_move_sent', 'payment_ids.is_matched')
     def _compute_state(self):
@@ -65,6 +67,7 @@ class BatchDepositChecks(models.Model):
                 batch.payment_method_id = batch.available_payment_method_ids[0]._origin
             else:
                 batch.payment_method_id = False
+
     # @api.depends('batch_type', 'journal_id')
     # def _compute_payment_method_id(self):
     #     ''' Compute the 'payment_method_id' field.
@@ -87,7 +90,7 @@ class BatchDepositChecks(models.Model):
     @api.constrains('batch_type', 'journal_id', 'payment_ids')
     def _check_payments_constrains(self):
         for record in self:
-            print("record.payment_ids.mapped('journal_id') :  ",record.payment_ids)
+            print("record.payment_ids.mapped('journal_id') :  ", record.payment_ids)
             all_companies = set(record.payment_ids.mapped('company_id'))
             if len(all_companies) > 1:
                 raise ValidationError(_("All payments in the batch must belong to the same company."))
@@ -95,7 +98,8 @@ class BatchDepositChecks(models.Model):
             if len(record.payment_ids) == 0:
                 raise ValidationError(_("You must select atleast one payment."))
             if len(all_journals) > 1 or record.payment_ids[0].journal_id != record.journal_id:
-                raise ValidationError(_("The journal of the batch payment and of the payments it contains must be the same."))
+                raise ValidationError(
+                    _("The journal of the batch payment and of the payments it contains must be the same."))
             all_types = set(record.payment_ids.mapped('payment_type'))
             if all_types and record.batch_type not in all_types:
                 raise ValidationError(_("The batch must have the same type as the payments it contains."))
@@ -104,13 +108,19 @@ class BatchDepositChecks(models.Model):
             if len(all_payment_methods) > 1:
                 raise ValidationError(_("All payments in the batch must share the same payment method."))
             if record.payment_method_id not in all_payment_methods:
-                print("all_payment_methods : ",all_payment_methods)
-                print("all_payment_methods : ",record.payment_method_id.name)
+                print("all_payment_methods : ", all_payment_methods)
+                print("all_payment_methods : ", record.payment_method_id.name)
                 raise ValidationError(_("The batch must have the same payment method as the payments it contains."))
 
     def draft(self):
         self.state = 'draft'
-    #@api.multi
+
+    def insured(self):
+        self.state = 'insured'
+        for r in self.payment_ids:
+            r.state_check = 'insured'
+
+    # @api.multi
     def related_journal_button(self):
         return {
             'name': 'Journal Items',
@@ -124,11 +134,11 @@ class BatchDepositChecks(models.Model):
         }
 
     # counter for validation message in discount check
-    #@api.multi
+    # @api.multi
     def refund_under_collections(self):
         for rec in self:
             run = False
-            print("rec.payment_ids : ",rec.payment_ids)
+            print("rec.payment_ids : ", rec.payment_ids)
             for r in rec.payment_ids:
                 if r.multi_select == True and r.state_check == 'under_coll':
                     print("herre true")
@@ -151,7 +161,7 @@ class BatchDepositChecks(models.Model):
         elif 'is_other_check_type' in ctx:
             return 'other'
 
-    #@api.multi
+    # @api.multi
     def print_batch_deposit(self):
         # for deposit in self:
         #     if deposit.state != 'draft':
@@ -160,7 +170,7 @@ class BatchDepositChecks(models.Model):
         #     deposit.write({'state': 'sent'})
         return self.env.ref('account_batch_payment.action_print_batch_deposit').report_action(self)
 
-    #@api.one
+    # @api.one
     @api.constrains('journal_id', 'payment_ids')
     def _check_same_journal(self):
         if not self.journal_id:
@@ -170,7 +180,7 @@ class BatchDepositChecks(models.Model):
 
             # receive checks part start
 
-    #@api.multi
+    # @api.multi
     def post_bank_entrie(self):
         for rec in self:
             collect = False
@@ -179,7 +189,7 @@ class BatchDepositChecks(models.Model):
                     if not r.ref_coll_batch:
                         raise ValidationError('Please enter collect Date')
                     r._compute_destination_account_id()
-                    print("r : > ",r.name)
+                    print("r : > ", r.name)
                     r.post()
                     collect = True
                     r.multi_select = False
@@ -189,15 +199,40 @@ class BatchDepositChecks(models.Model):
                 rec.write({'state': 'done'})
             if rec.change_state_collect():
                 rec.write({'state': 'done'})
-    check_number = fields.Text(compute='calc_check_number',store=True)
+
+    check_number_search = fields.Text(compute='calc_check_number', store=True)
+
     @api.depends('payment_ids_rel.check_number_2')
     def calc_check_number(self):
         for record in self:
-            check=''
+            check = ''
             for r in record.payment_ids_rel:
                 check += r.check_number_2 + ','
-            record.check_number = check
-    #@api.multi
+            record.check_number_search = check
+
+    # @api.multi
+    def validate_insured(self):
+        for r in self.payment_ids:
+            if r.multi_select and r.ref_coll_batch:
+                r.multi_select = False
+                r.state_check = 'collected'
+                move = self.env['account.move'].sudo().create({
+                    'move_type': 'entry',
+                    'date': r.ref_coll_batch,
+                    'journal_id': r.batch_payment_id.bank_id.id,
+                    # 'payment_id': r.id,
+                    'partner_id': r.partner_id.id,
+                    'line_ids': [
+                        (0, 0, {'debit':r.amount,'credit':0, 'account_id': r.batch_payment_id.bank_id.default_account_id.id,}),
+                        (0, 0, {'debit':0,'credit':r.amount, 'account_id': r.batch_payment_id.journal_id.default_account_id.id,}),
+                    ]
+                })
+                # move.button_draft()
+                move.action_post()
+                move.payment_id = r.id
+        if all([v.state_check=='collected' for v in self.payment_ids]):
+                self.state = 'done'
+
     def post_under_collection(self):
         for r in self.payment_ids:
 
@@ -207,7 +242,7 @@ class BatchDepositChecks(models.Model):
                 r.ref_coll_batch = False
         self.read_only = 'under_collection'
         self.state = 'under_collection'
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>AFTER POST",)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>AFTER POST", )
         # 1/0
 
     def change_state_collect(self):
@@ -229,7 +264,6 @@ class BatchDepositChecks(models.Model):
                     return False
         return True
         # receive checks part end
-
 
         # discount checks part start
 
@@ -552,7 +586,7 @@ class BatchDepositChecks(models.Model):
 
             from datetime import datetime
             for r in rec.payment_ids:
-                print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>R ACTU",r.actual_date)
+                print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>R ACTU", r.actual_date)
                 actual_date = datetime.strptime(str(r.actual_date), '%Y-%m-%d').date()
                 dif = actual_date - fields.date.today()
 
@@ -583,6 +617,5 @@ class BatchDepositChecks(models.Model):
                         r.check_number_2, r.bank_name, dif.days, rec.bank_id.bank_id.name)
             if len(msg) > 2:
                 return msg
-
 
                 # discount check part end

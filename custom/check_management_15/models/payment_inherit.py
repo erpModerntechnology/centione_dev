@@ -12,6 +12,7 @@ class PaymentCheque(models.Model):
     state_check = fields.Selection([('draft', 'Draft'), ('posted', 'Posted'), ('deliver', 'Deliver'),
                               ('under_coll', 'Under collection'),
                               ('collected', 'Withdrawal'),
+                              ('insured', 'Insured'),
                               ('sent', 'Sent'), ('reconciled', 'Reconciled'),
                               ('cancelled', 'Cancelled'),
                               ('discount', 'Discount'),
@@ -35,7 +36,7 @@ class PaymentCheque(models.Model):
     # bank_id = fields.Many2one(comodel_name='account.journal')
     bank_name = fields.Char()
     check_number_2 = fields.Char(store=True  ,readonly=False,string="Check Number" )
-    check_type = fields.Many2one('check.type')
+    check_type = fields.Char()
     move_date = fields.Date()
     multi_select = fields.Boolean()
     refund_date = fields.Date()
@@ -1806,8 +1807,6 @@ class PaymentCheque(models.Model):
             'domain': [('payment_id', 'in', self.ids)],
         }
 
-
-
     def _seek_for_lines(self):
         ''' Helper used to dispatch the journal items between:
         - The lines using the temporary liquidity account.
@@ -1821,34 +1820,44 @@ class PaymentCheque(models.Model):
         counterpart_lines = self.env['account.move.line']
         writeoff_lines = self.env['account.move.line']
 
-        print("payment_method_id",self.payment_method_id.ids)
+        print("payment_method_id", self.payment_method_id.ids)
         inbound_account = self.env['account.payment.method.line'].search([
-                                                                        ('id', '=', self.journal_id.inbound_payment_method_line_ids.ids)
-                                                                        ,('journal_id', '=', self.journal_id.id)
-                                                                        ,('payment_method_id', '=', self.payment_method_line_id.payment_method_id.id)
-                                                        ],limit=1)
+            ('id', '=', self.journal_id.inbound_payment_method_line_ids.ids)
+            , ('journal_id', '=', self.journal_id.id)
+            , ('payment_method_id', '=', self.payment_method_line_id.payment_method_id.id)
+        ], limit=1)
 
         outgoing_account = self.env['account.payment.method.line'].search([
-                                                                        ('id', '=', self.journal_id.outbound_payment_method_line_ids.ids)
-                                                                        ,('journal_id', '=', self.journal_id.id)
-                                                                        ,('payment_method_id', '=', self.payment_method_line_id.payment_method_id.id)
-                                                        ],limit=1)
-        print("inbound_account",inbound_account)
-        print("outgoing_account",outgoing_account)
+            ('id', '=', self.journal_id.outbound_payment_method_line_ids.ids)
+            , ('journal_id', '=', self.journal_id.id)
+            , ('payment_method_id', '=', self.payment_method_line_id.payment_method_id.id)
+        ], limit=1)
+        print("inbound_account", inbound_account)
+        print("outgoing_account", outgoing_account)
         for line in self.move_id.line_ids:
-            if line.account_id in (
-                    self.journal_id.notes_payable,
-                    inbound_account.payment_account_id,
-                    outgoing_account.payment_account_id,
-            ):
+            if line.account_id in self._get_valid_liquidity_accounts_custom():
                 liquidity_lines += line
             elif line.account_id.internal_type in (
-                'receivable', 'payable') or line.partner_id == line.company_id.partner_id:
+                    'receivable', 'payable') or line.partner_id == line.company_id.partner_id:
                 counterpart_lines += line
             else:
                 writeoff_lines += line
-
+        print("liquidity_lines :> ", liquidity_lines)
         return liquidity_lines, counterpart_lines, writeoff_lines
+
+    def _get_valid_liquidity_accounts_custom(self):
+        return (
+            self.journal_id.notes_payable,
+            self.journal_id.default_account_id,
+            self.payment_method_line_id.payment_account_id,
+            self.journal_id.company_id.account_journal_payment_debit_account_id,
+            self.journal_id.company_id.account_journal_payment_credit_account_id,
+            self.journal_id.inbound_payment_method_line_ids.payment_account_id,
+            self.journal_id.outbound_payment_method_line_ids.payment_account_id,
+        )
+
+
+
     # -------------------------------------------------------------------------
     # SYNCHRONIZATION account.payment <-> account.move
     # -------------------------------------------------------------------------

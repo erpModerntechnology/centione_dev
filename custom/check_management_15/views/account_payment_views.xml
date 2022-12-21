@@ -47,6 +47,9 @@
                          attrs="{'invisible': [ ('state_check', '!=', 'loan')]}">Loan
                     </div>
                     <div class="badge-pill badge-success float-right"
+                         attrs="{'invisible': [ ('state_check', '!=', 'insured')]}">Insured
+                    </div>
+                    <div class="badge-pill badge-success float-right"
                          attrs="{'invisible': [ ('state_check', '!=', 'refund_from_discount')]}">Refund From Discount
                     </div>
                                         <div class="badge-pill badge-success float-right"

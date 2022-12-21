@@ -274,6 +274,10 @@ class PurchaseRequestLine(models.Model):
     def constraint_budget(self):
         if self.consumed > self.budget_palanned:
             raise ValidationError("Must Select Consumed less Than Or Equal Budget Planned")
+    @api.constrains('subtotal','remained')
+    def constraint_budget(self):
+        if self.subtotal > self.remained:
+            raise ValidationError("Must Select Subtotal less Than Or Equal Remained")
 
 
 
