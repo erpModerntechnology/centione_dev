@@ -24,6 +24,20 @@
         </field>
     </record>
 
+    <!-- Inherit Form View to Modify it -->
+    <record id="crossovered_budget_view_form_inherits" model="ir.ui.view">
+        <field name="name">crossovered_budget_view_form_inherits</field>
+        <field name="model">crossovered.budget</field>
+        <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="budget_cost"/>
+            </xpath>
+
+        </field>
+    </record>
+
     <record id="view_purchase_request_form" model="ir.ui.view">
         <field name="name">purchase.request.form</field>
         <field name="model">purchase.request</field>
@@ -100,7 +114,7 @@
                         <group>
                             <field name="type" required="1"/>
                             <field name="date_request"/>
-<!--                            <field name="product_id" attrs="{'invisible':[('type','!=','custody')]}"/>-->
+                            <!--                            <field name="product_id" attrs="{'invisible':[('type','!=','custody')]}"/>-->
                             <field name="item_id"/>
                         </group>
                     </group>
@@ -112,6 +126,12 @@
                                     <field name="product_id" required="1"/>
                                     <field name="item_id" required="1"/>
                                     <field name="type"/>
+                                    <field name="reclass_budget" attrs="{'invisible':[('type','!=','reclass')]}"/>
+                                    <field name="reclass_item_code" attrs="{'invisible':[('type','!=','reclass')]}"/>
+                                    <field name="reclass_item_id_domain" widget="many2many_tags" invisible="1"/>
+                                    <field name="carry_forword_budget" attrs="{'invisible':[('type','!=','carry_forward')]}"/>
+                                    <field name="carry_backword_budget" attrs="{'invisible':[('type','!=','carry_back')]}"/>
+                                    <field name="amount"/>
                                     <field name="product_qty"/>
                                     <field name="unit_price"/>
                                     <field name="subtotal"/>
@@ -119,6 +139,12 @@
                                     <field name="consumed"/>
                                     <field name="remained"/>
                                     <field name="done" readonly="1"/>
+                                    <field name="compute_boolean" invisible="1"/>
+                                    <button name="compute_line" string="Compute" type="object"
+                                            class="btn-primary"
+                                            attrs="{'invisible' :[('compute_boolean','=',True)]}"/>
+
+
                                 </tree>
                             </field>
                         </page>
