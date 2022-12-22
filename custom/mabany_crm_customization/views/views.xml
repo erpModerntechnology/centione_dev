@@ -89,7 +89,8 @@
                             <field name="sub_source_2_id"/>
 
                             <field name="commission_type_id"/>
-                            <field name="broker_agent_id"/>
+                            <field name="broker_agent_id"
+                                   context="{'default_is_broker': True, 'default_is_company': True}"/>
                             <field name="broker_agent_phone" widget="phone"/>
                             <field name="support_call_id" />
                             <field name="support_visit_site_id"/>
@@ -103,7 +104,7 @@
                             <field name="rejection_source"/>
                             <field name="rejection_reason"/>
 
-                            <field name="broker_id"/>
+                            <field name="broker_id" context="{'default_is_broker': True}"/>
                             <field name="reassigned_reason_id"/>
                             <field name="interested_ids" widget="many2many_tags"/>
                             <field name="client_request_type_id"/>
