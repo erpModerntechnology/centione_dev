@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+                        <record id="view_account_payment_tree_inh" model="ir.ui.view">
+            <field name="name">account.payment.inh</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="state_check"/>
+                </xpath>
+                <xpath expr="//field[@name='check_number']" position="replace">
+                    <field name="check_number_2"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_account_supplier_payment_tree_inh" model="ir.ui.view">
+            <field name="name">account.payment.inh</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//field[@name='bank_name']" position="replace">
+                    <field name="cheque_books_id"/>
+                </xpath>
+                <xpath expr="//field[@name='check_number_2']" position="replace">
+                    <field name="cheque_number"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

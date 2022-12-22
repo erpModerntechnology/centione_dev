@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 class VendorWizard(models.TransientModel):
     _name = 'vendor.wizard'
 
-    vendor = fields.Many2one('res.partner',required=True)
+    vendor = fields.Many2one('res.partner',required=True,domain=[('supplier_rank','>',0)])
 
     def done(self):
         request = self.env['purchase.request'].browse(self.env.context.get('active_id'))
@@ -17,6 +17,7 @@ class VendorWizard(models.TransientModel):
                     lines.append((0, 0, {
                             'product_id': s.product_id.id,
                             'product_qty': s.product_qty,
+                            'item_id': s.item_id.id,
                             'price_unit': s.unit_price,
                             'price_subtotal':s.subtotal,
                             'name': s.product_id.display_name
@@ -48,6 +49,7 @@ class VendorWizard(models.TransientModel):
 
                     lines.append((0, 0, {
                             'product_id': s.product_id.id,
+                            'item_id': s.item_id.id,
                             'product_qty': s.product_qty,
                             'price_unit': s.unit_price,
                             'price_subtotal':s.subtotal,

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="cgit_git_from" model="ir.ui.view">
+            <field name="name">cgit_git_from</field>
+            <field name="model">git.cgit</field>
+            <field name="arch" type="xml">
+                <form string="name">
+                    <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <button string="Generate" class="btn-primary" type="object" name="generate_report"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+
+            </field>
+        </record>
+        <record id="cgit_action" model="ir.actions.act_window">
+            <field name="name">Cash Management Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">git.cgit</field>
+            <field name="view_mode">form</field>
+            <field name="target" eval="'new'"/>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="cgit_report_menu" name="Cash Management Report" parent="account.menu_finance_reports" action="cgit_action" sequence="99"/>
+
+    </data>
+</odoo>

@@ -10,5 +10,6 @@ class SalesApprovals(models.Model):
         ("budget_control", "Budget Control"),
         ("finance_section_head", "Finance Section Head"),
     ])
+    department = fields.Many2one('hr.department',)
 
     users = fields.Many2many('res.users')

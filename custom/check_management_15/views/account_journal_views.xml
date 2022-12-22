@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_account_journal_form_inh_bank" model="ir.ui.view">
+            <field name="name">account.journal.bank</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='default_account_id']" position="after">
+                    <field name="book_prefix"
+                           attrs="{'required': [('id', '!=', False), ('type', '=', 'bank')], 'invisible': [('type', '!=', 'bank')]}"/>
+                    <field name="multi_cheque_book" string="Activate Multi Check Book"
+                           attrs="{'required': [('id', '!=', False), ('type', '=', 'bank')], 'invisible': [('type', '!=', 'bank')]}"/>
+                    <field name="is_notes_receivable" string="Is Notes Receivable Journal"
+                           attrs="{'required': [('id', '!=', False), ('type', '=', 'bank')], 'invisible': [('type', '!=', 'bank')]}"/>
+                </xpath>
+
+                <xpath expr="//page[last()]" position="after">
+                    <page string="Check Bank">
+
+                            <field name="cheque_books_ids">
+                                <tree delete='false' editable="bottom">
+                                    <field name="name"/>
+                                    <field name="start_from"/>
+                                    <field name="end_in"/>
+                                    <field name="last_use" readonly="1"/>
+                                    <field name="used_book" readonly="1"/>
+                                    <field name="activate" attrs="{'readonly':[('read_only_data','=',True)]}"/>
+                                    <button name="delete_line" type="object" icon="fa-archive"/>
+                                    <field name="read_only_data" invisible="1"/>
+                                </tree>
+                            </field>
+                    </page>
+                    <page string="Followers Accounts">
+                        <group>
+                            <field name="notes_payable" string="Notes Payable Account"/>
+                            <field name="deliver_account" string="Payable Under Collection Account"/>
+                        </group>
+                        <group>
+                            <field name="reveivable_under_collection" string="Receivable Under Collection Account"/>
+                            <field name="discount_check_account" string="Discount Check Account"/>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

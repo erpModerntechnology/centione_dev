@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_item_code_form" model="ir.ui.view">
+            <field name="name">view_item_code_form</field>
+            <field name="model">item.code</field>
+            <field name="arch" type="xml">
+                <form string="Item Code">
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="item_code"/>
+                            </group>
+
+                            <group>
+                                <field name="desc"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_item_code_tree" model="ir.ui.view">
+            <field name="name">view_item_code_tree</field>
+            <field name="model">item.code</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="item_code"/>
+                    <field name="desc"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="item_code_form_action">
+            <field name="name">Codes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">item.code</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_item_code_act"
+                sequence="99"
+                name="Codes"
+                parent="account.menu_finance_configuration"
+                action="item_code_form_action"
+        />
+
+    </data>
+</odoo>

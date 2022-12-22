@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="invoice_holding_taxes_report_wiz_form" model="ir.ui.view">
+            <field name="name">invoice.holding.taxes.report.wiz.form</field>
+            <field name="model">invoice.holding.taxes.report.wiz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="generate_report" string="Print" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="invoice_holding_taxes_report_act_window" model="ir.actions.act_window">
+            <field name="name">Invoice Holding Taxes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.holding.taxes.report.wiz</field>
+            <field name="view_id" ref="invoice_holding_taxes_report_wiz_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Invoice with Holding Taxes" id="invoice_holding_taxes_report_menu" parent="account.menu_finance_reports"
+                  action="invoice_holding_taxes_report_act_window"/>
+
+    </data>
+</odoo>
