@@ -1,6 +1,10 @@
 import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
+
 
 
 class PaymentCheque(models.Model):
@@ -113,6 +117,7 @@ class PaymentCheque(models.Model):
             'view_id': compose_form.id,
             'res_id': self.batch_payment_id.id,
         }
+    collect_bank = fields.Many2one('account.journal',related='batch_payment_id.bank_id')
 
 
     @api.onchange('due_date')
@@ -2012,3 +2017,82 @@ class PaymentCheque(models.Model):
         # can be overriden to exclude payment methods based on the payment characteristics
         self.ensure_one()
         return []
+    def customer_cheques_payment(self):
+        customer_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.customer_cheque_due_alert')
+        today = date.today()
+        end_date = today - relativedelta(days=int(customer_cheque_due_alert))
+        print('end_date',end_date)
+        print('today',today)
+        return {
+            'name': _('Customer Cheques Due'),
+            'view_mode': 'tree,form',
+            'res_model': 'account.payment',
+            'type': 'ir.actions.act_window',
+            'domain': [('due_date', '>=', end_date),('payment_method_id.payment_type','=','inbound')],
+        }
+    def vendor_cheques_payment(self):
+        customer_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.vendor_cheque_due_alert')
+        today = date.today()
+        end_date = today - relativedelta(days=int(customer_cheque_due_alert))
+        print('end_date',end_date)
+        print('today',today)
+        return {
+            'name': _('Customer Cheques Due'),
+            'view_mode': 'tree,form',
+            'res_model': 'account.payment',
+            'type': 'ir.actions.act_window',
+            'domain': [('due_date', '>=', end_date),('payment_method_id.payment_type','=','outbound')],
+        }
+    notification_check = fields.Boolean(default=False,copy=False)
+    def _cron_payment_notification(self):
+        customer_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.vendor_cheque_due_alert')
+        today = date.today()
+        end_date = today - relativedelta(days=int(customer_cheque_due_alert))
+        records = self.env['account.payment'].search([('due_date', '>=', end_date),('payment_method_id.payment_type','in',['outbound','inbound']),('notification_check','=',False)])
+        for r in records:
+            print('print',self.env.ref('check_management_15.payment_notification'))
+            users = self.env.ref('check_management_15.payment_notification').users
+            if users:
+                base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+                base_url += '/web#id=%d&view_type=form&model=%s' % (r.id, r._name)
+                message_text = f'<strong>Reminder</strong> ' \
+                               f'<p>Check This <a href=%s>Payment</a></p>' % base_url
+
+                uid = self.env.user
+
+                notification_ids = []
+                for user in users:
+                    notification_ids.append((0, 0, {
+                        'res_partner_id': user.partner_id.id,
+                        'notification_type': 'inbox'
+                    }))
+                r.message_post(record_name='Payment',
+                                  body=message_text,
+                                  message_type="notification",
+                                  subtype_xmlid="mail.mt_comment",
+                                  author_id=uid.partner_id.id,
+                                  notification_ids=notification_ids)
+                r.notification_check = True
+
+
+class settings(models.TransientModel):
+    _inherit = 'res.config.settings'
+    customer_cheque_due_alert = fields.Integer('Customer Cheques Due Alert')
+    vendor_cheque_due_alert = fields.Integer('Vendor Cheques Due Alert')
+
+    def set_values(self):
+        res = super(settings, self).set_values()
+        self.env['ir.config_parameter'].set_param('check_management_15.customer_cheque_due_alert', self.customer_cheque_due_alert)
+        self.env['ir.config_parameter'].set_param('check_management_15.vendor_cheque_due_alert', self.vendor_cheque_due_alert)
+        return res
+
+    @api.model
+    def get_values(self):
+        res = super(settings, self).get_values()
+        customer_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.customer_cheque_due_alert')
+        vendor_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.vendor_cheque_due_alert')
+        res.update(
+            customer_cheque_due_alert=customer_cheque_due_alert,
+            vendor_cheque_due_alert=vendor_cheque_due_alert
+        )
+        return res

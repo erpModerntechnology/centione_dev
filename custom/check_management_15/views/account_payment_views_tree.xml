@@ -1,12 +1,13 @@
 <odoo>
     <data>
-                        <record id="view_account_payment_tree_inh" model="ir.ui.view">
+        <record id="view_account_payment_tree_inh" model="ir.ui.view">
             <field name="name">account.payment.inh</field>
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_tree"/>
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='state']" position="after">
+                    <field name="collect_bank"/>
                     <field name="state_check"/>
                 </xpath>
                 <xpath expr="//field[@name='check_number']" position="replace">
@@ -30,6 +31,73 @@
 
             </field>
         </record>
+        <record id="view_account_config_inherit" model="ir.ui.view">
+            <field name="name">Accounting settings</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@data-key='account']" position="inside">
+                    <h2>Cheques Alert</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="customer_cheque_due_alert" class="col-lg-5 o_light_label"/>
+                                <field name="customer_cheque_due_alert"/>
+                                <label for="vendor_cheque_due_alert" class="col-lg-5 o_light_label"/>
+                                <field name="vendor_cheque_due_alert"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="payment_notification" model="res.groups">
+            <field name="name">Payment Notification</field>
+        </record>
+
+        <record id="payment_customer_menuitem_act" model="ir.actions.server">
+            <field name="name">Customer Cheques Due</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="account.model_account_payment"/>
+            <field name="state">code</field>
+            <field name="code">action = model.customer_cheques_payment()</field>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="payment_customer_menuitem" name="Customer Cheques Due" parent="account.menu_finance_receivables"
+                  action="payment_customer_menuitem_act" groups="check_management_15.payment_notification"/>
+        <record id="payment_vendor_menuitem_act" model="ir.actions.server">
+            <field name="name">Vendor Cheques Due</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="account.model_account_payment"/>
+            <field name="state">code</field>
+            <field name="code">action = model.vendor_cheques_payment()</field>
+        </record>
+
+
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="payment_vendor_menuitem" name="Vendor Cheques Due" parent="account.menu_finance_payables"
+                  action="payment_vendor_menuitem_act" groups="check_management_15.payment_notification"/>
+
+        <record id="ir_cron_payment_notification" model="ir.cron">
+            <field name="name">Account: payment Notification</field>
+            <field name="model_id" ref="account.model_account_payment"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_payment_notification()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall"
+                   eval="datetime.now() + (datetime.now(pytz.timezone('Africa/Cairo')).replace(hour=10, minute=0, second=0) - datetime.now(pytz.timezone('Africa/Cairo'))) % timedelta(hours=24)"/>
+            <field name="doall" eval="False"/>
+        </record>
+
+
+
+
 
     </data>
 </odoo>

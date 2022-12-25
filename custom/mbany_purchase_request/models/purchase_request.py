@@ -45,6 +45,7 @@ class PurchaseRequest(models.Model):
     name = fields.Char(
         string="Request Reference",
         required=True,
+        readonly=True,
         default=lambda self: _("New"),
         tracking=True,
     )
@@ -288,7 +289,7 @@ class PurchaseRequestLine(models.Model):
             budget = self.env['crossovered.budget'].search([('date_from','>',self.request_id.date_request)])
             return {'domain': {'carry_forword_budget': [('id', 'in', budget.ids)]}}
         if self.type == 'carry_back':
-            budget = self.env['crossovered.budget'].search([('date_to','<',self.request_id.date_request)])
+            budget = self.env['crossovered.budget'].search([('date_from','<',self.request_id.date_request)])
             return {'domain': {'carry_backword_budget': [('id', 'in', budget.ids)]}}
 
 
@@ -329,25 +330,25 @@ class PurchaseRequestLine(models.Model):
     def constraint_budget(self):
         if self.subtotal > self.remained:
             raise ValidationError("Must Select Subtotal less Than Or Equal Remained")
-    compute_boolean = fields.Boolean(default=False)
+    compute_boolean = fields.Boolean(default=False,copy=False)
     def compute_line(self):
         if self.type=='reclass':
             budget = self.env['crossovered.budget.lines'].search([('date_from','<=',self.request_id.date_request),('date_to','>=',self.request_id.date_request),('crossovered_budget_id.budget_cost','=',True),('item_id','=',self.item_id.id)],limit=1)
             budget_reclass = self.env['crossovered.budget.lines'].search([('date_from','<=',self.request_id.date_request),('date_to','>=',self.request_id.date_request),('item_id','=',self.reclass_item_code.id)],limit=1)
             budget.planned_amount -= self.amount
-            budget_reclass.planned_amount -= self.amount
+            budget_reclass.planned_amount += self.amount
             self.compute_boolean = True
         if self.type == 'carry_forward':
             budget = self.env['crossovered.budget.lines'].search([('date_from','<=',self.request_id.date_request),('date_to','>=',self.request_id.date_request),('crossovered_budget_id.budget_cost','=',True),('item_id','=',self.item_id.id)],limit=1)
-            forward_budget = self.env['crossovered.budget.lines'].search([('crossovered_budget_id','=',self.carry_forword_budget),('item_id','=',self.item_id.id),('budget_cost','=',True)],limit=1)
+            forward_budget = self.env['crossovered.budget.lines'].search([('crossovered_budget_id','=',self.carry_forword_budget.id),('item_id','=',self.item_id.id),('crossovered_budget_id.budget_cost','=',True)],limit=1)
             budget.planned_amount -= self.amount
-            forward_budget.planned_amount -= self.amount
+            forward_budget.planned_amount += self.amount
             self.compute_boolean = True
         if self.type == 'carry_back':
             budget = self.env['crossovered.budget.lines'].search([('date_from','<=',self.request_id.date_request),('date_to','>=',self.request_id.date_request),('crossovered_budget_id.budget_cost','=',True),('item_id','=',self.item_id.id)],limit=1)
-            forward_budget = self.env['crossovered.budget.lines'].search([('crossovered_budget_id','=',self.carry_backword_budget),('item_id','=',self.item_id.id),('crossovered_budget_id.budget_cost','=',True)],limit=1)
+            forward_budget = self.env['crossovered.budget.lines'].search([('crossovered_budget_id','=',self.carry_backword_budget.id),('item_id','=',self.item_id.id),('crossovered_budget_id.budget_cost','=',True)],limit=1)
             budget.planned_amount -= self.amount
-            forward_budget.planned_amount -= self.amount
+            forward_budget.planned_amount += self.amount
             self.compute_boolean = True
 
 
