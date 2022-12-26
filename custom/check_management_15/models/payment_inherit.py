@@ -2028,7 +2028,7 @@ class PaymentCheque(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
-            'domain': [('due_date', '>=', end_date),('payment_method_id.payment_type','=','inbound')],
+            'domain': [('due_date', '>=', end_date),('payment_method_id.payment_type','=','inbound'),('state_check','not in',('collected','refunded_from_notes'))],
         }
     def vendor_cheques_payment(self):
         customer_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.vendor_cheque_due_alert')
@@ -2041,16 +2041,15 @@ class PaymentCheque(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'account.payment',
             'type': 'ir.actions.act_window',
-            'domain': [('due_date', '>=', end_date),('payment_method_id.payment_type','=','outbound')],
+            'domain': [('due_date', '>=', end_date),('payment_method_id.payment_type','=','outbound'),('state_check','not in',('collected','refunded_from_notes'))],
         }
     notification_check = fields.Boolean(default=False,copy=False)
     def _cron_payment_notification(self):
         customer_cheque_due_alert = self.env['ir.config_parameter'].get_param('check_management_15.vendor_cheque_due_alert')
         today = date.today()
         end_date = today - relativedelta(days=int(customer_cheque_due_alert))
-        records = self.env['account.payment'].search([('due_date', '>=', end_date),('payment_method_id.payment_type','in',['outbound','inbound']),('notification_check','=',False)])
+        records = self.env['account.payment'].search([('due_date', '>=', end_date),('payment_method_id.payment_type','in',['outbound','inbound']),('notification_check','=',False),('state_check','not in',('collected','refunded_from_notes'))])
         for r in records:
-            print('print',self.env.ref('check_management_15.payment_notification'))
             users = self.env.ref('check_management_15.payment_notification').users
             if users:
                 base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
