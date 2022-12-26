@@ -24,7 +24,8 @@ class VisitRegistrationCard(models.Model):
     start_time = fields.Datetime(string="Start Time")
     end_time = fields.Datetime(string="End Time")
     project_interested_in = fields.Char(string="Project Interested in")
-    broker_id = fields.Many2one(comodel_name="res.partner", string="Broker", domain="[('is_broker', '=', True)]")
+    broker_id = fields.Many2one(comodel_name="res.partner", string="Broker",
+                                domain="[('is_broker', '=', True), ('is_company', '=', False)]")
     next_action_date = fields.Date(string="Next Action Date")
     user_id = fields.Many2one(comodel_name="res.users", string="Assigned To")
 

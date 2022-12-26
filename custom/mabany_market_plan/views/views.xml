@@ -117,7 +117,8 @@
                             <field name="cust_sales_type"/>
                             <field name="channel_type" attrs="{'invisible':[('cust_sales_type','!=','direct')]}"/>
                             <field name="online_channel"
-                                   attrs="{'invisible':[('channel_type','!=','online_channel')]}"/>
+                                   attrs="{'invisible':[('channel_type','!=','online_channel')]}"
+                                   options="{'limit': 10, 'create': true, 'create_edit':true}"/>
                         </group>
                     </group>
 
