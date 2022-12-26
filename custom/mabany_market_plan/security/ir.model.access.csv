@@ -4,3 +4,4 @@ access_platform_plan,platform.plan,model_platform_plan,,1,1,1,1
 access_category_plan,category_plan,model_category_plan,,1,1,1,1
 access_type_plan,type_plan,model_type_plan,,1,1,1,1
 access_target_plan,target_plan,model_target_plan,,1,1,1,1
+access_online_channel,online_channel,model_online_channel,,1,1,1,1

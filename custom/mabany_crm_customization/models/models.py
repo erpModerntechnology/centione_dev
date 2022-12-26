@@ -256,7 +256,7 @@ class CRMLead(models.Model):
 
     support_visit_office_id = fields.Many2one(comodel_name="support.visit", string="Support Visit (Office)")
     broker_id = fields.Many2one(comodel_name="res.partner", string="Broker",
-                                domain="[('is_broker', '=', True)]")
+                                domain="[('is_broker', '=', True), ('is_company', '=', False)]")
     broker_agent_id = fields.Many2one(comodel_name="res.partner", string="Broker Agent Name",
                                       domain="[('is_broker', '=', True), ('is_company', '=', True)]")
     interested_ids = fields.Many2many(comodel_name="client.interested", string="Client Interested In")
