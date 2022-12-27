@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="group_set_project_fields_invisible" model="res.groups">
+            <field name="name">Set Project Fields Invisible</field>
+        </record>
+    </data>
+</odoo>

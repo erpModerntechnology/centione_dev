@@ -1,0 +1,179 @@
+<odoo>
+    <data>
+
+        <record id="project_project_view_form" model="ir.ui.view">
+            <field name="name">project.project.view.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="groups">
+                        mabany_project.group_set_project_fields_invisible
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="groups">
+                        mabany_project.group_set_project_fields_invisible
+                    </attribute>
+                </xpath>
+                <!--                <xpath expr="//field[@name='partner_phone']" position="attributes">-->
+                <!--                    <attribute name="groups">-->
+                <!--                        mabany_project.group_set_project_fields_invisible-->
+                <!--                    </attribute>-->
+                <!--                </xpath>-->
+                <!--                <xpath expr="//field[@name='partner_email']" position="attributes">-->
+                <!--                    <attribute name="groups">-->
+                <!--                        mabany_project.group_set_project_fields_invisible-->
+                <!--                    </attribute>-->
+                <!--                </xpath>-->
+                <xpath expr="//field[@name='privacy_visibility']" position="attributes">
+                    <attribute name="groups">
+                        mabany_project.group_set_project_fields_invisible
+                    </attribute>
+                </xpath>
+                <!--                <xpath expr="//field[@name='allowed_portal_user_ids']" position="attributes">-->
+                <!--                    <attribute name="groups">-->
+                <!--                        mabany_project.group_set_project_fields_invisible-->
+                <!--                    </attribute>-->
+                <!--                </xpath>-->
+                <xpath expr="//page[@name='settings']" position="inside">
+                    <group>
+                        <field name="project_type"/>
+                        <field name="bg_image"/>
+                        <field name="location"/>
+                        <field name="built_up_area"/>
+                        <field name="land_area"/>
+                        <field name="no_of_floors">
+                            <tree editable="bottom">
+                                <field name="no_of_floors"/>
+                                <field name="description"/>
+                            </tree>
+                        </field>
+                        <field name="status"/>
+                    </group>
+                </xpath>
+                <xpath expr="//notebook/page[@name='settings']" position="after">
+                    <page name="attachments" string="Attachments">
+                        <group>
+                            <group>
+                                <field name="licence"/>
+                                <field name="contracts"/>
+                                <field name="reservation_form"/>
+                            </group>
+                            <group>
+                                <field name="prochure"/>
+                                <field name="units_plans"/>
+                                <field name="layout"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!--    tree view-->
+        <record id="project_type_tree" model="ir.ui.view">
+            <field name="name">project.type.tree</field>
+            <field name="model">project.type</field>
+            <field name="arch" type="xml">
+                <tree string="Project Type">
+                    <field name="project_type"/>
+                </tree>
+            </field>
+        </record>
+        <!--    form view-->
+        <record id="project_type_form" model="ir.ui.view">
+            <field name="name">project.type.form</field>
+            <field name="model">project.type</field>
+            <field name="arch" type="xml">
+                <form string="Project Type">
+                    <sheet>
+                        <group>
+                            <field name="project_type"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--    tree view-->
+        <record id="status_tree" model="ir.ui.view">
+            <field name="name">status.tree</field>
+            <field name="model">status</field>
+            <field name="arch" type="xml">
+                <tree string="Status">
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+        <!--    form view-->
+        <record id="status_form" model="ir.ui.view">
+            <field name="name">status.form</field>
+            <field name="model">status</field>
+            <field name="arch" type="xml">
+                <form string="Status">
+                    <sheet>
+                        <group>
+                            <field name="status"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--        &lt;!&ndash;    tree view&ndash;&gt;-->
+        <!--        <record id="no_of_floors_tree" model="ir.ui.view">-->
+        <!--            <field name="name">no.of.floors.tree</field>-->
+        <!--            <field name="model">no.of.floors</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree string="No. of Floors">-->
+        <!--                    <field name="no_of_floors"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
+        <!--        &lt;!&ndash;    form view&ndash;&gt;-->
+        <!--        <record id="no_of_floors_form" model="ir.ui.view">-->
+        <!--            <field name="name">no.of.floors.form</field>-->
+        <!--            <field name="model">no.of.floors</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <form string="No. of Floors">-->
+        <!--                    <sheet>-->
+        <!--                        <group>-->
+        <!--                            <field name="no_of_floors"/>-->
+        <!--                        </group>-->
+        <!--                    </sheet>-->
+        <!--                </form>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="action_project_type" model="ir.actions.act_window">
+            <field name="name">Project Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_status" model="ir.actions.act_window">
+            <field name="name">Status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">status</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--        <record id="action_no_of_floors" model="ir.actions.act_window">-->
+        <!--            <field name="name">No. of Floors</field>-->
+        <!--            <field name="type">ir.actions.act_window</field>-->
+        <!--            <field name="res_model">no.of.floors</field>-->
+        <!--            <field name="view_mode">tree,form</field>-->
+        <!--        </record>-->
+
+        <menuitem id="menu_project_type" name="Project Type"
+                  parent="project.menu_project_config"
+                  action="mabany_project.action_project_type"/>
+        <menuitem id="menu_status" name="Status"
+                  parent="project.menu_project_config"
+                  action="mabany_project.action_status"/>
+        <!--        <menuitem id="menu_no_of_floors" name="No. of Floors"-->
+        <!--                  parent="project.menu_project_config"-->
+        <!--                  action="resan_project.action_no_of_floors"/>-->
+
+    </data>
+</odoo>

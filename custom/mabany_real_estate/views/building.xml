@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_build_view_form" model="ir.ui.view">
+            <field name="name">res_build_view_form</field>
+            <field name="model">res.build</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header/>
+                    <sheet string="Build">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="build_liscence"/>
+                                <field name="no_level"/>
+                                <field name="build_desc"/>
+                                <br/>
+                                <field name="select_all"/>
+                                <field name="net_area" attrs="{'invisible': [('select_all', '=', False)]}"/>
+                                <field name="sellable_area" attrs="{'invisible': [('select_all', '=', False)]}"/>
+                                <field name="sellable_price" attrs="{'invisible': [('select_all', '=', False)]}"/>
+                                <field name="is_garage" attrs="{'invisible': [('select_all', '=', False)]}"/>
+                                <button name="update_unit" type="object" string="Update" class="oe_highlight"
+                                        attrs="{'invisible': [('select_all', '=', False)]}"/>
+                            </group>
+                            <group>
+                                <field name="project_id"/>
+                                <field name="phase_id"/>
+                                <field name="no_units"/>
+                                <field name="categ"/>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Units">
+                                <field name="units"
+                                       widget="section_and_note_one2many"
+                                       mode="tree,kanban"
+                                       class="oe_inline oe_no_button"
+                                >
+                                    <tree editable="buttom" delete="0" create="0">
+                                        <field name="property_code" readonly="1"/>
+                                        <field name="type_of_property_id" readonly="1"/>
+                                        <field name="level" readonly="1"/>
+                                        <field name="sellable"/>
+                                        <field name="price_m"/>
+                                        <field name="is_garage"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter" name="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="res_build_view_tree" model="ir.ui.view">
+            <field name="name">res_build_view_tree</field>
+            <field name="model">res.build</field>
+            <field name="arch" type="xml">
+                <tree string="company_partner_tree">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="phase_id"/>
+                    <field name="no_level"/>
+                    <field name="no_units"/>
+                    <field name="build_liscence"/>
+                    <field name="build_desc"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_build_action" model="ir.actions.act_window">
+            <field name="name">Buildings</field>
+            <field name="res_model">res.build</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Building
+                </p>
+            </field>
+
+        </record>
+
+
+
+        <record id="building_shared_multi_company_rule" model="ir.rule">
+            <field name="name">Shared Records:Building</field>
+            <field name="model_id" ref="model_res_build"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+
+
+        <menuitem id="build_sub"
+                  name="Buildings"
+                  parent="building_structure_sub"
+                  action="res_build_action"
+                  sequence="1"/>
+
+
+    </data>
+</odoo>

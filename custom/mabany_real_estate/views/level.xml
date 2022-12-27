@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="level_view_form" model="ir.ui.view">
+            <field name="name">level_view_form</field>
+            <field name="model">res.level</field>
+            <field name="arch" type="xml">
+                <form string="git_form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="ground_level"/>
+                            <field name="under_ground_level"/>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="level_view_tree" model="ir.ui.view">
+            <field name="name">level_view_tree</field>
+            <field name="model">res.level</field>
+            <field name="arch" type="xml">
+                <tree string="company_partner_tree">
+                    <field name="name"/>
+                    <field name="ground_level"/>
+                    <field name="under_ground_level"/>
+                </tree>
+            </field>
+        </record>
+        <record id='res_estate_level' model='ir.actions.act_window'>
+            <field name="name">Levels</field>
+            <field name="res_model">res.level</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="conf_sub"
+                  name="Configuration"
+                  parent="menu_real_estate"
+                  sequence="99"/>
+
+
+        <menuitem id="level_sub"
+                  name="Levels"
+                  parent="conf_sub"
+                  action="res_estate_level"
+                  sequence="5"/>
+
+
+    </data>
+</odoo>

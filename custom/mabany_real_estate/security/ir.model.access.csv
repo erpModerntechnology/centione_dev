@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_reservation,res_reservation,model_res_reservation,,1,1,1,1
+access_project_phase,project_phase.project_phase,model_project_phase,,1,1,1,1
+access_latlng_line,latlng_line,model_latlng_line,,1,1,1,1
+access_biztech_product_images,biztech.product.images,model_biztech_product_images,,1,1,1,1
+mabany_real_estate.access_property_exception,access_property_exception,mabany_real_estate.model_property_exception,,1,1,1,1
+mabany_real_estate.access_property_category,access_property_category,mabany_real_estate.model_property_category,,1,1,1,1
+mabany_real_estate.access_property_type,access_property_type,mabany_real_estate.model_property_type,,1,1,1,1
+mabany_real_estate.access_property_location,access_property_location,mabany_real_estate.model_property_location,,1,1,1,1
+mabany_real_estate.access_property_finished_type,access_property_finished_type,mabany_real_estate.model_property_finished_type,,1,1,1,1
+mabany_real_estate.access_property_design,access_property_design,mabany_real_estate.model_property_design,,1,1,1,1
+mabany_real_estate.access_res_build,access_res_build,mabany_real_estate.model_res_build,,1,1,1,1
+mabany_real_estate.access_res_level,access_res_level,mabany_real_estate.model_res_level,,1,1,1,1
+mabany_real_estate.access_generate_build,access_generate_build,mabany_real_estate.model_generate_build,,1,1,1,1
+
