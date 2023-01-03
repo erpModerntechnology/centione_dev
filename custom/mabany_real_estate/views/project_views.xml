@@ -779,24 +779,24 @@
                         <span class="o_stat_text">Draft Units</span>
                     </div>
                 </button>
-                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_units_request"
-                >
-                    <div class="o_form_field o_stat_info">
-                        <field name="units_request_count" class="o_stat_value"/>
-                        <!--                                    <span class="o_stat_value">-->
-                        <!--                                    </span>-->
-                        <span class="o_stat_text">Request Available Units</span>
-                    </div>
-                </button>
-                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_units_approve"
-                >
-                    <div class="o_form_field o_stat_info">
-                        <field name="units_approve_count" class="o_stat_value"/>
-                        <!--                                    <span class="o_stat_value">-->
-                        <!--                                    </span>-->
-                        <span class="o_stat_text">Approve Units</span>
-                    </div>
-                </button>
+<!--                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_units_request"-->
+<!--                >-->
+<!--                    <div class="o_form_field o_stat_info">-->
+<!--                        <field name="units_request_count" class="o_stat_value"/>-->
+<!--                        &lt;!&ndash;                                    <span class="o_stat_value">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </span>&ndash;&gt;-->
+<!--                        <span class="o_stat_text">Request Available Units</span>-->
+<!--                    </div>-->
+<!--                </button>-->
+<!--                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_units_approve"-->
+<!--                >-->
+<!--                    <div class="o_form_field o_stat_info">-->
+<!--                        <field name="units_approve_count" class="o_stat_value"/>-->
+<!--                        &lt;!&ndash;                                    <span class="o_stat_value">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </span>&ndash;&gt;-->
+<!--                        <span class="o_stat_text">Approve Units</span>-->
+<!--                    </div>-->
+<!--                </button>-->
                 <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"
                         name="action_view_units_available"
                 >
@@ -832,19 +832,19 @@
                         <field name="units_blocked_count" class="o_stat_value"/>
                         <!--                                    <span class="o_stat_value">-->
                         <!--                                    </span>-->
-                        <span class="o_stat_text">Blocked Units</span>
+                        <span class="o_stat_text">Holded Units</span>
                     </div>
                 </button>
-                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"
-                        name="action_view_units_exception"
-                >
-                    <div class="o_form_field o_stat_info">
-                        <field name="units_exception_count" class="o_stat_value"/>
-                        <!--                                    <span class="o_stat_value">-->
-                        <!--                                    </span>-->
-                        <span class="o_stat_text">Exceptions Units</span>
-                    </div>
-                </button>
+<!--                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"-->
+<!--                        name="action_view_units_exception"-->
+<!--                >-->
+<!--                    <div class="o_form_field o_stat_info">-->
+<!--                        <field name="units_exception_count" class="o_stat_value"/>-->
+<!--                        &lt;!&ndash;                                    <span class="o_stat_value">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </span>&ndash;&gt;-->
+<!--                        <span class="o_stat_text">Exceptions Units</span>-->
+<!--                    </div>-->
+<!--                </button>-->
             </div>
             <xpath expr="//field[@name='partner_id']" position="after">
                 <!--                <field name="condition_terms"/>-->

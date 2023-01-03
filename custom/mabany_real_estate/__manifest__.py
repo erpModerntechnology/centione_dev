@@ -32,6 +32,14 @@
         'views/building.xml',
         'views/level.xml',
         'views/generate_build.xml',
+        'views/phase_views.xml',
+        'wizard/cancel_res_views.xml',
+        'wizard/copy_line_views.xml',
+        'wizard/merge_view.xml',
+        'views/res_reservation.xml',
+        'views/address_pay_strategy.xml',
+        'views/customer_payment.xml',
+        'views/sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

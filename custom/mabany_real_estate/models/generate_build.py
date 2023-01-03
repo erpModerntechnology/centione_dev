@@ -43,7 +43,7 @@ class masria_real_state_generate(models.Model):
                             str(n)) == 1 else build.name + " " + str(level.name) + str(n),
                         'property_code': build.name + " " + str(level.name) + '0' + str(n) if len(
                             str(n)) == 1 else build.name + " " + str(level.name) + str(n),
-                        # 'type_of_property_id': self.type_of_property_id.id,
+                        'cate_id': self.type_of_property_id.id,
                         'is_property': True,
                         'phase_id': self.phase_id.id,
                         'project_id': self.project_id.id,
@@ -63,7 +63,7 @@ class masria_real_state_generate(models.Model):
                         str(seq_3)) == 1 else build.name + " " + str(ground_level.name) + str(seq_3),
                     'property_code': build.name + " " + str(ground_level.name) + '0' + str(seq_3) if len(
                         str(seq_3)) == 1 else build.name + " " + str(ground_level.name) + str(seq_3),
-                    # 'type_of_property_id': self.type_of_property_id.id,
+                    'cate_id': self.type_of_property_id.id,
                     'phase_id': self.phase_id.id,
                     'project_id': self.project_id.id,
                     'is_property': True,
@@ -82,7 +82,7 @@ class masria_real_state_generate(models.Model):
                         str(seq_4)) == 1 else build.name + " " + str(under_ground_level.name) + str(seq_4),
                     'property_code': build.name + " " + str(under_ground_level.name) + '0' + str(seq_4) if len(
                         str(seq_4)) == 1 else build.name + " " + str(under_ground_level.name) + str(seq_4),
-                    # 'type_of_property_id': self.type_of_property_id.id,
+                    'cate_id': self.type_of_property_id.id,
                     'phase_id': self.phase_id.id,
                     'project_id': self.project_id.id,
                     'is_property': True,

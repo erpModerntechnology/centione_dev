@@ -141,40 +141,40 @@ class projectPoject(models.Model):
 
     def action_view_units(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_all').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_all').read()[0]
         print("action %s",action)
         return action
     def action_view_units_draft(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_draft').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_draft').read()[0]
         return action
     def action_view_units_request(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_request_available').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_request_available').read()[0]
         return action
     def action_view_units_approve(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_approve').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_approve').read()[0]
         return action
     def action_view_units_available(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_available').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_available').read()[0]
         return action
     def action_view_units_reserved(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_reserved').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_reserved').read()[0]
         return action
     def action_view_units_contracted(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_contracted').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_contracted').read()[0]
         return action
     def action_view_units_blocked(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_blocked').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_blocked').read()[0]
         return action
     def action_view_units_exception(self):
         self.ensure_one()
-        action = self.env.ref('resan_real_estate.act_project_units_exception').read()[0]
+        action = self.env.ref('mabany_real_estate.act_project_units_exception').read()[0]
         return action
 
 

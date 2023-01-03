@@ -158,7 +158,7 @@ class ProductProduct(models.Model):
          ('available', _('Available')),
          ('reserved', _('Reserved')),
          ('contracted', _('Contracted')),
-         ('blocked', _('Blocked'))], string="Status", default='draft', copy=False)
+         ('blocked', _('Holded'))], string="Status", default='draft', copy=False)
     is_contracted = fields.Boolean(string="is Contracted", compute="_compute_is_contract")
     north = fields.Float('North')
     view = fields.Float('View')
@@ -294,6 +294,10 @@ class ProductProduct(models.Model):
     # finish calculation
     unit_price = fields.Float(string="Unit Price ", required=False, compute="_compute_unit_price", store=True)
     unit_price2 = fields.Float(string="Unit Price ", required=False, )
+    is_garden = fields.Boolean(default=False)
+    is_clubhouse = fields.Boolean(default=False)
+    garden_amount = fields.Float()
+    clubhouse_amount = fields.Float()
 
     @api.depends('price_m', 'sellable', 'unit_price2')
     def _compute_unit_price(self):
@@ -427,11 +431,11 @@ class ProductProduct(models.Model):
                                     store=True)
 
     @api.depends('price_m', 'sellable', 'finishing_price', 'pool_price', 'price_garden_new', 'outdoor_price',
-                 'price_garage_for_one', 'number_of_garage','pricing_after_premium')
+                 'price_garage_for_one', 'number_of_garage','pricing_after_premium','garden_amount','clubhouse_amount')
     def _compute_final_unit_price(self):
         for rec in self:
             rec.final_unit_price = ((rec.total_ground + rec.total_first) if rec.is_duplex else (
-                    rec.price_m * rec.sellable))+rec.pricing_after_premium + rec.finishing_price + rec.pool_price + rec.price_garden_new +\
+                    rec.price_m * rec.sellable))+rec.pricing_after_premium+rec.garden_amount+rec.clubhouse_amount + rec.finishing_price + rec.pool_price + rec.price_garden_new +\
                                    rec.outdoor_price + (rec.price_garage_for_one * rec.number_of_garage)
 
     def update_state_to_available(self):
@@ -572,7 +576,7 @@ class ProductProduct(models.Model):
     def action_view_partner_reservation(self):
         # self.ensure_one()
         print("enter here L>action_view_partner_reservation")
-        action = self.env.ref('resan_real_estate.reservation_list_action').read()[0]
+        action = self.env.ref('mabany_real_estate.reservation_list_action').read()[0]
         action['domain'] = [
             ('property_id', '=', self.id),
         ]
@@ -583,7 +587,7 @@ class ProductProduct(models.Model):
     def action_view_partner_reservation_new(self):
         # self.ensure_one()
         print("enter here L>action_view_partner_reservation")
-        # action = self.env.ref('resan_real_estate.reservation_list_action').read()[0]
+        # action = self.env.ref('mabany_real_estate.reservation_list_action').read()[0]
         # action['domain'] = [
         #     ('property_id', '=', self.id),
         # ]
