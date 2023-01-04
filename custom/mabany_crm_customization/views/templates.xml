@@ -79,7 +79,7 @@
 
 
         <record id="client_source_action" model="ir.actions.act_window">
-            <field name="name">Unit Category</field>
+            <field name="name">Client Source</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">client.source</field>
             <field name="view_mode">tree,form</field>
@@ -87,14 +87,16 @@
         <menuitem id="client_source_menu" name="Client Source" parent="crm.crm_menu_config"
                   action="client_source_action" sequence="7"/>
 
-        <record id="unit_category_action" model="ir.actions.act_window">
-            <field name="name">Unit Category</field>
+        <record id="duplicated_leads_action" model="ir.actions.act_window">
+            <field name="name">Duplicated Leads</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">unit.category</field>
+            <field name="res_model">crm.lead</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_duplicated', '=', True)]</field>
         </record>
-        <menuitem id="unit_category_menu" name="Unit Category" parent="crm.crm_menu_config"
-                  action="unit_category_action" sequence="7"/>
+        <menuitem id="duplicated_leads_menu" name="Duplicated Leads" parent="crm.crm_menu_sales"
+                  action="duplicated_leads_action" sequence="6"/>
+
 
         <record id="unit_type_action" model="ir.actions.act_window">
             <field name="name">Unit Type</field>
@@ -199,24 +201,24 @@
         <menuitem id="client_request_type_menu" name="Client Request Contact Type" parent="crm.crm_menu_config"
                   action="client_request_type_action" sequence="7"/>
 
-        <record id="support_contract_action" model="ir.actions.act_window">
-            <field name="name">Support Contract</field>
+        <record id="unit_view_action" model="ir.actions.act_window">
+            <field name="name">Unit View</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">support.contract</field>
+            <field name="res_model">unit.view</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem id="support_contract_menu" name="Support Contract" parent="crm.crm_menu_config"
-                  action="support_contract_action" sequence="7"/>
+        <menuitem id="unit_view_menu" name="Unit View" parent="crm.crm_menu_config"
+                  action="unit_view_action" sequence="7"/>
 
 
-        <record id="support_visit_action" model="ir.actions.act_window">
-            <field name="name">Support Visit</field>
+        <record id="preferred_district_action" model="ir.actions.act_window">
+            <field name="name">Preferred District</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">support.visit</field>
+            <field name="res_model">preferred.district</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem id="support_visit_menu" name="Support Visit" parent="crm.crm_menu_config"
-                  action="support_visit_action" sequence="7"/>
+        <menuitem id="preferred_district_menu" name="Preferred District" parent="contacts.menu_localisation"
+                  action="preferred_district_action" sequence="2"/>
 
         <record id="support_reservation_action" model="ir.actions.act_window">
             <field name="name">Support Reservation</field>
@@ -226,15 +228,6 @@
         </record>
         <menuitem id="support_reservation_menu" name="Support Reservation" parent="crm.crm_menu_config"
                   action="support_reservation_action" sequence="7"/>
-
-        <record id="support_call_action" model="ir.actions.act_window">
-            <field name="name">Support Call</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">support.call</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-        <menuitem id="support_call_menu" name="Support Call" parent="crm.crm_menu_config"
-                  action="support_call_action" sequence="7"/>
 
         <record id="reassigned_reason_action" model="ir.actions.act_window">
             <field name="name">Reassigned Reason</field>

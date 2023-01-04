@@ -1,226 +1,264 @@
 <odoo>
-  <data>
-      <!-- Inherit Form View to Modify it -->
-      <record id="crm_lead_form_market_plan" model="ir.ui.view">
-          <field name="name">crm.lead.form.market.plan</field>
-          <field name="model">crm.lead</field>
-          <field name="inherit_id" ref="crm.crm_lead_view_form"/>
-          <field name="arch" type="xml">
-              <xpath expr="//page[@name='lead']/group[1]/group[3]/field[@name='campaign_id']" position="replace">
-                  <field name="market_plan_id"/>
-              </xpath>
+    <data>
+        <record id="crm_stage_tree_unqualified" model="ir.ui.view">
+            <field name="name">crm.stage.tree.unqualified</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_tree"/>
+            <field name="arch" type="xml">
 
-          </field>
-      </record>
-      <record id="crm_lead_from_marketing_new" model="ir.actions.act_window">
-          <field name="name">Welcome Care</field>
-          <field name="res_model">crm.lead</field>
-          <field name="view_mode">form,tree</field>
-          <field name="domain"></field>
-          <field name="context"></field>
-      </record>
+                <xpath expr="//field[@name='is_won']" position="after">
+                    <field name="is_unqualified"/>
+                </xpath>
 
-    <record id="market_plan_form" model="ir.ui.view">
-        <field name="name">market.plan.forn</field>
-        <field name="model">market.plan</field>
-        <field name="arch" type="xml">
-            <form string="Campaign">
-                <header>
-                    <button string="Create Welcome Card" name="%(mabany_market_plan.crm_lead_from_marketing_new)d"
-                            type="action"
-                            class="oe_highlight"
-                            context="{'search_default_market_plan_id': active_id,
+            </field>
+        </record>
+        <!-- Inherit Form View to Modify it -->
+        <record id="crm_stage_form_unqualified" model="ir.ui.view">
+            <field name="name">crm.stage.form.unqualified</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='is_won']" position="after">
+                    <field name="is_unqualified"/>
+                </xpath>
+
+            </field>
+        </record>
+        <!-- Inherit Form View to Modify it -->
+        <record id="crm_lead_form_market_plan" model="ir.ui.view">
+            <field name="name">crm.lead.form.market.plan</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <!--              <xpath expr="//page[@name='lead']/group[1]/group[3]/field[@name='campaign_id']" position="replace"/>-->
+                <xpath expr="//field[@name='sub_channel_ids']" position="after">
+                    <field name="market_plan_id" options="{'no_create': True}"/>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="crm_lead_from_marketing_new" model="ir.actions.act_window">
+            <field name="name">Welcome Care</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">form,tree</field>
+            <field name="domain"></field>
+            <field name="context"></field>
+        </record>
+
+        <record id="market_plan_form" model="ir.ui.view">
+            <field name="name">market.plan.forn</field>
+            <field name="model">market.plan</field>
+            <field name="arch" type="xml">
+                <form string="Campaign">
+                    <header>
+                         <button string="Activate" name="activate_plan"
+                                type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state', 'in', ('active','complete'))]}"
+                        />
+                        <button string="Done" name="complete_plan"
+                                type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state', 'in', ('planning','complete'))]}"
+                        />
+
+                        <button string="Create Welcome Card" name="%(mabany_market_plan.crm_lead_from_marketing_new)d"
+                                type="action"
+                                class="oe_highlight"
+                                context="{'search_default_market_plan_id': active_id,
                                   'default_market_plan_id': active_id,
 
                                   }"
-                    />
-                </header>
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_actual_lead_view" type="object"
-                                class="oe_stat_button" icon="fa-calendar"
-                                context="{'search_default_market_plan_id': active_id}">
-                            <div class="o_stat_info">
-                                <field name="actual_leads" class="o_stat_value"/>
-                                <span class="o_stat_text">
-                                    Actual Leads
-                                </span>
-                            </div>
-                        </button>
-                        <button name="action_won_lead_view" type="object"
-                                class="oe_stat_button" icon="fa-calendar"
-                                context="{'search_default_market_plan_id': active_id}">
-                            <div class="o_stat_info">
-                                <field name="won_leads" class="o_stat_value"/>
-                                <span class="o_stat_text">
-                                    Won Leads
-                                </span>
-                            </div>
-                        </button>
-                        <button name="action_visit_lead_view" type="object"
-                                class="oe_stat_button" icon="fa-calendar"
-                                context="{'search_default_market_plan_id': active_id}">
-                            <div class="o_stat_info">
-                                <field name="visit_leads" class="o_stat_value"/>
-                                <span class="o_stat_text">
-                                    No. of Visits
-                                </span>
-                            </div>
-                        </button>
-                        <button name="action_total_leads_view" type="object"
-                                class="oe_stat_button" icon="fa-calendar"
-                                context="{'search_default_market_plan_id': active_id}">
-                            <div class="o_stat_info">
-                                <field name="total_leads" class="o_stat_value"/>
-                                <span class="o_stat_text" attrs="{'invisible': [('total_leads', '&lt;', 2)]}">Total
-                                    Leads
-                                </span>
-                                <span class="o_stat_text" attrs="{'invisible': [('total_leads', '&gt;', 1)]}">Total
-                                    Lead
-                                </span>
-                            </div>
-                        </button>
+                        />
+                        <field name="state" widget="statusbar" statusbar_visible="planning,active,complete"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_unqualified_lead_view" type="object"
+                                    class="oe_stat_button" icon="fa-calendar"
+                                    context="{'search_default_market_plan_id': active_id}">
+                                <div class="o_stat_info">
+                                    <field name="unqualified_leads" class="o_stat_value"/>
+                                    <span class="o_stat_text">
+                                        Unqualified Leads
+                                    </span>
+                                </div>
+                            </button>
+                            <button name="action_won_lead_view" type="object"
+                                    class="oe_stat_button" icon="fa-calendar"
+                                    context="{'search_default_market_plan_id': active_id}">
+                                <div class="o_stat_info">
+                                    <field name="won_leads" class="o_stat_value"/>
+                                    <span class="o_stat_text">
+                                        Won Leads
+                                    </span>
+                                </div>
+                            </button>
+<!--                            <button name="action_visit_lead_view" type="object"-->
+<!--                                    class="oe_stat_button" icon="fa-calendar"-->
+<!--                                    context="{'search_default_market_plan_id': active_id}">-->
+<!--                                <div class="o_stat_info">-->
+<!--                                    <field name="visit_leads" class="o_stat_value"/>-->
+<!--                                    <span class="o_stat_text">-->
+<!--                                        No. of Visits-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </button>-->
+                            <button name="action_total_leads_view" type="object"
+                                    class="oe_stat_button" icon="fa-calendar"
+                                    context="{'search_default_market_plan_id': active_id}">
+                                <div class="o_stat_info">
+                                    <field name="total_leads" class="o_stat_value"/>
+                                    <span class="o_stat_text" attrs="{'invisible': [('total_leads', '&lt;', 2)]}">Total
+                                        Leads
+                                    </span>
+                                    <span class="o_stat_text" attrs="{'invisible': [('total_leads', '&gt;', 1)]}">Total
+                                        Lead
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                        <h3>
+                            <span>Campaign Name :</span>
+                        </h3>
+
+                        <h1 class="mt0">
+                            <field name="name" attrs="{'invisible':[('name', '=', '/')]}"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <!--                            <field name="platform_id"/>-->
+                                <field name="category_id" invisible="1"/>
+                                <field name="type_id"/>
+                                <!--                            <field name="target_id"/>-->
+                                <field name="ads_name" invisible="1"/>
+                                <field name="ads_link"/>
+                                <field name="ads_marketing_cost"/>
+                            </group>
+                            <group>
+<!--                                <field name="lead_cost" invisible="1"/>-->
+<!--                                <field name="planned_leads"/>-->
+<!--                                <field name="visit_leads" invisible="0"/>-->
+                                <field name="unqualified_leads" invisible="0"/>
+                                <field name="won_leads" invisible="0"/>
+                                <field name="total_leads" invisible="0"/>
+                                <field name="start_palnned_date" invisible="1"/>
+                                <field name="end_palnned_date" invisible="1"/>
+                                <field name="start_actual_date" invisible="1"/>
+                                <field name="end_actual_date" invisible="1"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="owner_id"/>
+                                <field name="project_id"/>
+                                <!--                            <field name="lead_type_id" invisible="1"/>-->
+                                <!--                            <field name="cust_sales_type"/>-->
+                                <!--                            <field name="channel_type" attrs="{'invisible':[('cust_sales_type','!=','direct')]}"/>-->
+                                <!--                            <field name="online_channel"-->
+                                <!--                                   attrs="{'invisible':[('channel_type','!=','online_channel')]}"-->
+                                <!--                                   options="{'limit': 10, 'create': true, 'create_edit':true}"/>-->
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
                     </div>
-                    <h3>
-                        <span>Campaign Name :</span>
-                    </h3>
+                </form>
+            </field>
+        </record>
+        <record id="market_plan_tree_view_leads_inherite" model="ir.ui.view">
+            <field name="name">market.plan.tree.lead.inherite</field>
+            <field name="model">market.plan</field>
+            <field name="arch" type="xml">
+                <tree string="Campaign">
+                    <field name="name"/>
+                    <!--                <field name="platform_id" optional="hide"/>-->
+                    <field name="category_id" invisible="1"/>
+                    <field name="type_id" optional="hide"/>
+                    <!--                <field name="target_id" optional="hide"/>-->
+                    <field name="ads_name" invisible="1"/>
+                    <field name="ads_link" optional="hide"/>
+                    <field name="ads_marketing_cost" optional="hide" digits="[42,0]"/>
+<!--                    <field name="lead_cost" optional="show" digits="[42,0]"/>-->
+<!--                    <field name="planned_leads" optional="show" digits="[42,0]"/>-->
+                    <field name="unqualified_leads" invisible="0" optional="show" digits="[42,0]"/>
+                    <field name="won_leads" invisible="0" optional="show" digits="[42,0]"/>
+<!--                    <field name="visit_leads" invisible="0" optional="show" digits="[42,0]"/>-->
+                    <field name="start_palnned_date" invisible="1"/>
+                    <field name="end_palnned_date" invisible="1"/>
+                    <field name="start_actual_date" invisible="1"/>
+                    <field name="end_actual_date" invisible="1"/>
+                    <field name="start_date" optional="hide"/>
+                    <field name="end_date" optional="hide"/>
+                    <field name="owner_id" optional="hide"/>
+                    <field name="project_id" optional="hide"/>
+                    <field name="total_leads" optional="hide" digits="[42,0]"/>
+                    <!--                <field name="lead_type_id" invisible="1"/>-->
+                    <!--                <field name="cust_sales_type" optional="hide"/>-->
+                    <!--                <field name="channel_type" attrs="{'invisible':[('cust_sales_type','!=','direct')]}" optional="hide"/>-->
+                    <!--                <field name="online_channel"-->
+                    <!--                       attrs="{'invisible':[('channel_type','!=','online_channel')]}" optional="hide"/>-->
 
-                    <h1 class="mt0">
-                        <field name="name" attrs="{'invisible':[('name', '=', '/')]}"/>
-                    </h1>
-                    <group>
-                        <group>
-                            <field name="platform_id"/>
-                            <field name="category_id" invisible="1"/>
-                            <field name="type_id"/>
-                            <field name="target_id"/>
-                            <field name="ads_name" invisible="1"/>
-                            <field name="ads_link"/>
-                            <field name="ads_marketing_cost"/>
-                        </group>
-                        <group>
-                            <field name="lead_cost" invisible="1"/>
-                            <field name="planned_leads"/>
-                            <field name="visit_leads" invisible="0"/>
-                            <field name="actual_leads" invisible="0"/>
-                            <field name="won_leads" invisible="0"/>
-                            <field name="total_leads" invisible="0"/>
-                            <field name="start_palnned_date" invisible="1"/>
-                            <field name="end_palnned_date" invisible="1"/>
-                            <field name="start_actual_date" invisible="1"/>
-                            <field name="end_actual_date" invisible="1"/>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
-                            <field name="owner_id"/>
-                            <field name="project_id"/>
-<!--                            <field name="lead_type_id" invisible="1"/>-->
-                            <field name="cust_sales_type"/>
-                            <field name="channel_type" attrs="{'invisible':[('cust_sales_type','!=','direct')]}"/>
-                            <field name="online_channel"
-                                   attrs="{'invisible':[('channel_type','!=','online_channel')]}"
-                                   options="{'limit': 10, 'create': true, 'create_edit':true}"/>
-                        </group>
-                    </group>
+                </tree>
+            </field>
+        </record>
 
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record id="market_plan_tree_view_leads_inherite" model="ir.ui.view">
-        <field name="name">market.plan.tree.lead.inherite</field>
-        <field name="model">market.plan</field>
-        <field name="arch" type="xml">
-            <tree string="Campaign">
-                <field name="name"/>
-                <field name="platform_id" optional="hide"/>
-                <field name="category_id" invisible="1"/>
-                <field name="type_id" optional="hide"/>
-                <field name="target_id" optional="hide"/>
-                <field name="ads_name" invisible="1"/>
-                <field name="ads_link" optional="hide"/>
-                <field name="ads_marketing_cost" optional="hide" digits="[42,0]"/>
-                <field name="lead_cost" optional="show" digits="[42,0]"/>
-                <field name="planned_leads" optional="show" digits="[42,0]"/>
-                <field name="actual_leads" invisible="0" optional="show" digits="[42,0]"/>
-                <field name="won_leads" invisible="0" optional="show" digits="[42,0]"/>
-                <field name="visit_leads" invisible="0" optional="show" digits="[42,0]"/>
-                <field name="start_palnned_date" invisible="1"/>
-                <field name="end_palnned_date" invisible="1"/>
-                <field name="start_actual_date" invisible="1"/>
-                <field name="end_actual_date" invisible="1"/>
-                <field name="start_date" optional="hide"/>
-                <field name="end_date" optional="hide"/>
-                <field name="owner_id" optional="hide"/>
-                <field name="project_id" optional="hide"/>
-                <field name="total_leads" optional="hide" digits="[42,0]"/>
-<!--                <field name="lead_type_id" invisible="1"/>-->
-                <field name="cust_sales_type" optional="hide"/>
-                <field name="channel_type" attrs="{'invisible':[('cust_sales_type','!=','direct')]}" optional="hide"/>
-                <field name="online_channel"
-                       attrs="{'invisible':[('channel_type','!=','online_channel')]}" optional="hide"/>
+        <record model="ir.actions.act_window" id="market_plan_action">
+            <field name="name">Campaign</field>
+            <field name="res_model">market.plan</field>
+            <field name="view_mode">tree,form</field>
+            <!--        <field name="search_view_id" ref="view_market_plan_filter"/>-->
+            <!--        <field name="domain">[('type','=','opportunity')]</field>-->
+            <!--        <field name="context">{-->
+            <!--            'default_type': 'opportunity',-->
+            <!--            'search_default_assigned_to_me': 1-->
+            <!--            }-->
+            <!--        </field>-->
+            <!--        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>-->
+        </record>
 
-            </tree>
-        </field>
-    </record>
+        <menuitem id="market_plan_menu"
+                  name="Campaign"
+                  parent="crm.crm_menu_root"
+                  action="market_plan_action"
+                  sequence="8"/>
 
-    <record model="ir.actions.act_window" id="market_plan_action">
-        <field name="name">Campaign</field>
-        <field name="res_model">market.plan</field>
-        <field name="view_mode">tree,form</field>
-        <!--        <field name="search_view_id" ref="view_market_plan_filter"/>-->
-        <!--        <field name="domain">[('type','=','opportunity')]</field>-->
-        <!--        <field name="context">{-->
-        <!--            'default_type': 'opportunity',-->
-        <!--            'search_default_assigned_to_me': 1-->
-        <!--            }-->
-        <!--        </field>-->
-        <!--        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>-->
-    </record>
+        <record id="platform_plan_action" model="ir.actions.act_window">
+            <field name="name">Platforms</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">platform.plan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="platform_plan_menu" name="Platforms" parent="crm.crm_menu_config" action="platform_plan_action"
+                  sequence="8"/>
 
-    <menuitem id="market_plan_menu"
-              name="Campaign"
-              parent="crm.crm_menu_root"
-              action="market_plan_action"
-              sequence="8"/>
+        <record id="category_plan_action" model="ir.actions.act_window">
+            <field name="name">Categories</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">category.plan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="category_plan_menu" name="Categories" parent="crm.crm_menu_config" action="category_plan_action"
+                  sequence="8"/>
 
-    <record id="platform_plan_action" model="ir.actions.act_window">
-        <field name="name">Platforms</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">platform.plan</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="platform_plan_menu" name="Platforms" parent="crm.crm_menu_config" action="platform_plan_action"
-              sequence="8"/>
+        <record id="type_plan_action" model="ir.actions.act_window">
+            <field name="name">Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">type.plan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="type_plan_menu" name="Types" parent="crm.crm_menu_config" action="type_plan_action" sequence="8"/>
 
-    <record id="category_plan_action" model="ir.actions.act_window">
-        <field name="name">Categories</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">category.plan</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="category_plan_menu" name="Categories" parent="crm.crm_menu_config" action="category_plan_action"
-              sequence="8"/>
-
-    <record id="type_plan_action" model="ir.actions.act_window">
-        <field name="name">Types</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">type.plan</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="type_plan_menu" name="Types" parent="crm.crm_menu_config" action="type_plan_action" sequence="8"/>
-
-    <record id="target_plan_action" model="ir.actions.act_window">
-        <field name="name">Targets</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">target.plan</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-    <menuitem id="target_plan_menu" name="Targets" parent="crm.crm_menu_config" action="target_plan_action"
-              sequence="8"/>
-  </data>
+        <record id="target_plan_action" model="ir.actions.act_window">
+            <field name="name">Targets</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">target.plan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="target_plan_menu" name="Targets" parent="crm.crm_menu_config" action="target_plan_action"
+                  sequence="8"/>
+    </data>
 </odoo>

@@ -1,6 +1,72 @@
 <odoo>
     <data>
 
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="res_users_salesperson" model="ir.ui.view">
+            <field name="name">res.users.salesperson</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[3]/group[1]" position="inside">
+                    <field name="is_salesperson"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="crm.crm_lead_lost_action" model="ir.actions.act_window">
+            <field name="name">Close Lost Reason</field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="crm_lead_lost_closed" model="ir.ui.view">
+            <field name="name">crm.lead.lost.closed</field>
+            <field name="model">crm.lead.lost</field>
+            <field name="inherit_id" ref="crm.crm_lead_lost_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form" position="attributes">
+                    <attribute name="string">Close Lost Reason</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='lost_reason_id']" position="attributes">
+                    <attribute name="string">Close Lost Reason</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="crm_lead_filter_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.filter.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='phone_mobile_search']" position="replace"></xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="phone_mobile_search"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="crm_lead_tree_is_duplicated" model="ir.ui.view">
+            <field name="name">crm.lead.tree.is.duplicated</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='phone']" position="after">
+                    <field name="is_duplicated"/>
+                </xpath>
+
+            </field>
+        </record>
+
         <!-- Partner Customization -->
         <record id="res_partner_broker" model="ir.ui.view">
             <field name="name">res.partner.broker</field>
@@ -10,6 +76,8 @@
 
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="is_broker"/>
+                    <field name="secondary_phone"/>
+                    <field name="international_phone"/>
                 </xpath>
 
                 <xpath expr="//notebook" position="inside">
@@ -31,6 +99,8 @@
 
                     </page>
                 </xpath>
+
+
 
             </field>
         </record>
@@ -70,8 +140,9 @@
                             <field name="priority" widget="priority" string="Rating"/>
                         </group>
                         <group>
+                            <field name="function"/>
                             <field name="mobile_no" widget="phone"/>
-                            <field name="international_phone" widget="phone"/>
+                            <field name="international_phone" widget="phone" />
                             <field name="email_from" string="Primary Email"/>
                             <field name="country_id"/>
                             <field name="religion"/>
@@ -81,30 +152,29 @@
                         <group>
                             <field name="user_id" context="{'default_sales_team_id': team_id}" widget="many2one_avatar_user"/>
                             <field name="team_id" options="{'no_open': True, 'no_create': True}"/>
-                            <field name="sub_channel_id"/>
-                            <field name="source_id"/>
+                            <field name="sub_channel_ids" widget="many2many_tags"/>
+                            <field name="source_ids" widget="many2many_tags"/>
                             <field name="outdoor_location_id"/>
-                            <field name="channel_2_id"/>
-                            <field name="source_2_id"/>
-                            <field name="sub_source_2_id"/>
+<!--                            <field name="channel_2_id"/>-->
+<!--                            <field name="source_2_id"/>-->
+<!--                            <field name="sub_source_2_id"/>-->
 
                             <field name="commission_type_id"/>
                             <field name="broker_agent_id"
-                                   context="{'default_is_broker': True, 'default_is_company': True}"/>
+                                   context="{'default_is_broker': True, 'default_is_company': False}"/>
                             <field name="broker_agent_phone" widget="phone"/>
-                            <field name="support_call_id" />
-                            <field name="support_visit_site_id"/>
-                            <field name="support_contract_id"/>
+<!--                            <field name="support_call_id" />-->
+<!--                            <field name="support_visit_site_id"/>-->
+<!--                            <field name="support_contract_id"/>-->
                         </group>
                         <group>
-                            <field name="channel_id"/>
-                            <field name="sub_source_id"/>
-                            <field name="sub_channel_2_id"/>
-                            <field name="campaign_id" string="Campaign Source"/>
+                            <field name="channel_ids" widget="many2many_tags"/>
+                            <field name="sub_source_ids" widget="many2many_tags"/>
+<!--                            <field name="sub_channel_2_id"/>-->
                             <field name="rejection_source"/>
                             <field name="rejection_reason"/>
 
-                            <field name="broker_id" context="{'default_is_broker': True}"/>
+                            <field name="broker_id" context="{'default_is_broker': True, 'default_is_company': True}"/>
                             <field name="reassigned_reason_id"/>
                             <field name="interested_ids" widget="many2many_tags"/>
                             <field name="client_request_type_id"/>
@@ -121,7 +191,7 @@
                             <field name="next_action"/>
                         </group>
                         <group>
-                            <field name="next_action_date"/>
+<!--                            <field name="next_action_date"/>-->
                             <field name="project_id"/>
                             <field name="request_stage_id"/>
                             <field name="transferred_resale_id"/>
@@ -132,35 +202,35 @@
                         <group>
                             <field name="unit_category_id"/>
                             <field name="price_range"/>
-                            <field name="preferred_city"/>
+                            <field name="preferred_city_id"/>
                             <field name="payment_notes"/>
                             <field name="sqm_area"/>
                         </group>
                         <group>
                             <field name="unit_type_id"/>
-                            <field name="unit_view"/>
-                            <field name="preferred_district"/>
+                            <field name="unit_view_id"/>
+                            <field name="preferred_district_id"/>
                             <field name="payment_method"/>
                             <field name="reservation_date"/>
                         </group>
 
                     </group>
-                    <group name="client_request_details" string="Client Request Details">
-                        <group>
-                            <field name="client_request_name"/>
-                            <field name="original_date"/>
-                        </group>
-                        <group>
-                            <field name="original_user"/>
-                        </group>
+<!--                    <group name="client_request_details" string="Client Request Details">-->
+<!--                        <group>-->
+<!--                            <field name="client_request_name"/>-->
+<!--                            <field name="original_date"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="original_user"/>-->
+<!--                        </group>-->
 
-                    </group>
+<!--                    </group>-->
                     <group name="description_details" string="Description Details">
                         <field name="description_details"/>
                     </group>
                 </xpath>
 
-                <xpath expr="//group[7]" position="attributes">
+                <xpath expr="//group[6]" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
 

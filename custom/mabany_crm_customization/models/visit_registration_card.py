@@ -21,19 +21,16 @@ class VisitRegistrationCard(models.Model):
     mobile = fields.Char(string="Mobile", related='partner_id.mobile')
     occupation = fields.Char(string="Occupation")
     notes = fields.Html(string="Notes")
-    start_time = fields.Datetime(string="Start Time")
-    end_time = fields.Datetime(string="End Time")
-    project_interested_in = fields.Char(string="Project Interested in")
+    start_datetime = fields.Datetime(string="Start Date")
+    project_interested_in_id = fields.Many2one(comodel_name="project.project", string="Project Interested In")
     broker_id = fields.Many2one(comodel_name="res.partner", string="Broker",
-                                domain="[('is_broker', '=', True), ('is_company', '=', False)]")
+                                domain="[('is_broker', '=', True), ('is_company', '=', True)]")
     next_action_date = fields.Date(string="Next Action Date")
     user_id = fields.Many2one(comodel_name="res.users", string="Assigned To")
 
     partner_id = fields.Many2one(comodel_name="res.partner", string="Contact Name", required=True)
     email = fields.Char(string="Email", related='partner_id.email')
     project_awareness = fields.Html(string="Project Awareness")
-    start_date = fields.Date(string="Start Date")
-    end_date = fields.Date(string="End Date")
     visit_duration = fields.Char(string="Visit Duration")
     project_id = fields.Many2one(comodel_name="project.project", string="Project Name")
     next_action = fields.Char(string="Next Action")
@@ -42,10 +39,10 @@ class VisitRegistrationCard(models.Model):
                                         domain="[('is_lost', '=', False)]")
 
     client_source_id = fields.Many2one(comodel_name="client.source", string="Client Source")
-    channel_id = fields.Many2one(comodel_name="utm.channel", string="Channel")
-    sub_channel_id = fields.Many2one(comodel_name="utm.channel", string="Sub Channel")
-    source_id = fields.Many2one(comodel_name="utm.source", string="Source")
-    sub_source_id = fields.Many2one(comodel_name="utm.source", string="Sub Source")
+    sub_channel_ids = fields.Many2many(comodel_name="utm.channel", relation="sub_channel_visit", string="Sub Channels")
+    channel_ids = fields.Many2many(comodel_name="utm.channel", relation="channel_visit", string="Channels")
+    sub_source_ids = fields.Many2many(comodel_name="utm.source", relation="sub_source_visit", string="Sub Sources")
+    source_ids = fields.Many2many(comodel_name="utm.source", relation="source_visit", string="Sources")
 
     @api.model
     def create(self, vals):

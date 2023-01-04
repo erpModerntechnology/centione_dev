@@ -23,12 +23,10 @@
                             <group>
                                 <field name="name"/>
                                 <field name="mobile" widget="phone"/>
-                                <field name="occupation"/>
+<!--                                <field name="occupation"/>-->
                                 <field name="notes"/>
-                                <field name="start_time"/>
-                                <field name="end_time"/>
-                                <field name="project_interested_in"/>
-                                <field name="broker_id" context="{'default_is_broker': True}"/>
+                                <field name="project_interested_in_id"/>
+                                <field name="broker_id" context="{'default_is_broker': True, 'default_is_company': True}"/>
                                 <field name="next_action_date"/>
                                 <field name="user_id"/>
                             </group>
@@ -36,9 +34,8 @@
                                 <field name="partner_id"/>
                                 <field name="email"/>
                                 <field name="project_awareness"/>
-                                <field name="start_date"/>
-                                <field name="end_date"/>
-                                <field name="visit_duration"/>
+                                <field name="start_datetime"/>
+<!--                                <field name="visit_duration"/>-->
                                 <field name="project_id"/>
                                 <field name="next_action"/>
                                 <field name="campaign_id"/>
@@ -49,12 +46,12 @@
                         <group name="campaign_source" string="Campaign Source">
                             <group>
                                 <field name="client_source_id"/>
-                                <field name="sub_channel_id"/>
-                                <field name="sub_source_id"/>
+                                <field name="sub_channel_ids" widget="many2many_tags"/>
+                                <field name="sub_source_ids" widget="many2many_tags"/>
                             </group>
                             <group>
-                                <field name="channel_id"/>
-                                <field name="source_id"/>
+                                <field name="channel_ids" widget="many2many_tags"/>
+                                <field name="source_ids" widget="many2many_tags"/>
                             </group>
                         </group>
                     </sheet>

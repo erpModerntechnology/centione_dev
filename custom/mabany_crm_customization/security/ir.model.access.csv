@@ -17,7 +17,6 @@ access_call_status,access.call.status,model_call_status,base.group_user,1,1,1,1
 access_request_stage,access.request.stage,model_request_stage,base.group_user,1,1,1,1
 access_unqualified_reason,access.unqualified.reason,model_unqualified_reason,base.group_user,1,1,1,1
 access_transferred_resale,access.transferred.resale,model_transferred_resale,base.group_user,1,1,1,1
-access_unit_category,access.unit.category,model_unit_category,base.group_user,1,1,1,1
 access_unit_type,access.unit.type,model_unit_type,base.group_user,1,1,1,1
 access_client_source,access.client.source,model_client_source,base.group_user,1,1,1,1
 access_visit_registration_card,access.visit.registration.card,model_visit_registration_card,base.group_user,1,1,1,1
@@ -25,3 +24,6 @@ access_visit_registration_card,access.visit.registration.card,model_visit_regist
 access_broker_status,access.broker.status,model_broker_status,base.group_user,1,1,1,1
 access_broker_type,access.broker.type,model_broker_type,base.group_user,1,1,1,1
 access_broker_category,access.broker.category,model_broker_category,base.group_user,1,1,1,1
+
+access_preferred_district,access.preferred.district,model_preferred_district,base.group_user,1,1,1,1
+access_unit_view,access.unit.view,model_unit_view,base.group_user,1,1,1,1

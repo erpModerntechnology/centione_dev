@@ -1,10 +1,17 @@
 from odoo import models, fields, api
 
 
+class CRMStage(models.Model):
+    _inherit = 'crm.stage'
+
+    is_unqualified = fields.Boolean(string="Unqualified")
+
+
 class CRMLead(models.Model):
     _inherit = 'crm.lead'
 
-    market_plan_id = fields.Many2one(comodel_name="market.plan", string="Campaign", tracking=True)
+    market_plan_id = fields.Many2one(comodel_name="market.plan", string="Campaign",
+                                     tracking=True, domain=[('state', '=', 'active')])
 
 
 class OnlineChannel(models.Model):
@@ -18,6 +25,12 @@ class MarketPlanning(models.Model):
     _name = 'market.plan'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
 
+    state = fields.Selection(selection=[
+        ('planning', 'Planning'),
+        ('active', 'Active'),
+        ('complete', 'Complete'),
+    ], string='Status', required=True, readonly=True, copy=False,
+        tracking=True, default='planning')
     name = fields.Char(string="", required=False, )
     platform_id = fields.Many2one(comodel_name="platform.plan", string="Platform", required=False, )
     category_id = fields.Many2one(comodel_name="category.plan", string="Category", required=False, )
@@ -26,11 +39,11 @@ class MarketPlanning(models.Model):
     ads_name = fields.Text(string="Ads Name", required=False, )
     ads_link = fields.Char(string="Ads Link", required=False, )
     ads_marketing_cost = fields.Float(string="Ads Marketing Cost", required=False, )
-    lead_cost = fields.Float(string="Lead Cost", required=False, compute="_compute_lead_cost")
+    # lead_cost = fields.Float(string="Lead Cost", required=False, compute="_compute_lead_cost")
     planned_leads = fields.Float(string="Planned Leads", required=False, )
-    actual_leads = fields.Float(string="Actual Leads", required=False, compute='_compute_actual_leads')
+    unqualified_leads = fields.Float(string="Unqualified Leads", required=False, compute='_compute_unqualified_leads')
     won_leads = fields.Float(string="Won Leads", required=False, compute='_compute_won_leads')
-    visit_leads = fields.Float(string="visit Leads", required=False, compute='_compute_visit_leads')
+    # visit_leads = fields.Float(string="visit Leads", required=False, compute='_compute_visit_leads')
     total_leads = fields.Float(string="Total Leads", required=False, compute='_compute_total_leads')
     start_palnned_date = fields.Date(string="Start Planned Date", required=False, )
     end_palnned_date = fields.Date(string="End Planned Date", required=False, )
@@ -51,15 +64,23 @@ class MarketPlanning(models.Model):
     ], string="Source", default='online_channel')
     online_channel = fields.Many2one('online.channel', string='Online Sub Source')
 
-    def _compute_actual_leads(self):
+    def activate_plan(self):
+        for rec in self:
+            rec.state = 'active'
+
+    def complete_plan(self):
+        for rec in self:
+            rec.state = 'complete'
+
+    def _compute_unqualified_leads(self):
         for rec in self:
             leads = self.env['crm.lead'].search([('market_plan_id', '=', rec.id)])
             total_meeting = 0
             for lead in leads:
-                if lead.stage_id.is_qualified:
+                if lead.stage_id.is_unqualified:
                     total_meeting += 1
 
-            rec.actual_leads = total_meeting
+            rec.unqualified_leads = total_meeting
 
     def _compute_won_leads(self):
         for rec in self:
@@ -71,15 +92,15 @@ class MarketPlanning(models.Model):
 
             rec.won_leads = total_meeting
 
-    def _compute_visit_leads(self):
-        for rec in self:
-            leads = self.env['crm.lead'].search([('market_plan_id', '=', rec.id)])
-            total_meeting = 0
-            for lead in leads:
-                if lead.is_visit:
-                    total_meeting += 1
-
-            rec.visit_leads = total_meeting
+    # def _compute_visit_leads(self):
+    #     for rec in self:
+    #         leads = self.env['crm.lead'].search([('market_plan_id', '=', rec.id)])
+    #         total_meeting = 0
+    #         for lead in leads:
+    #             if lead.is_visit:
+    #                 total_meeting += 1
+    #
+    #         rec.visit_leads = total_meeting
 
     def _compute_total_leads(self):
         for rec in self:
@@ -92,14 +113,14 @@ class MarketPlanning(models.Model):
 
             rec.total_leads = total_meeting
 
-    def _compute_lead_cost(self):
-        for rec in self:
-            if rec.actual_lead_count > 0:
-                rec.lead_cost = rec.ads_marketing_cost / rec.actual_lead_count
-            else:
-                rec.lead_cost = 0.0
+    # def _compute_lead_cost(self):
+    #     for rec in self:
+    #         if rec.actual_lead_count > 0:
+    #             rec.lead_cost = rec.ads_marketing_cost / rec.actual_lead_count
+    #         else:
+    #             rec.lead_cost = 0.0
 
-    def action_actual_lead_view(self):
+    def action_unqualified_lead_view(self):
 
         self.ensure_one()
         action = self.env.ref('crm.crm_lead_action_pipeline').read()[0]
@@ -109,8 +130,9 @@ class MarketPlanning(models.Model):
             # ('state', 'in', ['posted', 'paid']),
             ('market_plan_id', '=', self.id),
             ('type', '=', 'opportunity'),
+            ('stage_id.is_unqualified', '=', True),
             # ('is_actual', '=', True),
-            ('stage_id.name', '=', 'Follow Up'),
+            # ('stage_id.name', '=', 'Follow Up'),
             # (lead.stage_id.name, '=', 'Follow Up'),
         ]
         return action
@@ -130,16 +152,16 @@ class MarketPlanning(models.Model):
         ]
         return action
 
-    def action_visit_lead_view(self):
-        self.ensure_one()
-        action = self.env.ref('crm.crm_lead_action_pipeline').read()[0]
-        action['domain'] = [
-            # ('state', 'in', ['posted', 'paid']),
-            ('market_plan_id', '=', self.id),
-            ('type', '=', 'opportunity'),
-            ('is_visit', '=', True),
-        ]
-        return action
+    # def action_visit_lead_view(self):
+    #     self.ensure_one()
+    #     action = self.env.ref('crm.crm_lead_action_pipeline').read()[0]
+    #     action['domain'] = [
+    #         # ('state', 'in', ['posted', 'paid']),
+    #         ('market_plan_id', '=', self.id),
+    #         ('type', '=', 'opportunity'),
+    #         ('is_visit', '=', True),
+    #     ]
+    #     return action
 
     def action_total_leads_view(self):
         self.ensure_one()
@@ -153,20 +175,20 @@ class MarketPlanning(models.Model):
         ]
         return action
 
-    actual_lead_count = fields.Integer('# Actual Lead', compute='_compute_actual_lead_count')
-    visit_lead_count = fields.Integer('# Visit', compute='_compute_actual_lead_count')
+    # actual_lead_count = fields.Integer('# Actual Lead', compute='_compute_actual_lead_count')
+    # visit_lead_count = fields.Integer('# Visit', compute='_compute_actual_lead_count')
 
-    def _compute_actual_lead_count(self):
-
-        for rec in self:
-            leads = self.env['crm.lead'].search([('market_plan_id', '=', rec.id), ('type', '=', 'opportunity')])
-            total_meeting = 0
-            rec.actual_lead_count = len(leads)
-            for lead in leads:
-                if lead.is_visit:
-                    total_meeting += 1
-
-            rec.visit_lead_count = total_meeting
+    # def _compute_actual_lead_count(self):
+    #
+    #     for rec in self:
+    #         leads = self.env['crm.lead'].search([('market_plan_id', '=', rec.id), ('type', '=', 'opportunity')])
+    #         total_meeting = 0
+    #         rec.actual_lead_count = len(leads)
+    #         for lead in leads:
+    #             if lead.is_visit:
+    #                 total_meeting += 1
+    #
+    #         rec.visit_lead_count = total_meeting
 
     date = fields.Date(string='date', default=fields.Date.context_today, required=True)
 

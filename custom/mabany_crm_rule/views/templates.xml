@@ -1,17 +1,19 @@
 <odoo>
     <data>
         <!-- Inherit Form View to Modify it -->
-<!--        <record id="users_crm_lead_inherit" model="ir.ui.view">-->
-<!--            <field name="name">users_crm_lead_inherit</field>-->
-<!--            <field name="model">crm.lead</field>-->
-<!--            <field name="inherit_id" ref="resan_crm_real_estate.crm_lead_view_form_int"/>-->
-<!--            <field name="arch" type="xml">-->
+        <record id="users_crm_lead_inherit" model="ir.ui.view">
+            <field name="name">users.crm.lead.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
 
-<!--                <xpath expr="//field[@name='real_revenue_new']" position="before">-->
-<!--                    <field name="users" widget="many2many_tags"/>-->
-<!--                </xpath>-->
+                <xpath expr="//group[1]" position="before">
+                    <group string="Users">
+                        <field name="users" widget="many2many_tags"/>
+                    </group>
+                </xpath>
 
-<!--            </field>-->
-<!--        </record>-->
+            </field>
+        </record>
     </data>
 </odoo>
