@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'crm', 'sales_team', 'mail'],
+    'depends': ['base', 'crm', 'sales_team', 'mail', 'mabany_crm_customization'],
 
     # always loaded
     'data': [

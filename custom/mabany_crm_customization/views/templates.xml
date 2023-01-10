@@ -220,14 +220,14 @@
         <menuitem id="preferred_district_menu" name="Preferred District" parent="contacts.menu_localisation"
                   action="preferred_district_action" sequence="2"/>
 
-        <record id="support_reservation_action" model="ir.actions.act_window">
-            <field name="name">Support Reservation</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">support.reservation</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-        <menuitem id="support_reservation_menu" name="Support Reservation" parent="crm.crm_menu_config"
-                  action="support_reservation_action" sequence="7"/>
+<!--        <record id="support_reservation_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Support Reservation</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">support.reservation</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--        </record>-->
+<!--        <menuitem id="support_reservation_menu" name="Support Reservation" parent="crm.crm_menu_config"-->
+<!--                  action="support_reservation_action" sequence="7"/>-->
 
         <record id="reassigned_reason_action" model="ir.actions.act_window">
             <field name="name">Reassigned Reason</field>

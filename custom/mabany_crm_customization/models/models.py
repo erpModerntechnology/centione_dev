@@ -226,6 +226,24 @@ class Partner(models.Model):
     secondary_phone = fields.Char(string="Secondary Phone")
     international_phone = fields.Char(string="International Phone")
 
+    def get_broker_leads(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Opportunities',
+            'view_mode': 'tree,form',
+            'res_model': 'crm.lead',
+            'domain': ['|', ('broker_id', '=', self.id), ('broker_agent_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
+
+    def get_broker_opportunities_count(self):
+        for record in self:
+            record.broker_opportunities_count = self.env['crm.lead'].search_count(
+                ['|', ('broker_id', '=', self.id), ('broker_agent_id', '=', self.id)])
+
+    broker_opportunities_count = fields.Integer(compute='get_broker_opportunities_count')
+
     @api.constrains('secondary_phone', 'international_phone')
     def mobile_phone_constrains(self):
         for rec in self:
@@ -289,16 +307,6 @@ class CRMLead(models.Model):
         'res.users', string='Salesperson', default=lambda self: self.env.user,
         domain="['&', ('share', '=', False), ('company_ids', 'in', user_company_ids), ('is_salesperson', '=', True)]",
         check_company=True, index=True, tracking=True)
-
-    def _contact_details_fields(self):
-        return ['partner_id', 'phone', 'secondary_phone', 'country_code', 'organization_id', 'priority',
-                'mobile_no', 'international_phone', 'email_from', 'country_id', 'religion']
-
-    def write(self, vals):
-        if any(x in vals for x in self._contact_details_fields()) and not self.env.user.has_group('mabany_crm_rule.crm_admin_write'):
-            raise ValidationError(_('You are not allowed to update in Contact Details Section'))
-        else:
-            return super(CRMLead, self).write(vals)
 
     def create_visit(self):
         self.ensure_one()
@@ -439,6 +447,25 @@ class CRMLead(models.Model):
     broker_agent_id = fields.Many2one(comodel_name="res.partner", string="Broker Agent Name",
                                       domain="[('is_broker', '=', True), ('is_company', '=', False)]")
     interested_ids = fields.Many2many(comodel_name="client.interested", string="Client Interested In")
+    is_created = fields.Boolean(default=False)
+
+    def check_has_update_group(self):
+        if self.env.user.has_group('mabany_crm_customization.edit_lead_group'):
+            self.has_update_group = True
+            print('update group')
+        else:
+            self.has_update_group = False
+            print('no update group')
+
+    has_update_group = fields.Boolean(compute='check_has_update_group')
+
+    @api.model
+    def create(self, vals):
+        res = super(CRMLead, self).create(vals)
+        res.update({
+            'is_created': True
+        })
+        return res
 
     @api.depends('broker_agent_id.mobile')
     def _compute_broker_phone(self):
@@ -466,7 +493,7 @@ class CRMLead(models.Model):
     next_action_date = fields.Date(string="Next Action Date")
 
     ##########################################################################
-    unit_category_id = fields.Many2one(comodel_name="uom.uom", string="Unit Category")
+    unit_category_id = fields.Many2one(comodel_name="product.category", string="Unit Category")
     unit_type_id = fields.Many2one(comodel_name="unit.type", string="Unit Type")
     price_range = fields.Char(string="Price Range")
     preferred_city_id = fields.Many2one('res.country.state', string="Preferred City")

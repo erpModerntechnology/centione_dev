@@ -4,13 +4,11 @@
         <record id="users_crm_lead_inherit" model="ir.ui.view">
             <field name="name">users.crm.lead.inherit</field>
             <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="inherit_id" ref="mabany_crm_customization.crm_lead_customization"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//group[1]" position="before">
-                    <group string="Users">
-                        <field name="users" widget="many2many_tags"/>
-                    </group>
+                <xpath expr="//field[@name='team_id']" position="after">
+                    <field name="users" widget="many2many_tags"/>
                 </xpath>
 
             </field>

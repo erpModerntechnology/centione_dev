@@ -1,6 +1,12 @@
 from odoo import models, fields, api
 
 
+class VisitRegistrationCard(models.Model):
+    _inherit = 'visit.registration.card'
+
+    market_plan_id = fields.Many2one(comodel_name="market.plan", string="Campaign Source")
+
+
 class CRMStage(models.Model):
     _inherit = 'crm.stage'
 

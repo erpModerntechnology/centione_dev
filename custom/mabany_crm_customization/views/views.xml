@@ -1,8 +1,6 @@
 <odoo>
     <data>
 
-
-
         <!-- Inherit Form View to Modify it -->
         <record id="res_users_salesperson" model="ir.ui.view">
             <field name="name">res.users.salesperson</field>
@@ -74,6 +72,13 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
 
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="get_broker_leads"
+                            icon="fa-list-ul" attrs="{'invisible': [('is_broker', '=', False)]}">
+                        <field string="Broker Opportunities" name="broker_opportunities_count" widget="statinfo"/>
+                    </button>
+                </div>
+
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="is_broker"/>
                     <field name="secondary_phone"/>
@@ -105,6 +110,69 @@
             </field>
         </record>
 
+        <!-- CRM Tree Customization -->
+        <record id="crm_lead_tree_customization" model="ir.ui.view">
+            <field name="name">crm.lead.tree.customization</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='contact_name']" position="replace">
+                    <field name="partner_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='campaign_id']" position="replace">
+                    <field name="phone" string="Primary Phone" widget="phone" optional="hide"/>
+                    <field name="secondary_phone" widget="phone" optional="hide"/>
+                    <field name="country_code" widget="phone" optional="hide"/>
+                    <field name="organization_id" optional="hide"/>
+                    <field name="contact_name" optional="hide"/>
+                    <field name="priority" widget="priority" string="Rating" optional="hide"/>
+                    <field name="function" optional="hide"/>
+                    <field name="mobile_no" widget="phone" optional="hide"/>
+                    <field name="international_phone" widget="phone" optional="hide" />
+                    <field name="email_from" string="Primary Email" optional="hide"/>
+                    <field name="country_id" optional="hide"/>
+                    <field name="religion" optional="hide"/>
+                    <field name="user_id" optional="hide"/>
+                    <field name="team_id" optional="hide"/>
+                    <field name="sub_channel_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="source_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="outdoor_location_id" optional="hide"/>
+                    <field name="commission_type_id" optional="hide"/>
+                    <field name="broker_agent_id" optional="hide"/>
+                    <field name="broker_agent_phone" widget="phone" optional="hide"/>
+                    <field name="channel_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="sub_source_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="rejection_source" optional="hide"/>
+                    <field name="rejection_reason" optional="hide"/>
+                    <field name="broker_id" optional="hide"/>
+                    <field name="reassigned_reason_id" optional="hide"/>
+                    <field name="interested_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="client_request_type_id" optional="hide"/>
+                    <field name="call_status_id" optional="hide"/>
+                    <field name="unqualified_reason_id" optional="hide"/>
+                    <field name="summery" optional="hide"/>
+                    <field name="next_action" optional="hide"/>
+                    <field name="project_id" optional="hide"/>
+                    <field name="request_stage_id" optional="hide"/>
+                    <field name="transferred_resale_id" optional="hide"/>
+                    <field name="client_request_id" optional="hide"/>
+                    <field name="unit_category_id" optional="hide"/>
+                    <field name="price_range" optional="hide"/>
+                    <field name="preferred_city_id" optional="hide"/>
+                    <field name="payment_notes" optional="hide"/>
+                    <field name="sqm_area" optional="hide"/>
+                    <field name="unit_type_id" optional="hide"/>
+                    <field name="unit_view_id" optional="hide"/>
+                    <field name="preferred_district_id" optional="hide"/>
+                    <field name="payment_method" optional="hide"/>
+                    <field name="reservation_date" optional="hide"/>
+                </xpath>
+
+            </field>
+        </record>
+
         <!-- CRM Customization -->
         <record id="crm_lead_customization" model="ir.ui.view">
             <field name="name">crm.lead.customization</field>
@@ -132,20 +200,33 @@
                     </style>
                     <group name="contact_details" string="Contact Details">
                         <group>
-                            <field name="partner_id"/>
-                            <field name="phone" string="Primary Phone" widget="phone"/>
-                            <field name="secondary_phone" widget="phone"/>
-                            <field name="country_code" widget="phone"/>
-                            <field name="organization_id"/>
-                            <field name="priority" widget="priority" string="Rating"/>
+                            <field name="has_update_group" invisible="1"/>
+                            <field name="is_created" invisible="1"/>
+                            <field name="partner_id" attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="phone" string="Primary Phone" widget="phone"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="secondary_phone" widget="phone"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="country_code" widget="phone"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="organization_id"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="priority" widget="priority" string="Rating"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
                         </group>
                         <group>
-                            <field name="function"/>
-                            <field name="mobile_no" widget="phone"/>
-                            <field name="international_phone" widget="phone" />
-                            <field name="email_from" string="Primary Email"/>
-                            <field name="country_id"/>
-                            <field name="religion"/>
+                            <field name="function"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="mobile_no" widget="phone"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="international_phone" widget="phone"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="email_from" string="Primary Email"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="country_id"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
+                            <field name="religion"
+                                   attrs="{'readonly': [('is_created', '=', True), ('has_update_group','=',False)]}"/>
                         </group>
                     </group>
                     <group name="client_source" string="Client Source">
@@ -155,22 +236,14 @@
                             <field name="sub_channel_ids" widget="many2many_tags"/>
                             <field name="source_ids" widget="many2many_tags"/>
                             <field name="outdoor_location_id"/>
-<!--                            <field name="channel_2_id"/>-->
-<!--                            <field name="source_2_id"/>-->
-<!--                            <field name="sub_source_2_id"/>-->
-
                             <field name="commission_type_id"/>
                             <field name="broker_agent_id"
                                    context="{'default_is_broker': True, 'default_is_company': False}"/>
                             <field name="broker_agent_phone" widget="phone"/>
-<!--                            <field name="support_call_id" />-->
-<!--                            <field name="support_visit_site_id"/>-->
-<!--                            <field name="support_contract_id"/>-->
                         </group>
                         <group>
                             <field name="channel_ids" widget="many2many_tags"/>
                             <field name="sub_source_ids" widget="many2many_tags"/>
-<!--                            <field name="sub_channel_2_id"/>-->
                             <field name="rejection_source"/>
                             <field name="rejection_reason"/>
 
@@ -178,8 +251,6 @@
                             <field name="reassigned_reason_id"/>
                             <field name="interested_ids" widget="many2many_tags"/>
                             <field name="client_request_type_id"/>
-                            <field name="support_visit_office_id"/>
-                            <field name="support_reservation_id"/>
                         </group>
 
                     </group>
@@ -191,7 +262,6 @@
                             <field name="next_action"/>
                         </group>
                         <group>
-<!--                            <field name="next_action_date"/>-->
                             <field name="project_id"/>
                             <field name="request_stage_id"/>
                             <field name="transferred_resale_id"/>
@@ -213,18 +283,7 @@
                             <field name="payment_method"/>
                             <field name="reservation_date"/>
                         </group>
-
                     </group>
-<!--                    <group name="client_request_details" string="Client Request Details">-->
-<!--                        <group>-->
-<!--                            <field name="client_request_name"/>-->
-<!--                            <field name="original_date"/>-->
-<!--                        </group>-->
-<!--                        <group>-->
-<!--                            <field name="original_user"/>-->
-<!--                        </group>-->
-
-<!--                    </group>-->
                     <group name="description_details" string="Description Details">
                         <field name="description_details"/>
                     </group>

@@ -1,5 +1,10 @@
 <odoo>
     <data>
+
+        <record id="edit_lead_group" model="res.groups">
+            <field name="name">Edit Lead Group</field>
+        </record>
+
         <record id="user_broker" model="res.groups">
             <field name="name">User Broker</field>
         </record>
