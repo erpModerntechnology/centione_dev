@@ -7,7 +7,11 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     def _get_date_from_default(self):
-        date_start = date.today().replace(month=date.today().month-1)
+        if date.today().month == 1:
+            date_st = 12
+            date_start = date.today().replace(month=date_st)
+        else:
+            date_start = date.today().replace(month=date.today().month-1)
         defualt_date_from = date_start.replace(day=26)
         return defualt_date_from
 
