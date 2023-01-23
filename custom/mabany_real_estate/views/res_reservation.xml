@@ -13,7 +13,8 @@
                         <button name="convert_to_draft" type="object" string="Set To Draft"
                                 attrs="{'invisible': [('state', 'not in', ['reserved','blocked']),('eng_manage', '=',True)]}"/>
                         <button name="engineering_manage_app" type="object" string="Engineering Management Approval"
-                                attrs="{'invisible': [('eng_manage', '=',True)]}"/>
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','finance_delivered')]}"
+                                status="finance_delivered"/>
                         <button name="eng_approval" type="object" string="Approval"
                                 attrs="{'invisible': [('eng_manage', '=',False)]}"
                                 groups="mabany_real_estate.group_engineering_mangement"/>
@@ -21,7 +22,7 @@
                                 type="object" class="oe_highlight"
                                 attrs="{'invisible': [('check_field', '=', True)]}"
                         />
-<!--                                                        groups="mabany_real_estate.group_available_to_cancel"-->
+                        <!--                                                        groups="mabany_real_estate.group_available_to_cancel"-->
 
                         <!--                        groups="mabany_real_estate.group_set_to_draft_Reservation"/>-->
                         <button name="%(mabany_real_estate.action_cancel_res)d" string="Canceled" type="action"
@@ -30,7 +31,35 @@
                         <!--                        "{'invisible': [('state', 'not in', ['reserved','draft']),('eng_manage', '=',True)]}"-->
                         <!--                        <button name="convert_to_block" type="object" string="Canceled" attrs="{'invisible': [('state', 'not in', ['reserved','draft'])]}"/>-->
                         <button name="convert_to_reserved" type="object" string="Convert To Reserved"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}" status="draft"/>
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','draft')]}"
+                                status="draft"/>
+                        <button name="finance_approval" type="object" string="Finance Approval"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','reserved')]}"
+                                status="reserved"/>
+                        <button name="request_approval" type="object" string="Request Approval"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','finance_approval')]}"
+                                status="finance_approval"/>
+                        <button name="contracted" type="object" string="Contracted"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','request_approval')]}"
+                                status="request_approval"/>
+                        <button name="operation_signature" type="object" string="Operation Signature"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','contracted')]}"
+                                status="contracted"/>
+                        <button name="legal" type="object" string="Legal"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','operation_signature')]}"
+                                status="operation_signature"/>
+                        <button name="finance_delivered" type="object" string="Finance Delivered"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','legal')]}"
+                                status="legal"/>
+                        <button name="co_approval" type="object" string="Co Approval"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','engineering_comment')]}"
+                                status="engineering_comment"/>
+                        <button name="customer_service" type="object" string="Customer Service"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','co_approval')]}"
+                                status="co_approval"/>
+                        <button name="legal_final_accept" type="object" string="Legal Final Accept"
+                                attrs="{'invisible' :['|',('attr_boolean','=',False),('state','!=','customer_service')]}"
+                                status="customer_service"/>
                         <button class="btn btn-primary" name="create_initial_contract" type="object"
                                 string="Create initial Contract"
                                 attrs="{'invisible': ['|',('is_create_contract', '=', True),('state', '!=', 'reserved')]}"/>
@@ -74,6 +103,8 @@
                         <group>
                             <group colspan="1" string="Unit Details">
                                 <field name="check_field" invisible="1"/>
+                                <field name="approvals_users" widget="many2many_tags"/>
+                                <field name="attr_boolean"/>
                                 <field name="is_create_contract" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
                                 <field name="eng_manage" invisible="1"/>
                                 <field name="custom_type" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
@@ -129,13 +160,14 @@
 
 
                         <group>
-                            <group colspan="2" string="Payment Details" attrs="{'invisible': [('payment_type', '!=','specific_terms')]}">
+                            <group colspan="2" string="Payment Details"
+                                   attrs="{'invisible': [('payment_type', '!=','specific_terms')]}">
                                 <field name="pay_strategy_id"
                                        attrs="{'readonly' : ['|',('state', 'in', ['reserved','release']),('eng_manage', '=',True)]}"/>
                                 <field name="payment_strg_name" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
-<!--                                <field name="payment_term_discount" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
-<!--                                <field name="is_Custom_payment" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
-<!--                                <field name="Description_payment" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                                <!--                                <field name="payment_term_discount" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                                <!--                                <field name="is_Custom_payment" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                                <!--                                <field name="Description_payment" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
                             </group>
                         </group>
                         <group>
@@ -193,7 +225,8 @@
                                 <field name="is_select_all" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
 
                                 <group>
-                                    <table class="table table-bordered" width="90%" attrs="{'invisible': [('payment_type', '!=','manual_terms')]}">
+                                    <table class="table table-bordered" width="90%"
+                                           attrs="{'invisible': [('payment_type', '!=','manual_terms')]}">
                                         <thead style="text-align:center;">
                                             <tr>
                                                 <th>
@@ -251,7 +284,8 @@
                                         </tbody>
                                     </table>
                                 </group>
-                                <table class="table table-bordered" width="90%" attrs="{'invisible': [('payment_type', '!=','manual_terms')]}">
+                                <table class="table table-bordered" width="90%"
+                                       attrs="{'invisible': [('payment_type', '!=','manual_terms')]}">
                                     <thead style="text-align:center;">
                                         <tr>
                                             <th>
@@ -284,7 +318,8 @@
 
                                 <notebook>
 
-                                    <page string="Payment Terms" attrs="{'invisible': [('payment_type', '!=','manual_terms')]}">
+                                    <page string="Payment Terms"
+                                          attrs="{'invisible': [('payment_type', '!=','manual_terms')]}">
                                         <field name="payment_term_ids"
                                                widget="section_and_note_one2many"
                                                mode="tree,kanban"
@@ -401,14 +436,14 @@
                                 </group>
 
                             </page>
-<!--                            <page string="Notes">-->
-<!--                                <group>-->
-<!--                                    <field name="notes_cash" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
-<!--                                    <field name="notes_visa" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
-<!--                                    <field name="notes_cheque" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
-<!--                                    <field name="notes_bank" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
-<!--                                </group>-->
-<!--                            </page>-->
+                            <!--                            <page string="Notes">-->
+                            <!--                                <group>-->
+                            <!--                                    <field name="notes_cash" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                            <!--                                    <field name="notes_visa" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                            <!--                                    <field name="notes_cheque" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                            <!--                                    <field name="notes_bank" attrs="{'readonly': [('eng_manage', '=',True)]}"/>-->
+                            <!--                                </group>-->
+                            <!--                            </page>-->
                             <page string="Cancel Reasons" attrs="{'invisible' : [('state', 'not in',['blocked'] )]}">
                                 <group>
                                     <field name="reason" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
@@ -480,37 +515,37 @@
                   name="Reservation Form"
                   parent="transaction_sub"
                   action="reservation_list_action" sequence="2"/>
-<!--        <menuitem id="res_enginerring"-->
-<!--                  name="Enginerring Mangement Request"-->
-<!--                  parent="transaction_sub"-->
-<!--                  action="engineering_list_action" sequence="6"/>-->
+        <!--        <menuitem id="res_enginerring"-->
+        <!--                  name="Enginerring Mangement Request"-->
+        <!--                  parent="transaction_sub"-->
+        <!--                  action="engineering_list_action" sequence="6"/>-->
 
         <!--        history Reservation-->
 
-<!--        <record id="history_reservation_tree_view" model="ir.ui.view">-->
-<!--            <field name="name">history.reservation.res.reservation.reservation.tree view</field>-->
-<!--            <field name="model">history.reservation</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree string="History Reservation">-->
-<!--                    <field name="date"/>-->
-<!--                    <field name="name"/>-->
-<!--                    <field name="unit_id"/>-->
-<!--                    <field name="res_id"/>-->
-<!--                    <field name="state"/>-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--        </record>-->
-<!--        <record model="ir.actions.act_window" id="history_reservation_list_action">-->
-<!--            <field name="name">History Reservations</field>-->
-<!--            <field name="res_model">history.reservation</field>-->
-<!--            <field name="view_mode">tree,form</field>-->
+        <!--        <record id="history_reservation_tree_view" model="ir.ui.view">-->
+        <!--            <field name="name">history.reservation.res.reservation.reservation.tree view</field>-->
+        <!--            <field name="model">history.reservation</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree string="History Reservation">-->
+        <!--                    <field name="date"/>-->
+        <!--                    <field name="name"/>-->
+        <!--                    <field name="unit_id"/>-->
+        <!--                    <field name="res_id"/>-->
+        <!--                    <field name="state"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
+        <!--        <record model="ir.actions.act_window" id="history_reservation_list_action">-->
+        <!--            <field name="name">History Reservations</field>-->
+        <!--            <field name="res_model">history.reservation</field>-->
+        <!--            <field name="view_mode">tree,form</field>-->
 
-<!--        </record>-->
+        <!--        </record>-->
 
-<!--        <menuitem id="history_res_reservation"-->
-<!--                  name="History Reservations"-->
-<!--                  parent="transaction_sub"-->
-<!--                  action="history_reservation_list_action" sequence="3"/>-->
+        <!--        <menuitem id="history_res_reservation"-->
+        <!--                  name="History Reservations"-->
+        <!--                  parent="transaction_sub"-->
+        <!--                  action="history_reservation_list_action" sequence="3"/>-->
 
     </data>
 </odoo>

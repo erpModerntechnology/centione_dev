@@ -40,6 +40,7 @@
         'views/address_pay_strategy.xml',
         'views/customer_payment.xml',
         'views/sequence.xml',
+        'views/approval.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

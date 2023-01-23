@@ -78,9 +78,9 @@
                         <!--                        <button class="btn btn-primary" name="create_request_reservation" type="object"-->
                         <!--                                string="Create EOI"-->
                         <!--                                attrs="{'invisible': ['|',('state', '!=', 'available'),('is_req_res', '=',True)]}"/>-->
-                        <!--                        <button class="btn btn-primary" name="create_reservation" type="object"-->
-                        <!--                                string="Create Reservation"-->
-                        <!--                                attrs="{'invisible': ['|',('state', '!=', 'available'),('is_res', '=', True)]}"/>-->
+                                                <button class="btn btn-primary" name="create_reservation" type="object"
+                                                        string="Create Reservation"
+                                                        attrs="{'invisible': ['|',('state', '!=', 'available'),('is_res', '=', True)]}"/>
                         <!--                        <button class="btn btn-primary" name="create_rent" type="object"-->
                         <!--                                string="Create Rent"-->
                         <!--                                attrs="{'invisible': [('state', '!=', 'rented')]}"/>-->
@@ -126,8 +126,10 @@
                             <group>
 <!--                                <field name="type_of_property_id"-->
 <!--                                       attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>-->
-                                <field name="cate_id"
+                                <field name="cate_id" string="Property Type"
                                        attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>
+                                <field name="build_id"
+                                       readonly="1"/>
                                 <field name="level"
                                        attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>
                                 <field name="project_id"
@@ -146,7 +148,7 @@
                                 <field name="is_property" readonly="1"/>
                                 <field name="type" readonly="1"/>
                                 <!--                                <field name="is_req_res" invisible="1"/>-->
-                                <!--                                <field name="is_res" invisible="1"/>-->
+                                <field name="is_res" invisible="1"/>
                                 <field name="is_contracted" invisible="1"/>
                                 <field name="multi_image"
                                        attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>
@@ -186,6 +188,7 @@
                                         <field name="garden_amount" attrs="{'invisible': [('is_garden', '=', False)]}"/>
                                         <field name="is_clubhouse"/>
                                         <field name="clubhouse_amount" attrs="{'invisible': [('is_clubhouse', '=', False)]}"/>
+                                        <field name="sales_price_percentage" widget="percentage"/>
                                     </group>
                                     <group name="garage" colspan="1">
                                         <field name="is_garage"
@@ -236,6 +239,8 @@
                                             <!--                                            <field name="garage_price2" class="oe_subtotal_footer_separator"-->
                                             <!--                                                   readonly="1"/>-->
                                             <field name="final_unit_price" class="oe_subtotal_footer_separator"
+                                                   readonly="1"/>
+                                            <field name="sales_price" class="oe_subtotal_footer_separator"
                                                    readonly="1"/>
                                         </group>
                                     </group>

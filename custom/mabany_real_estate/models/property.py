@@ -26,7 +26,7 @@ class PropertyType(models.Model):
     _description = "Unit Types"
 
     name = fields.Char('Name', required=True, translate=True)
-    cate_id = fields.Many2one(comodel_name="property.category", string="Category", required=True, )
+    cate_id = fields.Many2one(comodel_name="property.category", string="Property Type", required=True, )
     multi_image = fields.Boolean(string="Add  Multiple Images?")
     images_type = fields.One2many('biztech.product.images', 'type_id',
                               string='Images')
@@ -381,6 +381,15 @@ class ProductProduct(models.Model):
     plot_price2 = fields.Float(string="Outdoor Price ", required=False, )
     build_id = fields.Many2one('res.build')
     level = fields.Many2one('res.level','Level')
+    sales_price_percentage = fields.Float()
+    sales_price = fields.Float(compute='calc_sales_price',store=True)
+
+    @api.depends('final_unit_price','sales_price_percentage')
+    def calc_sales_price(self):
+        for r in self:
+            r.sales_price = (r.final_unit_price * r.sales_price_percentage) + r.final_unit_price
+
+
 
 
     @api.depends('plot_area', 'price_m_a')
@@ -431,11 +440,11 @@ class ProductProduct(models.Model):
                                     store=True)
 
     @api.depends('price_m', 'sellable', 'finishing_price', 'pool_price', 'price_garden_new', 'outdoor_price',
-                 'price_garage_for_one', 'number_of_garage','pricing_after_premium','garden_amount','clubhouse_amount')
+                 'price_garage_for_one', 'number_of_garage','advantage','garden_amount','clubhouse_amount')
     def _compute_final_unit_price(self):
         for rec in self:
             rec.final_unit_price = ((rec.total_ground + rec.total_first) if rec.is_duplex else (
-                    rec.price_m * rec.sellable))+rec.pricing_after_premium+rec.garden_amount+rec.clubhouse_amount + rec.finishing_price + rec.pool_price + rec.price_garden_new +\
+                    rec.price_m * rec.sellable))+rec.advantage+rec.garden_amount+rec.clubhouse_amount + rec.finishing_price + rec.pool_price + rec.price_garden_new +\
                                    rec.outdoor_price + (rec.price_garage_for_one * rec.number_of_garage)
 
     def update_state_to_available(self):
@@ -485,6 +494,11 @@ class ProductProduct(models.Model):
     def request_to_available(self):
         for rec in self:
             rec.state = 'available'
+            req_id = self.env['account.analytic.account'].create({
+                'name': self.name,
+            })
+            rec.analytic_account_id = req_id.id
+
 
     def request_to_rented(self):
         for rec in self:
@@ -528,7 +542,7 @@ class ProductProduct(models.Model):
             'custom_type': 'Reservation',
             'state': 'draft',
         })
-        req_id.onchange_method_state()
+        # req_id.onchange_method_state()
 
         return {'name': ('Reservation'),
                 'type': 'ir.actions.act_window',
@@ -616,27 +630,27 @@ class ProductProduct(models.Model):
 
     propert_account_id = fields.Many2one(comodel_name="account.account", string="Income Account", required=False, )
 
-    # is_req_res = fields.Boolean(string="Is Request Resveration", compute="_compute_view_button_create")
-    # is_res = fields.Boolean(string="Is Request Resveration", compute="_compute_view_button_create")
+    is_req_res = fields.Boolean(string="Is Request Resveration", compute="_compute_view_button_create")
+    is_res = fields.Boolean(string="Is Request Resveration", compute="_compute_view_button_create")
     #
-    # def _compute_view_button_create(self):
-    #     for rec in self:
-    #         req = self.env['request.reservation'].search(
-    #             [('property_id', '=', rec.id), ("state", '!=', 'blocked')
-    #              ], limit=1)
-    #         res = self.env['res.reservation'].search(
-    #             [('property_id', '=', rec.id), ("state", '!=', 'blocked')
-    #              ], limit=1)
-    #         if len(req) > 0:
-    #             rec.is_req_res = True
-    #         else:
-    #             rec.is_req_res = False
-    #
-    #         if len(res) > 0:
-    #             rec.is_res = True
-    #         else:
-    #             rec.is_res = False
-    #         print("rec.is_res :: %s", rec.is_res)
+    def _compute_view_button_create(self):
+        for rec in self:
+            req = self.env['request.reservation'].search(
+                [('property_id', '=', rec.id), ("state", '!=', 'blocked')
+                 ], limit=1)
+            res = self.env['res.reservation'].search(
+                [('property_id', '=', rec.id), ("state", '!=', 'blocked')
+                 ], limit=1)
+            if len(req) > 0:
+                rec.is_req_res = True
+            else:
+                rec.is_req_res = False
+
+            if len(res) > 0:
+                rec.is_res = True
+            else:
+                rec.is_res = False
+            print("rec.is_res :: %s", rec.is_res)
     net_sellable_bua = fields.Float(string='Net Area', compute='calc_net_sellable_bua', store=True)
     load_percentage = fields.Float(string='نسبه التحميل%')
 

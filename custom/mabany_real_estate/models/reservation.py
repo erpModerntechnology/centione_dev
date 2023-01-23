@@ -46,10 +46,131 @@ class requestReservation(models.Model):
     state = fields.Selection(string="State",
                              selection=[('draft', 'Draft'),
                                         ('reserved', 'Reserved'),
+                                        ('finance_approval', 'Finance Approval'),
+                                        ('request_approval', 'Request Approval'),
                                         ('contracted', 'Contracted'),
+                                        ('operation_signature', 'Operation Signature'),
+                                        ('legal', 'Legal'),
+                                        ('finance_delivered', 'Finance Delivered'),
+                                        ('engineering_comment', 'Engineering Comment'),
+                                        ('co_approval', 'Co Approval'),
+                                        ('customer_service', 'Customer Service'),
+                                        ('legal_final_accept', 'Legal Final Accept'),
                                         ('blocked', 'Cancelled'),
-                                        ('release', 'Release'),
-                                        ('transfer', 'Transfer'), ], required=False, default='draft')
+                                        ], required=False, default='draft')
+    approvals_users = fields.Many2many('res.users', compute='get_approvals_users')
+    attr_boolean = fields.Boolean(compute='calc_attr_boolean')
+    def calc_attr_boolean(self):
+        for r in self:
+            if self.env.user in r.approvals_users:
+                r.attr_boolean = True
+            else:
+                r.attr_boolean = False
+
+    @api.depends('state')
+    def get_approvals_users(self):
+        for rec in self:
+            approval_users = False
+            if rec.state == 'draft':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'reserved')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'reserved':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'finance_approval')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'finance_approval':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'request_approval')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'request_approval':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'contracted')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'contracted':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'operation_signature')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'operation_signature':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'legal')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'legal':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'finance_delivered')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'finance_delivered':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'engineering_comment')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'engineering_comment':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'co_approval')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'co_approval':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'customer_service')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            elif rec.state == 'customer_service':
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'legal_final_accept')], limit=1)
+                approval_users = [(6, 0, approval_record.users.ids)]
+            rec.approvals_users = approval_users
+    def approval_reservation(self):
+        users = self.approvals_users
+        if users:
+            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            base_url += '/web#id=%d&view_type=form&model=%s' % (self.id, self._name)
+            message_text = f'<strong>Reminder</strong> ' \
+                           f'<p>This <a href=%s>Reservation</a> Check Approval On Reservation Form</p>' % base_url
+
+            uid = self.env.user
+
+            notification_ids = []
+            for user in users:
+                notification_ids.append((0, 0, {
+                    'res_partner_id': user.partner_id.id,
+                    'notification_type': 'inbox'
+                }))
+            self.message_post(record_name='Reservation',
+                              body=message_text,
+                              message_type="notification",
+                              subtype_xmlid="mail.mt_comment",
+                              author_id=uid.partner_id.id,
+                              notification_ids=notification_ids)
+
+
+    def finance_approval(self):
+        self.state = 'finance_approval'
+        self.approval_reservation()
+
+    def request_approval(self):
+        self.state = 'request_approval'
+        self.approval_reservation()
+
+    def contracted(self):
+        self.state = 'contracted'
+        self.approval_reservation()
+
+
+    def operation_signature(self):
+        self.state = 'operation_signature'
+        self.approval_reservation()
+
+
+    def legal(self):
+        self.state = 'legal'
+        self.approval_reservation()
+
+
+    def finance_delivered(self):
+        self.state = 'finance_delivered'
+        self.approval_reservation()
+
+
+    def co_approval(self):
+        self.state = 'co_approval'
+        self.approval_reservation()
+
+
+    def customer_service(self):
+        self.state = 'customer_service'
+        self.approval_reservation()
+
+
+    def legal_final_accept(self):
+        self.state = 'legal_final_accept'
+        self.approval_reservation()
+
 
     # def onchange_method_state(self):
     #     print("enter herer state ")
@@ -309,7 +430,7 @@ class requestReservation(models.Model):
     discount = fields.Float(string="Discount Percentage", digits=(16, 15))
     total_discount = fields.Float('Total Discount', compute='_compute_total_discount', store=True)
 
-    property_price = fields.Float(string="Unit Price", readonly=True, related='property_id.final_unit_price',
+    property_price = fields.Float(string="Unit Price", readonly=True, related='property_id.sales_price',
                                   digits=(16, 2))
     net_price = fields.Float(string="Net Price", compute='_calc_net_price', store=True, digits=(16, 2))
 
@@ -359,10 +480,10 @@ class requestReservation(models.Model):
             'payment_strg_ids': payment,
         })
 
-    @api.depends('property_id.final_unit_price', 'amount_discount')
+    @api.depends('property_id.sales_price', 'amount_discount')
     def _get_final_unit_price(self):
         for rec in self:
-            rec.final_unit_price = rec.property_id.final_unit_price - rec.amount_discount
+            rec.final_unit_price = rec.property_id.sales_price - rec.amount_discount
 
     final_unit_price = fields.Float(string="Unit Price", required=False, compute='_get_final_unit_price', store=True)
     maintenance = fields.Float('Maintenance', compute='_calc_amdents', inverse='_inverse_amdents', store=True)
