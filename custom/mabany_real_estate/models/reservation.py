@@ -290,7 +290,7 @@ class requestReservation(models.Model):
             return {'domain': {'phase_id': [('id', 'in', all_phases)]}}
 
     # sales details
-    sales_type = fields.Selection([('direct', _("Direct")), ('Broker', _("Broker"))], _('Sales Type'), default='direct')
+    sales_type = fields.Selection([('direct', _("Direct")), ('Broker', _("Broker")),('freelancer', _("Freelancer")),('recommendation', _("Recommendation"))], _('Sales Type'), default='direct')
     broker_id = fields.Many2one(comodel_name="res.partner", string="Broker", required=False,
                                 domain=[('is_broker', '=', True)])
     company_broker = fields.Many2one(comodel_name="res.partner", string="Company Broker", required=False,

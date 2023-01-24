@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'account', 'project', 'product', 'analytic', 'account',
-                'sale', 'check_management_15', 'account_batch_payment',],
+                'sale', 'check_management_15', 'account_batch_payment','sale_crm','crm'],
 
     # always loaded
     'data': [
@@ -41,6 +41,7 @@
         'views/customer_payment.xml',
         'views/sequence.xml',
         'views/approval.xml',
+        'views/crm.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

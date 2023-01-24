@@ -15,3 +15,4 @@ from . import customer_payment
 from . import inherit_account_payment
 from . import inherit_account_journal
 from . import approvals
+from . import crm_lead
