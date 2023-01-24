@@ -16,6 +16,12 @@ from odoo.tools import float_round, date_utils
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
 
+class HrPayslipInput(models.Model):
+    _inherit = 'hr.payslip.input'
+
+    input_type_id = fields.Many2one('hr.payslip.input.type', string='Type', required=False,
+                                    domain="['|', ('id', 'in', _allowed_input_type_ids), ('struct_ids', '=', False)]")
+
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
