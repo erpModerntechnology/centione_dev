@@ -132,44 +132,61 @@ class requestReservation(models.Model):
     def finance_approval(self):
         self.state = 'finance_approval'
         self.approval_reservation()
+        self.make_log()
+
 
     def request_approval(self):
         self.state = 'request_approval'
         self.approval_reservation()
+        self.make_log()
+
 
     def contracted(self):
         self.state = 'contracted'
         self.approval_reservation()
+        self.make_log()
+
 
 
     def operation_signature(self):
         self.state = 'operation_signature'
         self.approval_reservation()
+        self.make_log()
+
 
 
     def legal(self):
         self.state = 'legal'
         self.approval_reservation()
+        self.make_log()
+
 
 
     def finance_delivered(self):
         self.state = 'finance_delivered'
         self.approval_reservation()
+        self.make_log()
+
 
 
     def co_approval(self):
         self.state = 'co_approval'
         self.approval_reservation()
+        self.make_log()
+
 
 
     def customer_service(self):
         self.state = 'customer_service'
         self.approval_reservation()
+        self.make_log()
+
 
 
     def legal_final_accept(self):
         self.state = 'legal_final_accept'
         self.approval_reservation()
+        self.make_log()
 
 
     # def onchange_method_state(self):
@@ -219,6 +236,24 @@ class requestReservation(models.Model):
     def available_to_cancel(self):
         if self.available_to_cancel:
             self.check_field = True
+
+    res_log = fields.One2many('res.log','res_id')
+
+    def make_log(self):
+        self.res_log= [(0, 0,
+                           {
+                               'user_id': self.env.user.id,
+                               'time': datetime.now(),
+                               'state': dict(self._fields['state'].selection).get(self.state),
+                               'res_id': self.id})]
+        # print('ofofoofofofo')
+        # self.env['res.log'].create({
+        #     'user_id': self.env.user.id,
+        #     'time': datetime.datetime.now(),
+        #     'state': self.state,
+        #     'res_id': self.id
+        # })
+
 
     @api.onchange('date')
     def onchange_date(self):
@@ -414,6 +449,7 @@ class requestReservation(models.Model):
                                                               ('state', 'in', ['reserved'])])
                 if len(res_res) != 0:
                     rec.property_id.state = 'available'
+        self.make_log()
 
     # part payment and lins
     payment_type = fields.Selection([('manual_terms', _("Manual Terms")), ('specific_terms', _("Specific Terms"))],)

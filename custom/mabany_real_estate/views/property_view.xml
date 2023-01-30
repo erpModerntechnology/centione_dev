@@ -126,7 +126,9 @@
                             <group>
 <!--                                <field name="type_of_property_id"-->
 <!--                                       attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>-->
-                                <field name="cate_id" string="Property Type"
+                                <field name="cate_id" string="Property Type" invisible="1"
+                                       attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>
+                                <field name="categ_id" string="Property Type"
                                        attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>
                                 <field name="build_id"
                                        readonly="1"/>

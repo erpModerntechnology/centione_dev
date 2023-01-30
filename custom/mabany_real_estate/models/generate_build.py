@@ -15,7 +15,7 @@ class masria_real_state_generate(models.Model):
     ground_level = fields.Integer('Ground Level')
     under_ground_level = fields.Integer('Under Ground Level')
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company, readonly=True)
-    readonly_flag = fields.Boolean()
+    readonly_flag = fields.Boolean(copy=False)
 
     def generate(self):
         self.readonly_flag = True
@@ -43,7 +43,9 @@ class masria_real_state_generate(models.Model):
                             str(n)) == 1 else build.name + " " + str(level.name) + str(n),
                         'property_code': build.name + " " + str(level.name) + '0' + str(n) if len(
                             str(n)) == 1 else build.name + " " + str(level.name) + str(n),
-                        'cate_id': self.type_of_property_id.id,
+                        # 'cate_id': self.type_of_property_id.id,
+                        'categ_id': self.type_of_property_id.id,
+                        # 'type_of_property_id': self.type_of_property_id.id,
                         'is_property': True,
                         'phase_id': self.phase_id.id,
                         'project_id': self.project_id.id,
@@ -63,7 +65,9 @@ class masria_real_state_generate(models.Model):
                         str(seq_3)) == 1 else build.name + " " + str(ground_level.name) + str(seq_3),
                     'property_code': build.name + " " + str(ground_level.name) + '0' + str(seq_3) if len(
                         str(seq_3)) == 1 else build.name + " " + str(ground_level.name) + str(seq_3),
-                    'cate_id': self.type_of_property_id.id,
+                    # 'cate_id': self.type_of_property_id.id,
+                    'categ_id': self.type_of_property_id.id,
+                    # 'type_of_property_id': self.type_of_property_id.id,
                     'phase_id': self.phase_id.id,
                     'project_id': self.project_id.id,
                     'is_property': True,
@@ -82,7 +86,9 @@ class masria_real_state_generate(models.Model):
                         str(seq_4)) == 1 else build.name + " " + str(under_ground_level.name) + str(seq_4),
                     'property_code': build.name + " " + str(under_ground_level.name) + '0' + str(seq_4) if len(
                         str(seq_4)) == 1 else build.name + " " + str(under_ground_level.name) + str(seq_4),
-                    'cate_id': self.type_of_property_id.id,
+                    # 'cate_id': self.type_of_property_id.id,
+                    'categ_id': self.type_of_property_id.id,
+                    # 'type_of_property_id': self.type_of_property_id.id,
                     'phase_id': self.phase_id.id,
                     'project_id': self.project_id.id,
                     'is_property': True,
