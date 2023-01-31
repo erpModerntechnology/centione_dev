@@ -27,7 +27,7 @@
                         <!--                        groups="mabany_real_estate.group_set_to_draft_Reservation"/>-->
                         <button name="%(mabany_real_estate.action_cancel_res)d" string="Canceled" type="action"
                                 help="Canceled" class="oe_highlight"
-                                attrs="{'invisible': [('check_field', '=', False)]}"/>
+                                attrs="{'invisible': [('check_field', '=', False)]}" groups="mabany_real_estate.group_available_to_cancel"/>
                         <!--                        "{'invisible': [('state', 'not in', ['reserved','draft']),('eng_manage', '=',True)]}"-->
                         <!--                        <button name="convert_to_block" type="object" string="Canceled" attrs="{'invisible': [('state', 'not in', ['reserved','draft'])]}"/>-->
                         <button name="convert_to_reserved" type="object" string="Convert To Reserved"
@@ -62,7 +62,7 @@
                                 status="customer_service"/>
                         <button class="btn btn-primary" name="create_initial_contract" type="object"
                                 string="Create initial Contract"
-                                attrs="{'invisible': ['|',('is_create_contract', '=', True),('state', '!=', 'reserved')]}"/>
+                                attrs="{'invisible': ['|',('is_create_contract', '=', True),('state', '!=', 'contract')]}"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -103,8 +103,8 @@
                         <group>
                             <group colspan="1" string="Unit Details">
                                 <field name="check_field" invisible="1"/>
-                                <field name="approvals_users" widget="many2many_tags"/>
-                                <field name="attr_boolean"/>
+                                <field name="approvals_users" widget="many2many_tags" invisible="1"/>
+                                <field name="attr_boolean" invisible="1"/>
                                 <field name="is_create_contract" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
                                 <field name="eng_manage" invisible="1"/>
                                 <field name="custom_type" attrs="{'readonly': [('eng_manage', '=',True)]}"/>
@@ -504,6 +504,16 @@
             </field>
         </record>
         <record model="ir.actions.act_window" id="engineering_list_action">
+            <field name="name">Transaction</field>
+            <field name="res_model">res.reservation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_custom_type': 'Reservation',
+                }
+            </field>
+<!--            <field name="domain">[('eng_manage', '=', True)]</field>-->
+        </record>
+        <record model="ir.actions.act_window" id="reservation_form_action">
             <field name="name">Reservation Form</field>
             <field name="res_model">res.reservation</field>
             <field name="view_mode">tree,form</field>
@@ -511,12 +521,30 @@
                 'default_custom_type': 'Reservation',
                 }
             </field>
-            <field name="domain">[('eng_manage', '=', True)]</field>
+            <field name="domain">[('state','in',('draft','reserved','request_approval'))]</field>
+        </record>
+        <record model="ir.actions.act_window" id="reservation_form_action_contracted">
+            <field name="name">Contracts</field>
+            <field name="res_model">res.reservation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'default_custom_type': 'Reservation',
+                }
+            </field>
+            <field name="domain">[('state','in',('contracted','operation_signature','legal','finance_delivered','engineering_comment','co_approval','customer_service','legal_final_accept'))]</field>
         </record>
         <menuitem id="res_reservation"
+                  name="Transaction"
+                  parent="transaction_sub"
+                  action="reservation_list_action" sequence="1"/>
+        <menuitem id="res_reservation_non_contracted"
                   name="Reservation Form"
                   parent="transaction_sub"
-                  action="reservation_list_action" sequence="2"/>
+                  action="reservation_form_action" sequence="2"/>
+        <menuitem id="res_reservation_contracted"
+                  name="Contracts"
+                  parent="transaction_sub"
+                  action="reservation_form_action_contracted" sequence="2"/>
         <!--        <menuitem id="res_enginerring"-->
         <!--                  name="Enginerring Mangement Request"-->
         <!--                  parent="transaction_sub"-->

@@ -27,7 +27,7 @@
                                 <field name="type_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="reservation_id"
                                        attrs="{'readonly': [('state', '!=', 'draft')],'required' : [('type_id', '=', 'reservation')],'invisible' : [('type_id', '!=', 'reservation')],}"
-                                       domain="[ ('customer_id', '=', partner_id),('state', 'in', ['reserved','contracted'])]"/>
+                                       domain="[ ('customer_id', '=', partner_id),('state', 'not in', ['draft','blocked'])]"/>
                                 <!--                                <field name="rent_id"-->
                                 <!--                                       attrs="{'readonly': [('state', '!=', 'draft')],'required' : [('type_id', '=', 'rent')],'invisible' : [('type_id', '!=', 'rent')],}"-->
                                 <!--                                       domain="[ ('customer_id', '=', partner_id),('state', 'in', ['rented'])]"/>-->

@@ -614,6 +614,10 @@ class requestReservation(models.Model):
 
     def engineering_manage_app(self):
         self.eng_manage = True
+        self.state='engineering_comment'
+        self.approval_reservation()
+        self.make_log()
+
 
     def eng_approval(self):
         self.eng_manage = False

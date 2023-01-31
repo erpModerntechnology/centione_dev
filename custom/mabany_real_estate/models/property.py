@@ -579,13 +579,13 @@ class ProductProduct(models.Model):
             'view_mode': 'form',
         }
 
-    # counter_reservation = fields.Integer(string="", required=False, compute="_compute_counter_reservation")
-    #
-    # def _compute_counter_reservation(self):
-    #     for rec in self:
-    #         res = self.env['res.reservation'].search(
-    #             [('property_id', '=', rec.id)])
-    #         rec.counter_reservation = len(res)
+    counter_reservation = fields.Integer(string="", required=False, compute="_compute_counter_reservation")
+
+    def _compute_counter_reservation(self):
+        for rec in self:
+            res = self.env['res.reservation'].search(
+                [('property_id', '=', rec.id)])
+            rec.counter_reservation = len(res)
 
     def action_view_partner_reservation(self):
         # self.ensure_one()

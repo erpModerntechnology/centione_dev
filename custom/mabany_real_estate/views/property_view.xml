@@ -78,9 +78,9 @@
                         <!--                        <button class="btn btn-primary" name="create_request_reservation" type="object"-->
                         <!--                                string="Create EOI"-->
                         <!--                                attrs="{'invisible': ['|',('state', '!=', 'available'),('is_req_res', '=',True)]}"/>-->
-                                                <button class="btn btn-primary" name="create_reservation" type="object"
-                                                        string="Create Reservation"
-                                                        attrs="{'invisible': ['|',('state', '!=', 'available'),('is_res', '=', True)]}"/>
+                        <button class="btn btn-primary" name="create_reservation" type="object"
+                                string="Create Reservation"
+                                attrs="{'invisible': ['|',('state', '!=', 'available'),('is_res', '=', True)]}"/>
                         <!--                        <button class="btn btn-primary" name="create_rent" type="object"-->
                         <!--                                string="Create Rent"-->
                         <!--                                attrs="{'invisible': [('state', '!=', 'rented')]}"/>-->
@@ -91,22 +91,22 @@
                         <button class="btn btn-primary" name="approved_to_available" type="object"
                                 string="Approve TO Available"
                                 attrs="{'invisible': [('state', '!=', 'request_available')]}"
-                                />
-<!--                                groups="mabany_real_estate.group_Approve_TO_Available_Reservation"/>-->
+                        />
+                        <!--                                groups="mabany_real_estate.group_Approve_TO_Available_Reservation"/>-->
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
-                        <!--                        <div class="oe_button_box" name="button_box">-->
-                        <!--                            <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"-->
-                        <!--                                    name="action_view_partner_reservation_new">-->
-                        <!--                                <div class="o_form_field o_stat_info">-->
-                        <!--                                    <span class="o_stat_value">-->
-                        <!--&lt;!&ndash;                                        <field name="counter_reservation"/>&ndash;&gt;-->
-                        <!--                                    </span>-->
-                        <!--                                    <span class="o_stat_text">Reservation</span>-->
-                        <!--                                </div>-->
-                        <!--                            </button>-->
-                        <!--                        </div>-->
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                                    name="action_view_partner_reservation_new">
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="counter_reservation"/>
+                                    </span>
+                                    <span class="o_stat_text">Reservation</span>
+                                </div>
+                            </button>
+                        </div>
                         <div class="oe_title"
                              attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}">
                             <!--                        <label class="oe_edit_only" for="name" string="Unit Name"/>-->
@@ -124,8 +124,8 @@
 
                         <group>
                             <group>
-<!--                                <field name="type_of_property_id"-->
-<!--                                       attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>-->
+                                <!--                                <field name="type_of_property_id"-->
+                                <!--                                       attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>-->
                                 <field name="cate_id" string="Property Type" invisible="1"
                                        attrs="{'readonly': [('state', 'in', ['blocked','contracted','reserved'])]}"/>
                                 <field name="categ_id" string="Property Type"
@@ -189,7 +189,8 @@
                                         <field name="is_garden"/>
                                         <field name="garden_amount" attrs="{'invisible': [('is_garden', '=', False)]}"/>
                                         <field name="is_clubhouse"/>
-                                        <field name="clubhouse_amount" attrs="{'invisible': [('is_clubhouse', '=', False)]}"/>
+                                        <field name="clubhouse_amount"
+                                               attrs="{'invisible': [('is_clubhouse', '=', False)]}"/>
                                         <field name="sales_price_percentage" widget="percentage"/>
                                     </group>
                                     <group name="garage" colspan="1">
@@ -220,9 +221,12 @@
                                             <!--                                            <field name="plot_price" class="oe_subtotal_footer_separator" readonly="1"/>-->
                                             <field name="unit_price" class="oe_subtotal_footer_separator" readonly="1"/>
                                             <field name="advantage" class="oe_subtotal_footer_separator" readonly="1"/>
-                                            <field name='pricing_after_premium' class="oe_subtotal_footer_separator" readonly="1"/>
-                                            <field name='garden_amount' class="oe_subtotal_footer_separator" readonly="1"/>
-                                            <field name='clubhouse_amount' class="oe_subtotal_footer_separator" readonly="1"/>
+                                            <field name='pricing_after_premium' class="oe_subtotal_footer_separator"
+                                                   readonly="1"/>
+                                            <field name='garden_amount' class="oe_subtotal_footer_separator"
+                                                   readonly="1"/>
+                                            <field name='clubhouse_amount' class="oe_subtotal_footer_separator"
+                                                   readonly="1"/>
                                             <field name="unit_price2" class="oe_subtotal_footer_separator"
                                                    invisible="1"/>
                                             <field name="finishing_price" class="oe_subtotal_footer_separator"
@@ -349,7 +353,7 @@
                     <field name="name" string="Unit Number"/>
                     <field name="phase_id" optional="hide"/>
                     <field name="project_id"/>
-<!--                    <field name="type_of_property_id"/>-->
+                    <!--                    <field name="type_of_property_id"/>-->
                     <field name="north"/>
                     <field name="view"/>
                     <field name="ch_view"/>

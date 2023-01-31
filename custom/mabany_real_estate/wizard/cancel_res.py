@@ -22,5 +22,6 @@ class CancelSaleOrderPipe(models.TransientModel):
         res = self.env['res.reservation'].browse(self._context.get('active_ids', []))
         res.reason = self.reason.id
         res.state = 'blocked'
+        res.property_id.state = 'blocked'
         res.date_cancel_unit = datetime.now()
         res.make_log()
