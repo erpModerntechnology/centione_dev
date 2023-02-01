@@ -45,4 +45,25 @@ class CrmLead(models.Model):
                 'target': 'current',
             }
 
+    def action_open_leads(self):
+        """ Open meeting's calendar view to schedule meeting on current opportunity.
+            :return dict: dictionary value for created Meeting view
+        """
+        self.ensure_one()
+        res_ids = self.env['res.reservation'].search([('lead_id', '=', self.id)])
+        action = self.env["ir.actions.actions"]._for_xml_id("mabany_real_estate.reservation_list_action")
+        action['context'] = {
+            'default_lead_id': self.id,
+        }
+        action['domain'] = [('id', 'in', res_ids.ids)]
+        return action
+    count_reservation = fields.Integer(compute='count_reservation_recs')
+
+    def count_reservation_recs(self):
+        for rec in self:
+            count = self.env['res.reservation'].search_count([('lead_id', '=', rec.id)])
+            rec.count_reservation = count
+
+
+
 

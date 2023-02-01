@@ -12,7 +12,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-
 class requestReservation(models.Model):
     _name = 'res.reservation'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -60,6 +59,7 @@ class requestReservation(models.Model):
                                         ], required=False, default='draft')
     approvals_users = fields.Many2many('res.users', compute='get_approvals_users')
     attr_boolean = fields.Boolean(compute='calc_attr_boolean')
+
     def calc_attr_boolean(self):
         for r in self:
             if self.env.user in r.approvals_users:
@@ -84,16 +84,19 @@ class requestReservation(models.Model):
                 approval_record = self.env['reservation.approvals'].search([('type', '=', 'contracted')], limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'contracted':
-                approval_record = self.env['reservation.approvals'].search([('type', '=', 'operation_signature')], limit=1)
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'operation_signature')],
+                                                                           limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'operation_signature':
                 approval_record = self.env['reservation.approvals'].search([('type', '=', 'legal')], limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'legal':
-                approval_record = self.env['reservation.approvals'].search([('type', '=', 'finance_delivered')], limit=1)
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'finance_delivered')],
+                                                                           limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'finance_delivered':
-                approval_record = self.env['reservation.approvals'].search([('type', '=', 'engineering_comment')], limit=1)
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'engineering_comment')],
+                                                                           limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'engineering_comment':
                 approval_record = self.env['reservation.approvals'].search([('type', '=', 'co_approval')], limit=1)
@@ -102,9 +105,11 @@ class requestReservation(models.Model):
                 approval_record = self.env['reservation.approvals'].search([('type', '=', 'customer_service')], limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             elif rec.state == 'customer_service':
-                approval_record = self.env['reservation.approvals'].search([('type', '=', 'legal_final_accept')], limit=1)
+                approval_record = self.env['reservation.approvals'].search([('type', '=', 'legal_final_accept')],
+                                                                           limit=1)
                 approval_users = [(6, 0, approval_record.users.ids)]
             rec.approvals_users = approval_users
+
     def approval_reservation(self):
         users = self.approvals_users
         if users:
@@ -128,66 +133,50 @@ class requestReservation(models.Model):
                               author_id=uid.partner_id.id,
                               notification_ids=notification_ids)
 
-
     def finance_approval(self):
         self.state = 'finance_approval'
         self.approval_reservation()
         self.make_log()
-
 
     def request_approval(self):
         self.state = 'request_approval'
         self.approval_reservation()
         self.make_log()
 
-
     def contracted(self):
         self.state = 'contracted'
         self.approval_reservation()
         self.make_log()
-
-
 
     def operation_signature(self):
         self.state = 'operation_signature'
         self.approval_reservation()
         self.make_log()
 
-
-
     def legal(self):
         self.state = 'legal'
         self.approval_reservation()
         self.make_log()
-
-
 
     def finance_delivered(self):
         self.state = 'finance_delivered'
         self.approval_reservation()
         self.make_log()
 
-
-
     def co_approval(self):
         self.state = 'co_approval'
         self.approval_reservation()
         self.make_log()
-
-
 
     def customer_service(self):
         self.state = 'customer_service'
         self.approval_reservation()
         self.make_log()
 
-
-
     def legal_final_accept(self):
         self.state = 'legal_final_accept'
         self.approval_reservation()
         self.make_log()
-
 
     # def onchange_method_state(self):
     #     print("enter herer state ")
@@ -237,15 +226,15 @@ class requestReservation(models.Model):
         if self.available_to_cancel:
             self.check_field = True
 
-    res_log = fields.One2many('res.log','res_id')
+    res_log = fields.One2many('res.log', 'res_id')
 
     def make_log(self):
-        self.res_log= [(0, 0,
-                           {
-                               'user_id': self.env.user.id,
-                               'time': datetime.now(),
-                               'state': dict(self._fields['state'].selection).get(self.state),
-                               'res_id': self.id})]
+        self.res_log = [(0, 0,
+                         {
+                             'user_id': self.env.user.id,
+                             'time': datetime.now(),
+                             'state': dict(self._fields['state'].selection).get(self.state),
+                             'res_id': self.id})]
         # print('ofofoofofofo')
         # self.env['res.log'].create({
         #     'user_id': self.env.user.id,
@@ -253,7 +242,6 @@ class requestReservation(models.Model):
         #     'state': self.state,
         #     'res_id': self.id
         # })
-
 
     @api.onchange('date')
     def onchange_date(self):
@@ -325,11 +313,14 @@ class requestReservation(models.Model):
             return {'domain': {'phase_id': [('id', 'in', all_phases)]}}
 
     # sales details
-    sales_type = fields.Selection([('direct', _("Direct")), ('Broker', _("Broker")),('freelancer', _("Freelancer")),('recommendation', _("Recommendation"))], _('Sales Type'), default='direct')
+    sales_type = fields.Selection([('direct', _("Direct")), ('Broker', _("Broker")), ('freelancer', _("Freelancer")),
+                                   ('recommendation', _("Recommendation"))], _('Sales Type'), default='direct')
     broker_id = fields.Many2one(comodel_name="res.partner", string="Broker", required=False,
                                 domain=[('is_broker', '=', True)])
-    company_broker = fields.Many2one(comodel_name="res.partner", string="Company Broker", required=False,
+    company_broker = fields.Many2one(comodel_name="res.partner", string="Company Broker", required=False ,related='broker_id.parent_id',
                                      domain=[('is_broker', '=', True)])
+    freelance = fields.Many2one('res.partner')
+    recommendation = fields.Many2one('res.partner')
     # customer details
     customer_id = fields.Many2one('res.partner', string="Customer")
     customer_ids = fields.Many2many(comodel_name="res.partner", relation="res_partner_reservation", column1="par",
@@ -452,7 +443,7 @@ class requestReservation(models.Model):
         self.make_log()
 
     # part payment and lins
-    payment_type = fields.Selection([('manual_terms', _("Manual Terms")), ('specific_terms', _("Specific Terms"))],)
+    payment_type = fields.Selection([('manual_terms', _("Manual Terms")), ('specific_terms', _("Specific Terms"))], )
 
     pay_strategy_id = fields.Many2one('account.payment.term', string="Payment Strategy")
     payment_strg_name = fields.Char(string="Payment Strategy", related='pay_strategy_id.name', store=True)
@@ -492,8 +483,10 @@ class requestReservation(models.Model):
             'state_payment': 'cheque' if line.journal_id.is_notes_receivable == True else 'bank' if line.journal_id.type == 'cash' else 'bank',
             'reserve_id': self._origin.id,
             'cumulative_amount': cumulative_amount,
-            'cumulative_percentage': (cumulative_amount / self.final_unit_price) * 100 if self.final_unit_price and self.final_unit_price != 0 else 0,
-            'collection_percentage': (line.amount / self.final_unit_price) * 100 if self.final_unit_price and self.final_unit_price != 0 and line.install_type.installment or line.install_type.deposite else 0,
+            'cumulative_percentage': (
+                                             cumulative_amount / self.final_unit_price) * 100 if self.final_unit_price and self.final_unit_price != 0 else 0,
+            'collection_percentage': (
+                                             line.amount / self.final_unit_price) * 100 if self.final_unit_price and self.final_unit_price != 0 and line.install_type.installment or line.install_type.deposite else 0,
         }
 
     @api.onchange('payment_term_ids')
@@ -524,7 +517,8 @@ class requestReservation(models.Model):
     final_unit_price = fields.Float(string="Unit Price", required=False, compute='_get_final_unit_price', store=True)
     maintenance = fields.Float('Maintenance', compute='_calc_amdents', inverse='_inverse_amdents', store=True)
     utility_fees = fields.Float('Utility Fees', compute='_calc_amdents', inverse='_inverse_amdents', store=True)
-    finishing_penalty = fields.Float('Finishing Penalty', compute='_calc_amdents', inverse='_inverse_amdents', store=True)
+    finishing_penalty = fields.Float('Finishing Penalty', compute='_calc_amdents', inverse='_inverse_amdents',
+                                     store=True)
 
     @api.depends('project_id.maintenance_sel', 'project_id.maintenance_percent', 'project_id.maintenance_fixed',
                  'project_id.utility_fees_sel', 'project_id.utility_percent', 'project_id.utility_fixed',
@@ -598,7 +592,7 @@ class requestReservation(models.Model):
     @api.depends('maintenance_rem', 'utility_fees_rem', 'finishing_penalty_rem', 'final_unit_price_rem')
     def calc_total_rem(self):
         for rec in self:
-            rec.total_rem = rec.maintenance_rem + rec.utility_fees_rem + rec.finishing_penalty_rem +\
+            rec.total_rem = rec.maintenance_rem + rec.utility_fees_rem + rec.finishing_penalty_rem + \
                             rec.final_unit_price_rem
 
     @api.depends('total_rem', 'total_amount')
@@ -614,10 +608,9 @@ class requestReservation(models.Model):
 
     def engineering_manage_app(self):
         self.eng_manage = True
-        self.state='engineering_comment'
+        self.state = 'engineering_comment'
         self.approval_reservation()
         self.make_log()
-
 
     def eng_approval(self):
         self.eng_manage = False
@@ -680,6 +673,7 @@ class requestReservation(models.Model):
         inbound_payments = self.env['account.payment.method'].search([('payment_type', '=', 'inbound')])
         for rec in self:
             payments = []
+            cumulative_amount = 0
             for payment in rec.payment_strg_ids:
                 payment.write({
                     'reserve_id': False
@@ -734,6 +728,7 @@ class requestReservation(models.Model):
 
                     # if payment_line.is_by_date:
                     #     payment_date = payment_line.by_date_shift
+                    cumulative_amount += payment_amount
                     payment_arr = {
                         'amount': round(payment_amount),
                         'base_amount': round(payment_amount),
@@ -749,7 +744,12 @@ class requestReservation(models.Model):
                         'Waste_insurance': payment_line.Waste_insurance,
                         # 'payment_method_id': payment_methods.id and payment_methods[0].id or False,
                         'property_ids': [(6, 0, [rec.property_id.id])],
-                        "is_maintainance": payment_line.add_extension
+                        "is_maintainance": payment_line.add_extension,
+                        'cumulative_amount': cumulative_amount,
+                        'cumulative_percentage': (
+                                                         cumulative_amount / self.final_unit_price) * 100 if self.final_unit_price and self.final_unit_price != 0 else 0,
+                        'collection_percentage': (
+                                                         payment_amount / self.final_unit_price) * 100 if self.final_unit_price and self.final_unit_price != 0  else 0,
 
                     }
 
@@ -1287,6 +1287,7 @@ class requestReservation(models.Model):
     #             if dif > 100:
     #                 raise ValidationError(_("The sum of the Installment must be equal to the unit price"))
 
+
 class InstallType(models.Model):
     _name = 'install.type'
 
@@ -1296,6 +1297,8 @@ class InstallType(models.Model):
     maintenance = fields.Boolean(default=False)
     utility_fees = fields.Boolean(default=False)
     finishing_penalty = fields.Boolean(default=False)
+
+
 class CancelReason(models.Model):
     _name = "cancel.reason.res"
 

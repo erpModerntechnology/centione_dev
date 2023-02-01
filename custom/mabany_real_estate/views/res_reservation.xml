@@ -141,11 +141,13 @@
                                 <field name="sales_type"
                                        attrs="{'readonly' : ['|',('state', 'in', ['reserved','release']),('eng_manage', '=',True)]}"/>
                                 <field name="broker_id"
-                                       attrs="{'invisible' : [('sales_type', '=', 'direct')],'readonly': [('eng_manage', '=',True)]}"
+                                       attrs="{'invisible' : [('sales_type', '!=', 'Broker')],'readonly': [('eng_manage', '=',True)]}"
                                        optional="{'no_create': True,'no_open': True}"
                                        domain="[('is_broker','=',True)]"/>
+                                <field name="freelance" attrs="{'invisible' : [('sales_type', '!=', 'freelancer')]}"/>
+                                <field name="recommendation" attrs="{'invisible' : [('sales_type', '!=', 'recommendation')]}"/>
                                 <field name="company_broker"
-                                       attrs="{'invisible' : [('sales_type', '=', 'direct')],'readonly': [('eng_manage', '=',True)]}"
+                                       attrs="{'invisible' : [('sales_type', '!=', 'Broker')],'readonly': [('eng_manage', '=',True)]}"
                                        optional="{'no_create': True,'no_open': True}"
                                        domain="[('is_broker','=',True)]"/>
                                 <field name="company_id" readonly="1"
@@ -346,7 +348,7 @@
                                         </field>
                                     </page>
 
-                                    <page name="lines" string="lines">
+                                    <page name="lines" string="Lines">
                                         <field name="payment_strg_ids"
                                                widget="section_and_note_one2many"
                                                mode="tree,kanban"

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="deposite_record" model="install.type">
+            <field name="name">Deposit</field>
+            <field name="deposite">True</field>
+        </record>
+        <record id="installment_record" model="install.type">
+            <field name="name">Installment</field>
+            <field name="installment">True</field>
+        </record>
+        <record id="maintenance_record" model="install.type">
+            <field name="name">Maintenance</field>
+            <field name="maintenance">True</field>
+        </record>
+        <record id="utility_fees_record" model="install.type">
+            <field name="name">Utility Fees</field>
+            <field name="utility_fees">True</field>
+        </record>
+        <record id="finishing_penalty_record" model="install.type">
+            <field name="name">Finishing Penalty</field>
+            <field name="finishing_penalty">True</field>
+        </record>
+    </data>
+</odoo>

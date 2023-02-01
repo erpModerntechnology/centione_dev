@@ -42,6 +42,7 @@
         'views/sequence.xml',
         'views/approval.xml',
         'views/crm.xml',
+        'views/install_type.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
