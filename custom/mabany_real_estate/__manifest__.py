@@ -43,6 +43,7 @@
         'views/approval.xml',
         'views/crm.xml',
         'views/install_type.xml',
+        'views/request_reservation.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

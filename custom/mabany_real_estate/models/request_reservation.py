@@ -48,7 +48,9 @@ class requestReservation(models.Model):
                     })
                     raise ValidationError('Please select a date equal/or greater than the current date')
 
-    is_eoi = fields.Boolean(string="EOI",default=True  )
+    is_eoi = fields.Boolean(string="EOI",default=True)
+    lead_id = fields.Many2one('crm.lead', string="Lead")
+
 
     project_id = fields.Many2one('project.project', _("Project"))
     # terms_and_conditions = fields.Text(string="Terms and Conditions", required=False,related='project_id.terms_and_conditions' )
@@ -79,7 +81,8 @@ class requestReservation(models.Model):
             return {'domain': {'phase_id': [('id', 'in', all_phases)]}}
 
     # sales details
-    sales_type = fields.Selection([('direct', _("Direct")), ('Broker', _("Broker")) ], _('Sales Type'),default='direct')
+    sales_type = fields.Selection([('direct', _("Direct")), ('Broker', _("Broker")), ('freelancer', _("Freelancer")),
+                                   ('recommendation', _("Recommendation"))], _('Sales Type'), default='direct')
     broker_id = fields.Many2one(comodel_name="res.partner", string="Broker", required=False,domain=[('is_broker','=',True)] )
     # customer details
     customer_id = fields.Many2one('res.partner', string="Customer")

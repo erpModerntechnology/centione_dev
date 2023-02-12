@@ -12,6 +12,11 @@
                             type="object"
                             class="oe_highlight"
                     />
+                    <button name="create_request_reservation"
+                            string="Create Request Reservation"
+                            type="object"
+                            class="oe_highlight"
+                    />
                 </xpath>
                 <xpath expr="//button[@name='action_view_sale_quotation']" position="replace">
                     <button name="action_open_leads" type="object"
@@ -24,6 +29,19 @@
                             </span>
                             <span class="o_stat_text" attrs="{'invisible': [('count_reservation', '&gt;', 1)]}">
                                 Reservation
+                            </span>
+                        </div>
+                    </button>
+                    <button name="action_open_req" type="object"
+                            class="oe_stat_button" icon="fa-star"
+                            attrs="{'invisible': [('type', '=', 'lead')]}">
+                        <div class="o_stat_info">
+                            <field name="count_req_reservation" class="o_stat_value"/>
+                            <span class="o_stat_text" attrs="{'invisible': [('count_req_reservation', '&lt;', 2)]}">
+                                Request Reservations
+                            </span>
+                            <span class="o_stat_text" attrs="{'invisible': [('count_req_reservation', '&gt;', 1)]}">
+                                Request Reservation
                             </span>
                         </div>
                     </button>
