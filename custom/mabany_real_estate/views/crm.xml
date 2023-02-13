@@ -17,6 +17,11 @@
                             type="object"
                             class="oe_highlight"
                     />
+                    <button name="create_Amendments"
+                            string="Create Amendments"
+                            type="object"
+                            class="oe_highlight"
+                    />
                 </xpath>
                 <xpath expr="//button[@name='action_view_sale_quotation']" position="replace">
                     <button name="action_open_leads" type="object"
@@ -29,6 +34,19 @@
                             </span>
                             <span class="o_stat_text" attrs="{'invisible': [('count_reservation', '&gt;', 1)]}">
                                 Reservation
+                            </span>
+                        </div>
+                    </button>
+                    <button name="action_amed_leads" type="object"
+                            class="oe_stat_button" icon="fa-star"
+                            attrs="{'invisible': [('type', '=', 'lead')]}">
+                        <div class="o_stat_info">
+                            <field name="count_amed" class="o_stat_value"/>
+                            <span class="o_stat_text" attrs="{'invisible': [('count_amed', '&lt;', 2)]}">
+                                Amendments
+                            </span>
+                            <span class="o_stat_text" attrs="{'invisible': [('count_amed', '&gt;', 1)]}">
+                                Amendments
                             </span>
                         </div>
                     </button>

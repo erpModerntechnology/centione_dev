@@ -44,6 +44,7 @@
         'views/crm.xml',
         'views/install_type.xml',
         'views/request_reservation.xml',
+        'views/amendment.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

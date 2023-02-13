@@ -168,6 +168,7 @@ class ProductProduct(models.Model):
     bldg_type = fields.Float('Bldg. Type')
     un_area = fields.Float('Un .Area')
     advantage = fields.Float(compute='calc_advantage',store=True)
+    pricelist_ids = fields.One2many('unit.pricelist','product_id')
     @api.depends('north','view','ch_view','ch_distance','floor','bldg_type','un_area','unit_price')
     def calc_advantage(self):
         for r in self:
@@ -383,11 +384,20 @@ class ProductProduct(models.Model):
     level = fields.Many2one('res.level','Level')
     sales_price_percentage = fields.Float()
     sales_price = fields.Float(compute='calc_sales_price',store=True)
+    sales_pricelist = fields.Float()
 
     @api.depends('final_unit_price','sales_price_percentage')
     def calc_sales_price(self):
         for r in self:
             r.sales_price = (r.final_unit_price * r.sales_price_percentage) + r.final_unit_price
+    def calc_sales_pricelist(self):
+        for r in self.search([('state','not in',['reserved','contracted'])]):
+                project_unit = self.env['product.product'].search([('project_id','=',self.project_id.id),('state','=','contracted')])
+                unit_count = len(project_unit)
+                for l in r.pricelist_ids:
+                    if date.today() >= l.date_from and date.today() <= l.date_to and unit_count >= l.no_unit:
+                        r.sales_pricelist = l.new_salesprice
+
 
 
 

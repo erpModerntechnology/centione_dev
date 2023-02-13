@@ -35,6 +35,7 @@ mabany_real_estate.access_customer_payment,access_customer_payment,mabany_real_e
 mabany_real_estate.access_loan_line_rs_wizard,access_loan_line_rs_wizard,mabany_real_estate.model_loan_line_rs_wizard,,1,1,1,1
 mabany_real_estate.access_reservation_approvals,access_reservation_approvals,mabany_real_estate.model_reservation_approvals,,1,1,1,1
 mabany_real_estate.access_res_log,access_res_log,mabany_real_estate.model_res_log,,1,1,1,1
+mabany_real_estate.access_unit_pricelist,access_unit_pricelist,mabany_real_estate.model_unit_pricelist,,1,1,1,1
 
 
 

@@ -17,3 +17,4 @@ from . import inherit_account_journal
 from . import approvals
 from . import crm_lead
 from . import reservation_log
+from . import unit_pricelist

@@ -457,8 +457,18 @@ class requestReservation(models.Model):
     discount = fields.Float(string="Discount Percentage", digits=(16, 15))
     total_discount = fields.Float('Total Discount', compute='_compute_total_discount', store=True)
 
-    property_price = fields.Float(string="Unit Price", readonly=True, related='property_id.sales_price',
-                                  digits=(16, 2))
+    property_price = fields.Float(string="Unit Price", readonly=True, compute='calc_property_price',store=True,
+                                    digits=(16, 2))
+    @api.depends('property_id.sales_pricelist','property_id.sales_price')
+    def calc_property_price(self):
+        for r in self:
+            if r.property_id.sales_pricelist > 0:
+                r.property_price = r.property_id.sales_pricelist
+            else:
+                r.property_price = r.property_id.sales_price
+
+
+
     net_price = fields.Float(string="Net Price", compute='_calc_net_price', store=True, digits=(16, 2))
 
     payment_due = fields.Float(string="Payment Due", required=False, compute="_calc_net_price")
