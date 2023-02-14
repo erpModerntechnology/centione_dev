@@ -34,8 +34,14 @@ mabany_real_estate.access_cancel_reason_res,access_cancel_reason_res,mabany_real
 mabany_real_estate.access_customer_payment,access_customer_payment,mabany_real_estate.model_customer_payment,,1,1,1,1
 mabany_real_estate.access_loan_line_rs_wizard,access_loan_line_rs_wizard,mabany_real_estate.model_loan_line_rs_wizard,,1,1,1,1
 mabany_real_estate.access_reservation_approvals,access_reservation_approvals,mabany_real_estate.model_reservation_approvals,,1,1,1,1
+mabany_real_estate.access_rent_approvals,access_rent_approvals,mabany_real_estate.model_rent_approvals,,1,1,1,1
 mabany_real_estate.access_res_log,access_res_log,mabany_real_estate.model_res_log,,1,1,1,1
 mabany_real_estate.access_unit_pricelist,access_unit_pricelist,mabany_real_estate.model_unit_pricelist,,1,1,1,1
+mabany_real_estate.access_res_rent,access_res_rent,mabany_real_estate.model_res_rent,,1,1,1,1
+mabany_real_estate.access_res_rent_type,access_res_rent_type,mabany_real_estate.model_res_rent_type,,1,1,1,1
+mabany_real_estate.access_rent_type_details,access_rent_type_details,mabany_real_estate.model_rent_type_details,,1,1,1,1
+
+
 
 
 

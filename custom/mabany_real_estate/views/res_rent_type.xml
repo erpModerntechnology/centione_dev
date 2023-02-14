@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_rent_type_view_form" model="ir.ui.view">
+            <field name="name">res.rent.type.view.form</field>
+            <field name="model">res.rent.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="rent_type" required="1"/>
+                            <field name="amount" required="1"/>
+                            <field name="tax_id" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

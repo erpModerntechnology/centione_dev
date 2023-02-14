@@ -18,3 +18,5 @@ from . import approvals
 from . import crm_lead
 from . import reservation_log
 from . import unit_pricelist
+from . import res_rent
+from . import rent_approvals

@@ -675,6 +675,8 @@ class ProductProduct(models.Model):
     ground_floor_area = fields.Float(string='Ground Floor Area')
     ground_floor_prices = fields.Float(string='Ground Floor Price', store=True)
     total_ground = fields.Float(compute='calc_total_ground', store=True)
+    insurance_amount = fields.Float()
+    deposite_amount = fields.Float()
 
     @api.depends('first_floor_area', 'first_floor_prices')
     def calc_total_first(self):

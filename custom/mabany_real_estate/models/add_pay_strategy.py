@@ -530,7 +530,7 @@ class PaymentStrg(models.Model):
     # month_amount = fields.Float('Months Amount',readonly=True)
     sales_value = fields.Float('Sales Value', )
     company_percent = fields.Float('Company Percentage')
-    # rent_id = fields.Many2one('res.rent')
+    rent_id = fields.Many2one('res.rent')
     install_type = fields.Many2one('install.type', string="Type")
     period = fields.Selection(
         [('once', 'Once'), ('monthly', 'Monthly'), ('quarter', 'Quarter'), ('semiannual', 'Semiannual'),
@@ -653,6 +653,7 @@ class PaymentStrg(models.Model):
     utilities_included = fields.Boolean(default=False)
     markting = fields.Boolean('Utility Fees')
     Waste_insurance = fields.Boolean('Finishing Penalty')
+    rent_id = fields.Many2one('res.rent')
 
     def _compute_amount_due(self):
         for rec in self:
@@ -776,6 +777,85 @@ class PaymentStrg(models.Model):
             elif values['state_payment'] == 'bank':
                 values['payment_code'] = self.env['ir.sequence'].next_by_code('pay.Bank.seq')
             return super().create(values)
+    seq = fields.Integer(
+        string='Seq',
+        required=False)
+    rent_value = fields.Float('Rent Value')
+    difference = fields.Float('Diff.',compute='_calc_difference',store=True)
+    desc = fields.Char('Description')
+    ins = fields.Boolean('Insurance')
+    @api.depends('rent_value','company_percent')
+    def _calc_difference(self):
+        for r in self:
+            r.difference = r.company_percent -r.rent_value
+    percent_of_sale = fields.Float('Percentage Of Sale')
+    annual_increase = fields.Float('Annual Increase',compute = 'calc_annual_increase',)
+
+    def calc_annual_increase(self):
+        for rec in self:
+            if rec.rent_id.date_annual_increase and rec.payment_date:
+                years = (rec.rent_id.date_annual_increase - rec.payment_date).days
+                y = int(-years/365)
+                if rec.rent_id.date_annual_increase <= rec.payment_date:
+                    rec.annual_increase = rec.amount + ((rec.rent_id.perc_increase/100*(y + 1)) * (rec.amount))
+                else:
+                    rec.annual_increase = 0
+            else:
+                rec.annual_increase = 0
+
+    tax = fields.Float('Tax',compute='_calc_tax',store=True)
+    @api.depends('is_maintainance','amount')
+    def _calc_tax(self):
+        for r in self:
+            r.tax = (14/100) * r.amount if r.is_maintainance == True else (1/100) * r.amount
+    annual_increase = fields.Float('Annual Increase',compute = 'calc_annual_increase',)
+    rent_type = fields.Char()
+    tax_id = fields.Many2one(
+        comodel_name='account.tax',
+        string='Tax_id',
+        required=False)
+
+    amount_after_tax = fields.Float(
+        string='Amount_after_tax',
+        required=False, compute="compute_amount_tax")
+
+    amount_tax = fields.Float(
+        string='Amount_tax',
+        required=False, compute="compute_amount_tax")
+
+    @api.depends('tax_id', 'rent_type', 'rent_value', 'annual_increase')
+    def compute_amount_tax(self):
+        for rec in self:
+            taxes = rec.tax_id.compute_all(rec.rent_value, self.env.company.currency_id, )
+            # print("tax",taxes)
+            # print("taxes_res['total_excluded']",taxes['total_excluded'])
+            rec.amount_tax = taxes['total_included'] - taxes['total_excluded']
+            rec.amount_after_tax = taxes['total_included']
+
+    # def calc_annual_increase(self):
+    #     for rec in self:
+    #         if rec.rent_id.date_annual_increase and rec.payment_date:
+    #             years = (rec.rent_id.date_annual_increase - rec.payment_date).days
+    #             y = int(-years/365)
+    #             if rec.rent_id.date_annual_increase <= rec.payment_date:
+    #                 rec.annual_increase = rec.amount + ((rec.rent_id.perc_increase/100*(y + 1)) * (rec.amount))
+    #             else:
+    #                 rec.annual_increase = 0
+    #         else:
+    #             rec.annual_increase = rec.rent_value
+
+    months_2 = fields.Integer(
+        string='Months_2',
+        required=False)
+
+
+
+
+
+
+
+
+
 
     def write(self, vals):
         print("values :> ", vals)

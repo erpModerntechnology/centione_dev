@@ -147,22 +147,24 @@
                                 </group>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <button groups="mabany_real_estate.group_create_payment_Reservation"
+<!--                                        groups="mabany_real_estate.group_create_payment_Reservation"-->
+                                        <button
                                                 name="create_payment_lines_selected" type="object"
                                                 string="Create Payment" class="btn btn-primary"/>
                                     </li>
                                     <li class="list-inline-item">
-                                        <button groups="mabany_real_estate.group_Delete_Reservation"
+                                        <button
                                                 name="button_delete_lines_selected" type="object" string="Delete"
                                                 class="btn btn-primary"/>
                                     </li>
                                     <li class="list-inline-item">
-                                        <button groups="mabany_real_estate.group_Receive_Reservation"
+<!--                                        groups="mabany_real_estate.group_Receive_Reservation"-->
+                                        <button
                                                 name="button_receive_lines_selected" type="object" string="Receive"
                                                 class="btn btn-primary"/>
                                     </li>
                                     <li class="list-inline-item">
-                                        <button groups="mabany_real_estate.group_Print_Reservation"
+                                        <button
                                                 name="generate_report" type="object" string="Print"
                                                 class="btn btn-primary"/>
                                     </li>

@@ -123,35 +123,35 @@ class Customer_payment(models.Model):
     @api.onchange('rent_id')
     def onchange_rent_id(self):
         if self.rent_id:
-            loan_lines=[]
+            loan_lines = []
             for line in self.rent_id.payment_strg_ids:
-                print("line.id :: %s",line.id)
+                print("line.id :: %s", line.id)
                 strg = self.env['payment.strg'].sudo().search([
                     ('id', '=', line.id)
                 ], limit=1)
-                print(" strg:: %s",strg)
+                print(" strg:: %s", strg)
 
-                if not line.is_pay :
+                if not line.is_pay:
                     if line.state_payment == self.state_payment:
-                        loan_lines.append((0,0,
+                        loan_lines.append((0, 0,
                                            {
-                                               'payment_date':line.payment_date,
-                                               'amount':line.amount,
-                                               'description':line.description,
+                                               'payment_date': line.payment_date,
+                                               'amount': line.amount_after_tax,
+                                               'description': line.desc,
                                                'installment_line_id': line.id,
                                                'payment_strg_id': strg,
-                                               'name':line.name,
-                                               'cus_bank':line.cus_bank,
-                                               'bank_name':line.bank_name,
+                                               'name': line.name,
+                                               'cus_bank': line.cus_bank,
+                                               'bank_name': line.bank_name,
                                                'cheque': line.cheque,
-                                               'amount_due':line.amount_due,
+                                               'amount_due': line.amount_after_tax,
                                                'is_main': line.is_maintainance,
                                                'state_payment': line.state_payment
                                            }))
             # self.partner_id=self.reservation_id.customer_id.id
-            self.loan_line = [(6,0,[])]
+            self.loan_line = [(6, 0, [])]
 
-            self.loan_line=loan_lines
+            self.loan_line = loan_lines
 
     # create method
     @api.model

@@ -45,9 +45,10 @@
         'views/install_type.xml',
         'views/request_reservation.xml',
         'views/amendment.xml',
+        'views/res_rent.xml',
+        'views/res_rent_details.xml',
+        'views/res_rent_type.xml',
+        'views/rent_approval.xml',
     ],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
 }

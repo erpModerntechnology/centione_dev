@@ -2,9 +2,9 @@
 <odoo>
     <data>
 
-        <record id="sales_approvals_res_tree_view" model="ir.ui.view">
+        <record id="sales_approvals_rent_tree_view" model="ir.ui.view">
             <field name="name">sales.approvals.tree.view</field>
-            <field name="model">reservation.approvals</field>
+            <field name="model">rent.approvals</field>
             <field name="arch" type="xml">
                 <tree editable="top">
                     <field name="type" required="1"/>
@@ -13,10 +13,10 @@
             </field>
         </record>
 
-        <record id="sales_res_approvals_act_window" model="ir.actions.act_window">
-            <field name="name">Reservation Approvals</field>
+        <record id="sales_res_rent_approvals_act_window" model="ir.actions.act_window">
+            <field name="name">Rent Approvals</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">reservation.approvals</field>
+            <field name="res_model">rent.approvals</field>
             <field name="view_mode">tree</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
@@ -25,8 +25,8 @@
             </field>
         </record>
 
-        <menuitem name="Reservation Approvals" id="approvals_res_users_menu" parent="conf_sub"
-                  action="sales_res_approvals_act_window"/>
+        <menuitem name="Rent Approvals" id="approvals_res_users_menu" parent="conf_sub"
+                  action="sales_res_rent_approvals_act_window"/>
 
     </data>
 </odoo>

@@ -343,6 +343,11 @@
                                     </tree>
                                 </field>
                             </page>
+                            <page name="Rent"
+                                  string="Rent">
+                                <field name="insurance_amount"/>
+                                <field name="deposite_amount"/>
+                            </page>
 
                         </notebook>
 

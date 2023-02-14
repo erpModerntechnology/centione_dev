@@ -17,7 +17,7 @@
                                 status="finance_delivered"/>
                         <button name="eng_approval" type="object" string="Approval"
                                 attrs="{'invisible': [('eng_manage', '=',False)]}"
-                                groups="mabany_real_estate.group_engineering_mangement"/>
+                                />
                         <button name="available_to_cancel" string="Available to Cancel"
                                 type="object" class="oe_highlight"
                                 attrs="{'invisible': [('check_field', '=', True)]}"
